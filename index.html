@@ -35,22 +35,22 @@
                 <div class="gracze_edycja">
                     <div class="gracz nr1">
                         <h4>Gracz 1</h4>
-                        <h2>Nazwa gracza 1</h2>
+                        <h2>Nazwa gracza</h2>
                         <div class="kolor"></div>
                     </div>
                     <div class="gracz nr2">
                         <h4>Gracz 2</h4>
-                        <h2>Nazwa gracza 2</h2>
+                        <h2>Nazwa gracza</h2>
                         <div class="kolor"></div>
                     </div>
                     <div class="gracz nr3">
                         <h4>Gracz 3</h4>
-                        <h2>Nazwa gracza 3</h2>
+                        <h2>Nazwa gracza</h2>
                         <div class="kolor"></div>
                     </div>
                     <div class="gracz nr4">
                         <h4>Gracz 4</h4>
-                        <h2>Nazwa gracza 4</h2>
+                        <h2>Nazwa gracza</h2>
                         <div class="kolor"></div>
                     </div>
                     <div class="gracz dodaj">
@@ -62,8 +62,11 @@
             </div>
             <div class="dol">
                 <div class="gracze_edycja">
+                    <div id="blad">
+                        <h3></h3>
+                    </div>
                     <h3 id="pierwszy">Podaj nazwę gracza</h3>
-                    <input type="text" id="nazwa_gracza" maxlength="14" disabled>
+                    <input type="text" id="nazwa_gracza" maxlength="14" disabled placeholder="Nazwa gracza">
                     <h3>Wybierz awatar</h3>
                     <select id="wyb_awatar" disabled>
                         <option>1</option>
@@ -73,16 +76,22 @@
                     </select>
                     <h3>Wybierz kolor</h3>
                     <select id="wyb_kolor" disabled>
-                        <option value="red">Czerwony</option>
-                        <option value="blue">Niebieski</option>
-                        <option value="green">Zielony</option>
-                        <option value="yellow">Żółty</option>
+                        <option value="pusty" style="display:none"></option>
+                        <option value="rgb(232, 65, 24)">Czerwony</option>
+                        <option value="rgb(0, 151, 230)">Niebieski</option>
+                        <option value="rgb(68, 189, 50)">Zielony</option>
+                        <option value="rgb(225, 177, 44)">Żółty</option>
+                        <option value="rgb(140, 122, 230)">Fioletowy</option>
+                        <option value="rgb(119, 140, 163)">Szary</option>
                     </select>
                 </div>
             </div>
         </div>
     </section>
 
+    <main>
+        <div id="plansza"></div>
+    </main>
     <script src="js/rozgrywka.js"></script>
 </body>
 </html>

@@ -13,8 +13,6 @@ body {
     width: 100vw;
     height: 50vh;
     box-sizing: border-box;
-}
-.gora.glowna {
     -webkit-transition: opacity .5s ease-in-out;
     -moz-transition: opacity .5s ease-in-out;
     transition: opacity .5s ease-in-out;
@@ -56,14 +54,14 @@ body {
     width: 100vw;
     box-sizing: border-box;
     background-color: #f5f6fa;
+    -webkit-transition: opacity .5s ease-in-out;
+    -moz-transition: opacity .5s ease-in-out;
+    transition: opacity .5s ease-in-out;
 }
 .dol.glowna {
     width: 1000px;
     margin: 0 auto;
     padding: 0;
-    -webkit-transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    transition: opacity .5s ease-in-out;
 }
 
 .cechy {
@@ -139,29 +137,21 @@ body {
     margin: 0 auto;
     width: 100px;
     height: 100px;
-    background-color: #fff;
-}
-.nr1 .kolor {
-    background-color: red;
-}
-.nr2 .kolor {
-    background-color: green;
-}
-.nr3 .kolor {
-    background-color: blue;
-}
-.nr4 .kolor {
-    background-color: yellow;
+    background-color: #353b48;
 }
 .dol .gracze_edycja{
     color: #353b48;
 }
 .dol .gracze_edycja h3 {
     font-size: 22px;
-    margin: 20px 0;
+    padding: 15px 0;
+    margin: 0;
+}
+#blad {
+    height: 70px;
+    color: #e84118;
 }
 h3#pierwszy {
-    padding-top: 70px;
     margin: 0 0 20px 0;
 }
 #nazwa_gracza {

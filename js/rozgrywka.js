@@ -2,6 +2,12 @@ const maksymalna_liczba_graczy = 4;
 var liczba_graczy = 2;
 var zablokowany = false;
 
+var aktywnynr = 0;
+var kolory = [];
+var nazwy = [];
+var awatary = [];
+
+//Przejście do ekranu przygotowywania rozgrywki
 $(".graj#glowna").on("click",function () {
     $(".gora.glowna, .dol.glowna").css("opacity","0");
     setTimeout(function(){ 
@@ -13,6 +19,7 @@ $(".graj#glowna").on("click",function () {
     }, 520);
 });
 
+//Dodanie kolejnego gracza
 $(".gracz.dodaj").on("click", function () {  
     if(!zablokowany)
     {  
@@ -32,46 +39,63 @@ $(".gracz.dodaj").on("click", function () {
         }, 520);
     }
 });
+
+//Oznaczenie wybranego gracza aktywnym do edycji oraz wczytanie jego ustawień do pól wyboru
 $(".gracz").on("click", function () {
     for(i=1;i<=maksymalna_liczba_graczy;i++)
     {
         if($(this).hasClass("nr"+i))
         {
             $(".gracz.nr"+i).addClass("aktywny");
-            $("#nazwa_gracza, #wyb_kolor, #wyb_awatar").removeAttr("disabled");
-            var kolor = "red";
-            switch(i)
-            {
-                case 1:
-                    kolor = "red";
-                    break;
-                case 2:
-                    kolor = "green";
-                    break;
-                case 3:
-                    kolor = "blue";
-                    break;
-                case 4:
-                    kolor = "yellow";
-                    break;
-            }
-            $("#wyb_kolor").val(kolor);
+            aktywnynr=i;
+            var kolor = $(".aktywny h4").css("color");
+            if(kolor=="rgb(245, 246, 250)") $("#wyb_kolor").val("pusty");
+            else $("#wyb_kolor").val(kolor);
+            $("#nazwa_gracza").val(nazwy[i]);
         }
         else
         {
             $(".gracz.nr"+i).removeClass("aktywny");
         }
-        var nazwa = $(".aktywny h2").text();
-        $("#nazwa_gracza").val(nazwa);
+        $("#nazwa_gracza, #wyb_kolor, #wyb_awatar").removeAttr("disabled");
     }
 });
 
-$("#nazwa_gracza").focusout(function(){
-    var nazwa = $(this).val();
-    $(".aktywny h2").html(nazwa);
+//Zmiana nazwy gracza
+$("#nazwa_gracza").on("focusout", function(){
+        var nazwa = $(this).val();
+        if(nazwa!="" && nazwa.length>2) 
+        {
+            $(".aktywny h2").html(nazwa);
+            nazwy[aktywnynr] = nazwa;
+        }
 });
 
-$("#wyb_kolor").change(function(){
+//Zmiana koloru gracza
+$("#wyb_kolor").on("change click",function(){
     var kolor = $(this).children("option:selected").val();
     $(".aktywny .kolor").css("background-color", kolor);
+    $(".aktywny h4").css("color",kolor);
+    kolory[aktywnynr] = kolor;
+});
+
+//Weryfikacja wprowadzonych danych i przejście do ekranu rozgrywki
+$(".graj#start").on("click",function(){
+    for(i=1;i<=liczba_graczy;i++)
+    {
+        if(kolory[i]=== undefined) $("#blad h3").html("Nie wybrano koloru dla co najmniej jednego gracza!");
+        else if(nazwy[i] === undefined) $("#blad h3").html("Nie ustawiono nazwy dla co najmniej jednego gracza!");
+        else $("#blad h3").html("");
+    }
+    if($("#blad h3").text() == "")
+    {
+        $(".gora, .dol").css("opacity","0");
+        setTimeout(function(){ 
+            $("#start, .gora, .gracze_edycja .dol, #przygotowanie").css("display","none"); 
+            $("#plansza").css("display","block");
+        }, 500);
+        setTimeout(function(){ 
+            $("#plansza").css("opacity","1");
+        }, 520);
+    }
 });
