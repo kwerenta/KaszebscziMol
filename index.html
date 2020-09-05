@@ -5,15 +5,84 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kaszëbsczi Mól</title>
 
+    <script src="js/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     
-    <div id="gora">
-        <div id="logo">Kaszëbsczi <span style="color: #fbc531;">Mól</span></div>
-        <div id="graj">ZAGRAJ</div>
-    </div>
-    <div id="dol">gituwa</div>
+    <header>
+        <div class="gora glowna">
+            <div id="logo">
+                <h1>Kaszëbsczi <span style="color: #fbc531;">Mól</span></h1>
+                <p>Kaszubska gra polegająca na handlu nieruchomościami</p>
+            </div>
+            <div class="graj" id="glowna">ZAGRAJ</div>
+        </div>
+    </header>
 
+    <section>
+        <div class="dol glowna">
+            <div class="cechy">cecha</div>
+            <div class="cechy" id="srodkowy">cecha</div>
+            <div class="cechy">cecha</div>
+            <div style="clear:both;"></div>
+        </div>
+    </section>
+
+    <section>
+        <div id="przygotowanie">
+            <div class="gora">
+                <div class="gracze_edycja">
+                    <div class="gracz nr1">
+                        <h4>Gracz 1</h4>
+                        <h2>Nazwa gracza 1</h2>
+                        <div class="kolor"></div>
+                    </div>
+                    <div class="gracz nr2">
+                        <h4>Gracz 2</h4>
+                        <h2>Nazwa gracza 2</h2>
+                        <div class="kolor"></div>
+                    </div>
+                    <div class="gracz nr3">
+                        <h4>Gracz 3</h4>
+                        <h2>Nazwa gracza 3</h2>
+                        <div class="kolor"></div>
+                    </div>
+                    <div class="gracz nr4">
+                        <h4>Gracz 4</h4>
+                        <h2>Nazwa gracza 4</h2>
+                        <div class="kolor"></div>
+                    </div>
+                    <div class="gracz dodaj">
+                        +
+                    </div>
+                    <div style="clear:both;"></div>
+                    <div class="graj" id="start">START</div>
+                </div>  
+            </div>
+            <div class="dol">
+                <div class="gracze_edycja">
+                    <h3 id="pierwszy">Podaj nazwę gracza</h3>
+                    <input type="text" id="nazwa_gracza" maxlength="14" disabled>
+                    <h3>Wybierz awatar</h3>
+                    <select id="wyb_awatar" disabled>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                    <h3>Wybierz kolor</h3>
+                    <select id="wyb_kolor" disabled>
+                        <option value="red">Czerwony</option>
+                        <option value="blue">Niebieski</option>
+                        <option value="green">Zielony</option>
+                        <option value="yellow">Żółty</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/rozgrywka.js"></script>
 </body>
 </html>
