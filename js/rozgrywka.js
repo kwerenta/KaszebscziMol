@@ -81,12 +81,13 @@ $("#wyb_kolor").on("change click",function(){
 
 //Weryfikacja wprowadzonych danych i przejście do ekranu rozgrywki
 $(".graj#start").on("click",function(){
-    for(i=1;i<=liczba_graczy;i++)
+    /* WYŁĄCZENIE WERYFIKACJI BŁĘDÓW
+    for(i=0;i<liczba_graczy;i++)
     {
-        if(kolory[i]=== undefined) $("#blad h3").html("Nie wybrano koloru dla co najmniej jednego gracza!");
+        if(kolory[i] === undefined) $("#blad h3").html("Nie wybrano koloru dla co najmniej jednego gracza!");
         else if(nazwy[i] === undefined) $("#blad h3").html("Nie ustawiono nazwy dla co najmniej jednego gracza!");
         else $("#blad h3").html("");
-    }
+    } */
     if($("#blad h3").text() == "")
     {
         $(".gora, .dol").css("opacity","0");
@@ -96,6 +97,25 @@ $(".graj#start").on("click",function(){
         }, 500);
         setTimeout(function(){ 
             $("#plansza").css("opacity","1");
+            $("body").css("background-color","#353b48")
         }, 520);
     }
+});
+
+$(".pole").hover(function(){
+    for(i=0;i<40;i++)
+    {
+        if($(this).attr("id") == "p"+i)
+        {
+            $("#powiekszenie h1").text(i);
+            $("#powiekszenie").css("display","block");
+            $("#powiekszenie").css("opacity","1");
+        }
+    }
+},
+function(){
+    setTimeout(function(){
+        $("#powiekszenie").css("display","none");
+    }, 200);
+        $("#powiekszenie").css("opacity","0")
 });
