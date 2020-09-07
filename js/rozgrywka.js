@@ -1,6 +1,7 @@
 const maksymalna_liczba_graczy = 4;
 var liczba_graczy = 2;
 var zablokowany = false;
+var ile=0;
 
 var aktywnynr = 0;
 var kolory = [];
@@ -107,7 +108,7 @@ $(".pole").hover(function(){
     {
         if($(this).attr("id") == "p"+i)
         {
-            $("#powiekszenie h1").text(i);
+            $("#powiekszenie").css("background-image","url(img/1.jpg)");
             $("#powiekszenie").css("display","block");
             $("#powiekszenie").css("opacity","1");
         }
@@ -117,5 +118,5 @@ function(){
     setTimeout(function(){
         $("#powiekszenie").css("display","none");
     }, 200);
-        $("#powiekszenie").css("opacity","0")
+        $("#powiekszenie").css("opacity","0");
 });
