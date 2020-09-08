@@ -1,7 +1,6 @@
-const maksymalna_liczba_graczy = 4;
+const maksymalna_liczba_graczy = 6;
 var liczba_graczy = 2;
 var zablokowany = false;
-var ile=0;
 
 var aktywnynr = 0;
 var kolory = [];
@@ -48,7 +47,7 @@ $(".gracz").on("click", function () {
         if($(this).hasClass("nr"+i))
         {
             $(".gracz.nr"+i).addClass("aktywny");
-            aktywnynr=i;
+            aktywnynr=i-1;
             var kolor = $(".aktywny h4").css("color");
             if(kolor=="rgb(245, 246, 250)") $("#wyb_kolor").val("pusty");
             else $("#wyb_kolor").val(kolor);
@@ -82,6 +81,7 @@ $("#wyb_kolor").on("change click",function(){
 
 //Weryfikacja wprowadzonych danych i przejście do ekranu rozgrywki
 $(".graj#start").on("click",function(){
+    
     /* WYŁĄCZENIE WERYFIKACJI BŁĘDÓW
     for(i=0;i<liczba_graczy;i++)
     {
@@ -100,23 +100,38 @@ $(".graj#start").on("click",function(){
             $("#plansza").css("opacity","1");
             $("body").css("background-color","#353b48")
         }, 520);
+        rozpoczecie();
     }
 });
 
+//Wyświetlanie powiększania najechanej karty
+var licznik;
 $(".pole").hover(function(){
-    for(i=0;i<40;i++)
+    if(!zablokowany)
     {
-        if($(this).attr("id") == "p"+i)
-        {
-            $("#powiekszenie").css("background-image","url(img/1.jpg)");
-            $("#powiekszenie").css("display","block");
-            $("#powiekszenie").css("opacity","1");
-        }
+        clearTimeout(licznik);
+        $("#powiekszenie").html("<h3>"+this.id+"</h3>");
+        $("#powiekszenie").css("visibility","visible");
+        $("#powiekszenie").css("opacity","1");
     }
 },
 function(){
-    setTimeout(function(){
-        $("#powiekszenie").css("display","none");
-    }, 200);
+    licznik = setTimeout(function() {
         $("#powiekszenie").css("opacity","0");
+        setTimeout(function() {
+            $("#powiekszenie").css("visibility","hidden");
+        },300);
+    },20);
 });
+
+function rozpoczecie(){
+    zablokowany = true;
+    $("#okienko").html(function(){
+        var kolejnosc;
+        for(i=0;i<liczba_graczy;i++)
+    {
+        kolejnosc += '<li><span style="color:'+kolory[i]+';">'+nazwy[i]+'</span></li>';
+    }
+        return "<h1>Kolejność startu:</h1><ol>"+kolejnosc+"</ol>";
+    });
+}
