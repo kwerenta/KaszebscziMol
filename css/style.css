@@ -16,9 +16,6 @@ body {
     width: 100vw;
     height: 50vh;
     box-sizing: border-box;
-    -webkit-transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    transition: opacity .5s ease-in-out;
 }
 #logo h1 {
     text-align: center;
@@ -57,9 +54,6 @@ body {
     width: 100vw;
     box-sizing: border-box;
     background-color: #f5f6fa;
-    -webkit-transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    transition: opacity .5s ease-in-out;
 }
 .dol.glowna {
     width: 1000px;
@@ -83,9 +77,6 @@ body {
 #przygotowanie {
     opacity: 0;
     display: none;
-    -webkit-transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    transition: opacity .5s ease-in-out;
 }
 .gracze_edycja {
     width: 1000px;
@@ -103,9 +94,6 @@ body {
     margin-right: 30px;
     margin-top: 90px;
     cursor: pointer;
-    -webkit-transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    transition: opacity .5s ease-in-out;   
 }
 .gracz.nr1 {
     margin-left: 140px;
@@ -180,10 +168,7 @@ h3#pierwszy {
     height: 722px;
     width: 722px;
     display: none;
-    opacity: 0;
-    -webkit-transition: opacity .5s ease-in-out;
-    -moz-transition: opacity .5s ease-in-out;
-    transition: opacity .5s ease-in-out;   
+    opacity: 0;  
 }
 .pole {
     width: 60px;

@@ -10,9 +10,9 @@ function Pole(nazwa,cena,kolor,czynsz,czynsz1,czynsz2,czynsz3,czynsz4,czynsz5){
     this.czynsz5 = czynsz5 || 0;
 }
 
-var pole = [40];
+let pole = [40];
 
-pole[0] = new Pole("Bazarek w Sierakowicach",400,"#303030",50);
+pole[0] = new Pole("START",400,"#303030",50);
 pole[1] = new Pole("Dino Mściszewice",350,"#303030",80,150);
 
 function Karta(tekst,dzialanie) {
@@ -20,6 +20,6 @@ function Karta(tekst,dzialanie) {
     this.dzialanie = dzialanie;
 }
 
-var karta = [];
+let karta = [];
 
 karta[0] = new Karta("Wygrałeś Snuff World Championship! Otrzymujesz 500$","Stworzyc funkcje dodaj i odejmij pieniadze");

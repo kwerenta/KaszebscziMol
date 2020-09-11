@@ -1,116 +1,108 @@
 const maksymalna_liczba_graczy = 6;
-var liczba_graczy = 2;
-var zablokowany = false;
+let liczba_graczy = 2;
+let zablokowany = false;
+let aktywnynr = 0;
 
-var aktywnynr = 0;
-var kolory = [];
-var nazwy = [];
-var awatary = [];
-
+const zmienEkran = (doSchowania, doPokazania,czas = 500) => {
+    $(`${doSchowania}, ${doPokazania}`).css("transition",`opacity ${czas/1000}s ease-in-out`);
+    $(`${doSchowania}, ${doPokazania}`).css("-moz-transition",`opacity ${czas/1000}s ease-in-out`);
+    $(`${doSchowania}, ${doPokazania}`).css("-webkit-transition",`opacity ${czas/1000}s ease-in-out`);
+    $(doSchowania).css("opacity","0");
+    setTimeout(function(){ 
+        $(doSchowania).css("display","none");
+        $(doPokazania).css("display","block");
+    }, czas);
+    setTimeout(function(){ 
+        $(doPokazania).css("opacity","1");
+    }, czas+20);
+}
 //Przejście do ekranu przygotowywania rozgrywki
-$(".graj#glowna").on("click",function () {
-    $(".gora.glowna, .dol.glowna").css("opacity","0");
-    setTimeout(function(){ 
-        $("#graj, .gora.glowna, #logo, .dol.glowna, .cechy").css("display","none"); 
-        $("#przygotowanie").css("display","block");
-    }, 500);
-    setTimeout(function(){ 
-        $("#przygotowanie").css("opacity","1");
-    }, 520);
-});
+$(".graj#glowna").click(function () { zmienEkran('#graj, .gora.glowna, #logo, .dol.glowna, .cechy', '#przygotowanie'); });
 
 //Dodanie kolejnego gracza
-$(".gracz.dodaj").on("click", function () {  
+$(".gracz.dodaj").click(function () {  
     if(!zablokowany)
     {  
         zablokowany = true;
         $(".gracz.nr1").css("margin-left","15px");
-        $(this).css("opacity","0");
+        gracz[liczba_graczy] = new Gracz ();
         liczba_graczy++;
+        zmienEkran('.gracz.dodaj',`.gracz.dodaj, .gracz.nr${liczba_graczy}`);
         setTimeout(function() {
+            zablokowany = false;
             if(liczba_graczy>=maksymalna_liczba_graczy) {
                 $(".gracz.dodaj").css("display","none");
             }
-            $(".gracz.nr"+liczba_graczy).css("display","block"); 
-        }, 500 );
-        setTimeout(function(){ 
-            $(".gracz.dodaj, .gracz.nr"+liczba_graczy).css("opacity","1");
-            zablokowany = false;
-        }, 520);
+        },500);
+        
     }
 });
 
 //Oznaczenie wybranego gracza aktywnym do edycji oraz wczytanie jego ustawień do pól wyboru
-$(".gracz").on("click", function () {
-    for(i=1;i<=maksymalna_liczba_graczy;i++)
+$(".gracz").click(function () {
+    if($(this).attr("class") != "gracz dodaj" && !$(this).hasClass("aktywny"))
     {
-        if($(this).hasClass("nr"+i))
-        {
-            $(".gracz.nr"+i).addClass("aktywny");
-            aktywnynr=i-1;
-            var kolor = $(".aktywny h4").css("color");
-            if(kolor=="rgb(245, 246, 250)") $("#wyb_kolor").val("pusty");
-            else $("#wyb_kolor").val(kolor);
-            $("#nazwa_gracza").val(nazwy[i]);
-        }
-        else
-        {
-            $(".gracz.nr"+i).removeClass("aktywny");
-        }
+        const id = $(this).attr("class");
+        aktywnynr = parseInt(id.substr(id.length - 1))-1;
+
+        $(".gracz.aktywny").removeClass("aktywny");
+        $(this).addClass("aktywny");
         $("#nazwa_gracza, #wyb_kolor, #wyb_awatar").removeAttr("disabled");
+        
+        $("#nazwa_gracza").val(gracz[aktywnynr].nazwa);
+        $("#wyb_kolor").val(gracz[aktywnynr].kolor);
     }
 });
 
 //Zmiana nazwy gracza
-$("#nazwa_gracza").on("focusout", function(){
-        var nazwa = $(this).val();
-        if(nazwa!="" && nazwa.length>2) 
+$("#nazwa_gracza").on("focusout keydown", function(e){
+        const nazwa = $(this).val();
+        console.log(e);
+        if(e.type === "focusout" || e.keyCode === 13)
         {
-            $(".aktywny h2").html(nazwa);
-            nazwy[aktywnynr] = nazwa;
+            if(nazwa!="" && nazwa.length>2) 
+            {
+                $(".aktywny h2").html(nazwa);
+                gracz[aktywnynr].nazwa = nazwa;
+            }
         }
+        if(e.keyCode === 13) $(this).blur();
 });
 
 //Zmiana koloru gracza
 $("#wyb_kolor").on("change click",function(){
-    var kolor = $(this).children("option:selected").val();
+    const kolor = $(this).children("option:selected").val();
     $(".aktywny .kolor").css("background-color", kolor);
     $(".aktywny h4").css("color",kolor);
-    kolory[aktywnynr] = kolor;
+    gracz[aktywnynr].kolor = kolor;
 });
 
 //Weryfikacja wprowadzonych danych i przejście do ekranu rozgrywki
-$(".graj#start").on("click",function(){
-    
-    /* WYŁĄCZENIE WERYFIKACJI BŁĘDÓW
-    for(i=0;i<liczba_graczy;i++)
-    {
-        if(kolory[i] === undefined) $("#blad h3").html("Nie wybrano koloru dla co najmniej jednego gracza!");
-        else if(nazwy[i] === undefined) $("#blad h3").html("Nie ustawiono nazwy dla co najmniej jednego gracza!");
+$(".graj#start").click(function(){
+
+    /* WERYFIKACJA DANYCH
+    gracz.forEach(gracz => {
+        if(gracz.kolor === "rgb(245, 246, 250)") $("#blad h3").html("Nie wybrano koloru dla co najmniej jednego gracza!");
+        else if(gracz.nazwa === undefined) $("#blad h3").html("Nie ustawiono nazwy dla co najmniej jednego gracza!");
         else $("#blad h3").html("");
-    } */
+    }); */
+
     if($("#blad h3").text() == "")
     {
-        $(".gora, .dol").css("opacity","0");
-        setTimeout(function(){ 
-            $("#start, .gora, .gracze_edycja .dol, #przygotowanie").css("display","none"); 
-            $("#plansza").css("display","block");
-        }, 500);
-        setTimeout(function(){ 
-            $("#plansza").css("opacity","1");
-            $("body").css("background-color","#353b48")
-        }, 520);
-        rozpoczecie();
+        zmienEkran('.gora, .dol','#plansza');
+        $("body").css("background-color","#353b48");
+        wyswietlKolejnosc();
     }
 });
 
 //Wyświetlanie powiększania najechanej karty
-var licznik;
+
+let licznik;
 $(".pole").hover(function(){
     if(!zablokowany)
     {
         clearTimeout(licznik);
-        $("#powiekszenie").html("<h3>"+this.id+"</h3>");
+        $("#powiekszenie").html(`<h3>${this.id}</h3>`);
         $("#powiekszenie").css("visibility","visible");
         $("#powiekszenie").css("opacity","1");
     }
@@ -124,15 +116,16 @@ function(){
     },20);
 });
 
-function rozpoczecie(){
+
+function wyswietlKolejnosc(){
     zablokowany = true;
     $("#okienko").html(function(){
-        var kolejnosc;
+        let kolejnosc = "";
         for(i=0;i<liczba_graczy;i++)
     {
-        kolejnosc += '<li><span style="color:'+kolory[i]+';">'+nazwy[i]+'</span></li>';
+        kolejnosc += `<li><span style="color:${gracz[i].kolor};">${gracz[i].nazwa}</span></li>`;
     }
-        return "<h1>Kolejność startu:</h1><ol>"+kolejnosc+"</ol>";
+        return `<h1>Kolejność startu:</h1><ol>${kolejnosc}</ol>`;
     });
 }
 
