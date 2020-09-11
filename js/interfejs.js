@@ -2,6 +2,7 @@ const maksymalna_liczba_graczy = 6;
 let liczba_graczy = 2;
 let zablokowany = false;
 let aktywnynr = 0;
+let kolejnosc = [];
 
 const zmienEkran = (doSchowania, doPokazania,czas = 500) => {
     $(`${doSchowania}, ${doPokazania}`).css("transition",`opacity ${czas/1000}s ease-in-out`);
@@ -34,7 +35,6 @@ $(".gracz.dodaj").click(function () {
                 $(".gracz.dodaj").css("display","none");
             }
         },500);
-        
     }
 });
 
@@ -120,12 +120,17 @@ function(){
 function wyswietlKolejnosc(){
     zablokowany = true;
     $("#okienko").html(function(){
-        let kolejnosc = "";
+        let lista = "";
+        while(kolejnosc.length < liczba_graczy){
+            let losowa = Math.floor(Math.random() * liczba_graczy) + 1;
+            if(kolejnosc.indexOf(losowa) === -1) kolejnosc.push(losowa);
+        }
         for(i=0;i<liczba_graczy;i++)
-    {
-        kolejnosc += `<li><span style="color:${gracz[i].kolor};">${gracz[i].nazwa}</span></li>`;
-    }
-        return `<h1>Kolejność startu:</h1><ol>${kolejnosc}</ol>`;
+        {
+            nr = kolejnosc[i]-1;
+            lista += `<li><span style="color:${gracz[nr].kolor};">${gracz[nr].nazwa}</span></li>`;
+        }
+        return `<h1>Kolejność startu:</h1><ol>${lista}</ol>`;
     });
 }
 
