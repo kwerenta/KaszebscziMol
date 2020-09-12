@@ -1,163 +1,160 @@
 <!DOCTYPE html>
 <html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kaszëbsczi Mól</title>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Kaszëbsczi Mól</title>
 
-    <script src="js/jquery-3.5.1.min.js"></script>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    
-    <header>
-        <div class="gora glowna">
-            <div id="logo">
-                <h1>Kaszëbsczi <span style="color: #fbc531;">Mól</span></h1>
-                <p>Kaszubska gra polegająca na handlu nieruchomościami</p>
-            </div>
-            <div class="graj" id="glowna">ZAGRAJ</div>
-        </div>
-    </header>
-
-    <section>
-        <div class="dol glowna">
-            <div class="cechy">jakiś zajawowy element</div>
-            <div class="cechy" id="srodkowy">inny zajawa</div>
-            <div class="cechy">zajawa totalna</div>
-            <div style="clear:both;"></div>
-        </div>
-    </section>
-
-    <section>
-        <div id="przygotowanie">
-            <div class="gora">
-                <div class="gracze_edycja">
-                    <div class="gracz nr1">
-                        <h4>Gracz 1</h4>
-                        <h2>Nazwa gracza</h2>
-                        <div class="kolor"></div>
-                    </div>
-                    <div class="gracz nr2">
-                        <h4>Gracz 2</h4>
-                        <h2>Nazwa gracza</h2>
-                        <div class="kolor"></div>
-                    </div>
-                    <div class="gracz nr3">
-                        <h4>Gracz 3</h4>
-                        <h2>Nazwa gracza</h2>
-                        <div class="kolor"></div>
-                    </div>
-                    <div class="gracz nr4">
-                        <h4>Gracz 4</h4>
-                        <h2>Nazwa gracza</h2>
-                        <div class="kolor"></div>
-                    </div>
-                    <div class="gracz nr5">
-                        <h4>Gracz 5</h4>
-                        <h2>Nazwa gracza</h2>
-                        <div class="kolor"></div>
-                    </div>
-                    <div class="gracz nr6">
-                        <h4>Gracz 6</h4>
-                        <h2>Nazwa gracza</h2>
-                        <div class="kolor"></div>
-                    </div>
-                    <div class="gracz dodaj">
-                        +
-                    </div>
-                    <div style="clear:both;"></div>
+        <script src="js/jquery-3.5.1.min.js"></script>
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <header>
+            <div class="gora glowna">
+                <div id="logo">
+                    <h1>Kaszëbsczi <span style="color: #fbc531">Mól</span></h1>
+                    <p>Kaszubska gra polegająca na handlu nieruchomościami</p>
                 </div>
-                <div class="graj" id="start">START</div>
+                <div class="graj" id="glowna">ZAGRAJ</div>
             </div>
-            <div class="dol">
-                <div class="gracze_edycja">
-                    <div id="blad">
-                        <h3></h3>
+        </header>
+
+        <section>
+            <div class="dol glowna">
+                <div class="cechy">jakiś zajawowy element</div>
+                <div class="cechy" id="srodkowy">inny zajawa</div>
+                <div class="cechy">zajawa totalna</div>
+                <div style="clear: both"></div>
+            </div>
+        </section>
+
+        <section>
+            <div id="przygotowanie">
+                <div class="gora">
+                    <div class="gracze_edycja">
+                        <div class="gracz nr1">
+                            <h4>Gracz 1</h4>
+                            <h2>Nazwa gracza</h2>
+                            <div class="kolor"></div>
+                        </div>
+                        <div class="gracz nr2">
+                            <h4>Gracz 2</h4>
+                            <h2>Nazwa gracza</h2>
+                            <div class="kolor"></div>
+                        </div>
+                        <div class="gracz nr3">
+                            <h4>Gracz 3</h4>
+                            <h2>Nazwa gracza</h2>
+                            <div class="kolor"></div>
+                        </div>
+                        <div class="gracz nr4">
+                            <h4>Gracz 4</h4>
+                            <h2>Nazwa gracza</h2>
+                            <div class="kolor"></div>
+                        </div>
+                        <div class="gracz nr5">
+                            <h4>Gracz 5</h4>
+                            <h2>Nazwa gracza</h2>
+                            <div class="kolor"></div>
+                        </div>
+                        <div class="gracz nr6">
+                            <h4>Gracz 6</h4>
+                            <h2>Nazwa gracza</h2>
+                            <div class="kolor"></div>
+                        </div>
+                        <div class="gracz dodaj">+</div>
+                        <div style="clear: both"></div>
                     </div>
-                    <h3 id="pierwszy">Podaj nazwę gracza</h3>
-                    <input type="text" id="nazwa_gracza" maxlength="14" disabled placeholder="Nazwa gracza">
-                    <h3>Wybierz awatar</h3>
-                    <select id="wyb_awatar" disabled>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                    </select>
-                    <h3>Wybierz kolor</h3>
-                    <select id="wyb_kolor" disabled>
-                        <option value="pusty" style="display:none"></option>
-                        <option value="rgb(232, 65, 24)">Czerwony</option>
-                        <option value="rgb(0, 151, 230)">Niebieski</option>
-                        <option value="rgb(68, 189, 50)">Zielony</option>
-                        <option value="rgb(225, 177, 44)">Żółty</option>
-                        <option value="rgb(140, 122, 230)">Fioletowy</option>
-                        <option value="rgb(119, 140, 163)">Szary</option>
-                    </select>
+                    <div class="graj" id="start">START</div>
+                </div>
+                <div class="dol">
+                    <div class="gracze_edycja">
+                        <div id="blad">
+                            <h3></h3>
+                        </div>
+                        <h3 id="pierwszy">Podaj nazwę gracza</h3>
+                        <input type="text" id="nazwa_gracza" maxlength="14" disabled placeholder="Nazwa gracza" />
+                        <h3>Wybierz awatar</h3>
+                        <select id="wyb_awatar" disabled>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                        <h3>Wybierz kolor</h3>
+                        <select id="wyb_kolor" disabled>
+                            <option value="pusty" style="display: none"></option>
+                            <option value="rgb(232, 65, 24)">Czerwony</option>
+                            <option value="rgb(0, 151, 230)">Niebieski</option>
+                            <option value="rgb(68, 189, 50)">Zielony</option>
+                            <option value="rgb(225, 177, 44)">Żółty</option>
+                            <option value="rgb(140, 122, 230)">Fioletowy</option>
+                            <option value="rgb(119, 140, 163)">Szary</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <main>
-        <div id="plansza">
-            <div class="pole naroznik" id="p20"></div>
-            <div class="pole" id="p21"></div>
-            <div class="pole" id="p22"></div>
-            <div class="pole" id="p23"></div>
-            <div class="pole" id="p24"></div>
-            <div class="pole" id="p25"></div>
-            <div class="pole" id="p26"></div>
-            <div class="pole" id="p27"></div>
-            <div class="pole" id="p28"></div>
-            <div class="pole" id="p29"></div>
-            <div class="pole naroznik" id="p30"></div>
+        <main>
+            <div id="plansza">
+                <div class="pole naroznik" id="p20"></div>
+                <div class="pole" id="p21"></div>
+                <div class="pole" id="p22"></div>
+                <div class="pole" id="p23"></div>
+                <div class="pole" id="p24"></div>
+                <div class="pole" id="p25"></div>
+                <div class="pole" id="p26"></div>
+                <div class="pole" id="p27"></div>
+                <div class="pole" id="p28"></div>
+                <div class="pole" id="p29"></div>
+                <div class="pole naroznik" id="p30"></div>
 
-            <div class="pole lewy" id="p19"></div>
-            <div class="pole prawy" id="p31"></div>
+                <div class="pole lewy" id="p19"></div>
+                <div class="pole prawy" id="p31"></div>
 
-            <div class="pole lewy" id="p18"></div>
-            <div class="pole prawy" id="p32"></div>
+                <div class="pole lewy" id="p18"></div>
+                <div class="pole prawy" id="p32"></div>
 
-            <div class="pole lewy" id="p17"></div>
-            <div class="pole prawy" id="p33"></div>
+                <div class="pole lewy" id="p17"></div>
+                <div class="pole prawy" id="p33"></div>
 
-            <div class="pole lewy" id="p16"></div>
-            <div class="pole prawy" id="p34"></div>
-            
-            <div class="pole lewy" id="p15"></div>
-            <div class="pole prawy" id="p35"></div>
+                <div class="pole lewy" id="p16"></div>
+                <div class="pole prawy" id="p34"></div>
 
-            <div class="pole lewy" id="p14"></div>
-            <div class="pole prawy" id="p36"></div>
+                <div class="pole lewy" id="p15"></div>
+                <div class="pole prawy" id="p35"></div>
 
-            <div class="pole lewy" id="p13"></div>
-            <div class="pole prawy" id="p37"></div>
+                <div class="pole lewy" id="p14"></div>
+                <div class="pole prawy" id="p36"></div>
 
-            <div class="pole lewy" id="p12"></div>
-            <div class="pole prawy" id="p38"></div>
+                <div class="pole lewy" id="p13"></div>
+                <div class="pole prawy" id="p37"></div>
 
-            <div class="pole lewy" id="p11"></div>
-            <div class="pole prawy" id="p39"></div>
+                <div class="pole lewy" id="p12"></div>
+                <div class="pole prawy" id="p38"></div>
 
-            <div class="pole  naroznik" id="p10"></div>
-            <div class="pole" id="p9"></div> 
-            <div class="pole" id="p8"></div>
-            <div class="pole" id="p7"></div>
-            <div class="pole" id="p6"></div>
-            <div class="pole" id="p5"></div>
-            <div class="pole" id="p4"></div>
-            <div class="pole" id="p3"></div>
-            <div class="pole" id="p2"></div>
-            <div class="pole" id="p1"><img src="img/1.jpg" width="60px" height="80px"></div>
-            <div class="pole naroznik" id="p0"></div>
+                <div class="pole lewy" id="p11"></div>
+                <div class="pole prawy" id="p39"></div>
 
-            <div id="powiekszenie"></div>
-            <div id="okienko"></div>
-        </div>
-    </main>
-    <script src="js/karty.js"></script>
-    <script src="js/interfejs.js"></script>
-    <script src="js/rozgrywka.js"></script>
-</body>
+                <div class="pole naroznik" id="p10"></div>
+                <div class="pole" id="p9"></div>
+                <div class="pole" id="p8"></div>
+                <div class="pole" id="p7"></div>
+                <div class="pole" id="p6"></div>
+                <div class="pole" id="p5"></div>
+                <div class="pole" id="p4"></div>
+                <div class="pole" id="p3"></div>
+                <div class="pole" id="p2"></div>
+                <div class="pole" id="p1"><img src="img/1.jpg" width="60px" height="80px" /></div>
+                <div class="pole naroznik" id="p0"></div>
+
+                <div id="powiekszenie"></div>
+                <div id="okienko"></div>
+            </div>
+        </main>
+        <script src="js/karty.js"></script>
+        <script src="js/interfejs.js"></script>
+        <script src="js/rozgrywka.js"></script>
+    </body>
 </html>

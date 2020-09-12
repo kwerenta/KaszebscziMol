@@ -4,82 +4,79 @@ let zablokowany = false;
 let aktywnynr = 0;
 let kolejnosc = [];
 
-const zmienEkran = (doSchowania, doPokazania,czas = 500) => {
-    $(`${doSchowania}, ${doPokazania}`).css("transition",`opacity ${czas/1000}s ease-in-out`);
-    $(`${doSchowania}, ${doPokazania}`).css("-moz-transition",`opacity ${czas/1000}s ease-in-out`);
-    $(`${doSchowania}, ${doPokazania}`).css("-webkit-transition",`opacity ${czas/1000}s ease-in-out`);
-    $(doSchowania).css("opacity","0");
-    setTimeout(function(){ 
-        $(doSchowania).css("display","none");
-        $(doPokazania).css("display","block");
+const zmienEkran = (doSchowania, doPokazania, czas = 500) => {
+    $(`${doSchowania}, ${doPokazania}`).css('transition', `opacity ${czas / 1000}s ease-in-out`);
+    $(`${doSchowania}, ${doPokazania}`).css('-moz-transition', `opacity ${czas / 1000}s ease-in-out`);
+    $(`${doSchowania}, ${doPokazania}`).css('-webkit-transition', `opacity ${czas / 1000}s ease-in-out`);
+    $(doSchowania).css('opacity', '0');
+    setTimeout(function () {
+        $(doSchowania).css('display', 'none');
+        $(doPokazania).css('display', 'block');
     }, czas);
-    setTimeout(function(){ 
-        $(doPokazania).css("opacity","1");
-    }, czas+20);
-}
+    setTimeout(function () {
+        $(doPokazania).css('opacity', '1');
+    }, czas + 20);
+};
 //Przejście do ekranu przygotowywania rozgrywki
-$(".graj#glowna").click(function () { zmienEkran('#graj, .gora.glowna, #logo, .dol.glowna, .cechy', '#przygotowanie'); });
+$('.graj#glowna').click(function () {
+    zmienEkran('#graj, .gora.glowna, #logo, .dol.glowna, .cechy', '#przygotowanie');
+});
 
 //Dodanie kolejnego gracza
-$(".gracz.dodaj").click(function () {  
-    if(!zablokowany)
-    {  
+$('.gracz.dodaj').click(function () {
+    if (!zablokowany) {
         zablokowany = true;
-        $(".gracz.nr1").css("margin-left","15px");
-        gracz[liczba_graczy] = new Gracz ();
+        $('.gracz.nr1').css('margin-left', '15px');
+        gracz[liczba_graczy] = new Gracz();
         liczba_graczy++;
-        zmienEkran('.gracz.dodaj',`.gracz.dodaj, .gracz.nr${liczba_graczy}`);
-        setTimeout(function() {
+        zmienEkran('.gracz.dodaj', `.gracz.dodaj, .gracz.nr${liczba_graczy}`);
+        setTimeout(function () {
             zablokowany = false;
-            if(liczba_graczy>=maksymalna_liczba_graczy) {
-                $(".gracz.dodaj").css("display","none");
+            if (liczba_graczy >= maksymalna_liczba_graczy) {
+                $('.gracz.dodaj').css('display', 'none');
             }
-        },500);
+        }, 500);
     }
 });
 
 //Oznaczenie wybranego gracza aktywnym do edycji oraz wczytanie jego ustawień do pól wyboru
-$(".gracz").click(function () {
-    if($(this).attr("class") != "gracz dodaj" && !$(this).hasClass("aktywny"))
-    {
-        const id = $(this).attr("class");
-        aktywnynr = parseInt(id.substr(id.length - 1))-1;
+$('.gracz').click(function () {
+    if ($(this).attr('class') != 'gracz dodaj' && !$(this).hasClass('aktywny')) {
+        const id = $(this).attr('class');
+        aktywnynr = parseInt(id.substr(id.length - 1)) - 1;
 
-        $(".gracz.aktywny").removeClass("aktywny");
-        $(this).addClass("aktywny");
-        $("#nazwa_gracza, #wyb_kolor, #wyb_awatar").removeAttr("disabled");
-        
-        $("#nazwa_gracza").val(gracz[aktywnynr].nazwa);
-        $("#wyb_kolor").val(gracz[aktywnynr].kolor);
+        $('.gracz.aktywny').removeClass('aktywny');
+        $(this).addClass('aktywny');
+        $('#nazwa_gracza, #wyb_kolor, #wyb_awatar').removeAttr('disabled');
+
+        $('#nazwa_gracza').val(gracz[aktywnynr].nazwa);
+        $('#wyb_kolor').val(gracz[aktywnynr].kolor);
     }
 });
 
 //Zmiana nazwy gracza
-$("#nazwa_gracza").on("focusout keydown", function(e){
-        const nazwa = $(this).val();
-        console.log(e);
-        if(e.type === "focusout" || e.keyCode === 13)
-        {
-            if(nazwa!="" && nazwa.length>2) 
-            {
-                $(".aktywny h2").html(nazwa);
-                gracz[aktywnynr].nazwa = nazwa;
-            }
+$('#nazwa_gracza').on('focusout keydown', function (e) {
+    const nazwa = $(this).val();
+    console.log(e);
+    if (e.type === 'focusout' || e.keyCode === 13) {
+        if (nazwa != '' && nazwa.length > 2) {
+            $('.aktywny h2').html(nazwa);
+            gracz[aktywnynr].nazwa = nazwa;
         }
-        if(e.keyCode === 13) $(this).blur();
+    }
+    if (e.keyCode === 13) $(this).blur();
 });
 
 //Zmiana koloru gracza
-$("#wyb_kolor").on("change click",function(){
-    const kolor = $(this).children("option:selected").val();
-    $(".aktywny .kolor").css("background-color", kolor);
-    $(".aktywny h4").css("color",kolor);
+$('#wyb_kolor').on('change click', function () {
+    const kolor = $(this).children('option:selected').val();
+    $('.aktywny .kolor').css('background-color', kolor);
+    $('.aktywny h4').css('color', kolor);
     gracz[aktywnynr].kolor = kolor;
 });
 
 //Weryfikacja wprowadzonych danych i przejście do ekranu rozgrywki
-$(".graj#start").click(function(){
-
+$('.graj#start').click(function () {
     /* WERYFIKACJA DANYCH
     gracz.forEach(gracz => {
         if(gracz.kolor === "rgb(245, 246, 250)") $("#blad h3").html("Nie wybrano koloru dla co najmniej jednego gracza!");
@@ -87,10 +84,9 @@ $(".graj#start").click(function(){
         else $("#blad h3").html("");
     }); */
 
-    if($("#blad h3").text() == "")
-    {
-        zmienEkran('.gora, .dol','#plansza');
-        $("body").css("background-color","#353b48");
+    if ($('#blad h3').text() == '') {
+        zmienEkran('.gora, .dol', '#plansza');
+        $('body').css('background-color', '#353b48');
         wyswietlKolejnosc();
     }
 });
@@ -98,39 +94,42 @@ $(".graj#start").click(function(){
 //Wyświetlanie powiększania najechanej karty
 
 let licznik;
-$(".pole").hover(function(){
-    if(!zablokowany)
-    {
-        clearTimeout(licznik);
-        $("#powiekszenie").html(`<h3>${this.id}</h3>`);
-        $("#powiekszenie").css("visibility","visible");
-        $("#powiekszenie").css("opacity","1");
-    }
-},
-function(){
-    licznik = setTimeout(function() {
-        $("#powiekszenie").css("opacity","0");
-        setTimeout(function() {
-            $("#powiekszenie").css("visibility","hidden");
-        },300);
-    },20);
-});
-
-
-function wyswietlKolejnosc(){
-    zablokowany = true;
-    $("#okienko").html(function(){
-        let lista = "";
-        while(kolejnosc.length < liczba_graczy){
-            let losowa = Math.floor(Math.random() * liczba_graczy) + 1;
-            if(kolejnosc.indexOf(losowa) === -1) kolejnosc.push(losowa);
+$('.pole').hover(
+    function () {
+        if (!zablokowany) {
+            clearTimeout(licznik);
+            $('#powiekszenie').html(`<h3>${this.id}</h3>`);
+            $('#powiekszenie').css('visibility', 'visible');
+            $('#powiekszenie').css('opacity', '1');
         }
-        for(i=0;i<liczba_graczy;i++)
-        {
-            nr = kolejnosc[i]-1;
+    },
+    function () {
+        licznik = setTimeout(function () {
+            $('#powiekszenie').css('opacity', '0');
+            setTimeout(function () {
+                $('#powiekszenie').css('visibility', 'hidden');
+            }, 300);
+        }, 20);
+    }
+);
+
+function wyswietlKolejnosc() {
+    zablokowany = true;
+    $('#okienko').html(function () {
+        let lista = '';
+        while (kolejnosc.length < liczba_graczy) {
+            let losowa = Math.floor(Math.random() * liczba_graczy) + 1;
+            if (kolejnosc.indexOf(losowa) === -1) kolejnosc.push(losowa);
+        }
+        for (i = 0; i < liczba_graczy; i++) {
+            nr = kolejnosc[i] - 1;
             lista += `<li><span style="color:${gracz[nr].kolor};">${gracz[nr].nazwa}</span></li>`;
         }
-        return `<h1>Kolejność startu:</h1><ol>${lista}</ol>`;
+        return `<h1>Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
+    });
+    $('.kontynuuj').click(function () {
+        zmienEkran('#okienko');
+        zablokowany = false;
+        zmianaGracza();
     });
 }
-

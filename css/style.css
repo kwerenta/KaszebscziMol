@@ -6,9 +6,9 @@ body {
     font-family: 'Roboto Mono', monospace;
     color: #f5f6fa;
     background-color: #f5f6fa;
-    -webkit-transition: background-color .5s ease-in-out;
-    -moz-transition: background-color .5s ease-in-out;
-    transition: background-color .5s ease-in-out; 
+    -webkit-transition: background-color 0.5s ease-in-out;
+    -moz-transition: background-color 0.5s ease-in-out;
+    transition: background-color 0.5s ease-in-out;
     /* user-select: none; */
 }
 .gora {
@@ -41,9 +41,9 @@ body {
     padding: 5px;
     font-weight: 700;
     cursor: pointer;
-    -webkit-transition: all .3s ease-in-out;
-    -moz-transition: all .3s ease-in-out;
-    transition: all .3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 .graj:hover {
     background-color: #fbc531;
@@ -63,7 +63,7 @@ body {
 
 .cechy {
     box-sizing: border-box;
-    float:left;
+    float: left;
     width: 300px;
     min-height: 40vh;
     margin: 5vh 0;
@@ -97,15 +97,19 @@ body {
 }
 .gracz.nr1 {
     margin-left: 140px;
-    -webkit-transition: margin-left .5s ease-in-out;
-    -moz-transition: margin-left .5s ease-in-out;
-    transition: margin-left .5s ease-in-out; 
+    -webkit-transition: margin-left 0.5s ease-in-out;
+    -moz-transition: margin-left 0.5s ease-in-out;
+    transition: margin-left 0.5s ease-in-out;
 }
-.gracz.nr3, .gracz.nr4, .gracz.nr5, .gracz.nr6 {
+.gracz.nr3,
+.gracz.nr4,
+.gracz.nr5,
+.gracz.nr6 {
     display: none;
     opacity: 0;
 }
-.gracz.dodaj, .gracz.nr4 .gracz.nr6 {
+.gracz.dodaj,
+.gracz.nr4 .gracz.nr6 {
     margin-right: 0;
 }
 .gracz.dodaj {
@@ -130,7 +134,7 @@ body {
     height: 100px;
     background-color: #353b48;
 }
-.dol .gracze_edycja{
+.dol .gracze_edycja {
     color: #353b48;
 }
 .dol .gracze_edycja h3 {
@@ -168,13 +172,13 @@ h3#pierwszy {
     height: 722px;
     width: 722px;
     display: none;
-    opacity: 0; 
+    opacity: 0;
 }
 .pole {
     width: 60px;
     height: 80px;
     background-color: #f5f6fa;
-    margin:0;
+    margin: 0;
     padding: 0;
     float: left;
     border: 1px solid #000;
@@ -183,7 +187,8 @@ h3#pierwszy {
     width: 80px;
     height: 80px;
 }
-.lewy, .prawy {
+.lewy,
+.prawy {
     width: 80px;
     height: 60px;
 }
@@ -204,9 +209,9 @@ h3#pierwszy {
     background-color: #e84118;
     visibility: hidden;
     opacity: 0;
-    -webkit-transition: visibility 0s, opacity .3s linear;
-    -moz-transition: visibility 0s, opacity .3s linear;
-    transition: visibility 0s, opacity .3s linear;  
+    -webkit-transition: opacity 0.3s linear;
+    -moz-transition: opacity 0.3s linear;
+    transition: opacity 0.3s linear;
 }
 #okienko {
     position: absolute;
@@ -223,4 +228,23 @@ h3#pierwszy {
 }
 #okienko h1 {
     text-align: center;
+}
+.kontynuuj {
+    font-size: 22px;
+    width: 150px;
+    height: 30px;
+    border: 3px solid #fbc531;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 50px auto;
+    text-align: center;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: #353b48;
+    color: #fbc531;
+}
+.kontynuuj:hover {
+    background-color: #fbc531;
+    color: #353b48;
 }
