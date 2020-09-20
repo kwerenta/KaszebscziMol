@@ -21,11 +21,7 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
         this.pieniadze -= ile;
     };
     this.czyPieniadze = (ile) => {
-        if (this.pieniadze - ile >= 0) return true;
-        else {
-            alert('Nie masz tyle pieniędzy!');
-            return false;
-        }
+        return this.pieniadze - ile >= 0;
     };
     this.przelejPieniadze = (ile, komu) => {
         if (this.czyPieniadze(ile)) {
@@ -35,11 +31,12 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
     };
     this.dodajPosiadane = (co) => {
         this.posiadane.push(co);
+        pole[co].zmienWlasciciela(gracz.findIndex((gracz) => gracz.nazwa === this.nazwa));
     };
     this.kupPole = (ktore) => {
         if (this.czyPieniadze(pole[ktore].cena)) {
             this.odejmijPieniadze(pole[ktore].cena);
-            this.dodajPosiadane(this.pozycja);
+            this.dodajPosiadane(ktore);
         }
     };
 }
@@ -47,6 +44,7 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
 let gracz = [];
 gracz[0] = new Gracz('Kamil', 'rgb(225, 177, 44)');
 gracz[1] = new Gracz('Andrzej', 'rgb(232, 65, 24)');
+gracz[2] = new Gracz('Janusz', 'rgb(232, 65, 24)');
 
 let kostka1;
 let kostka2;
@@ -55,16 +53,15 @@ let kto = 0;
 let aktualny = 0;
 let obecny;
 
-function rzutKoscmi() {
+const rzutKoscmi = () => {
     kostka1 = Math.floor(Math.random() * 6) + 1;
     kostka2 = Math.floor(Math.random() * 6) + 1;
-}
+};
 
-function zmianaGracza() {
-    aktualny = kolejnosc[kto] - 1;
+const zmianaGracza = () => {
+    aktualny = kolejnosc[kto];
     obecny = gracz[aktualny];
-    kostka1 = 35;
-    kostka2 = 10;
+    rzutKoscmi();
     obecny.zmianaPozycji(kostka1, kostka2);
 
     kto++;
@@ -72,16 +69,61 @@ function zmianaGracza() {
         kto = 0;
         tura++;
     }
-    // gracz.findIndex((gracz) => gracz.nazwa === 'lol'); - Znajduje index gracza o nazwie 'lol'
-    if (![0, 10, 20, 30].includes(obecny.pozycja)) {
+
+    if (![0, 10, 20, 30, 38].includes(obecny.pozycja)) {
         if (!pole[obecny.pozycja].czyWlasciciel(aktualny)) {
             if (pole[obecny.pozycja].wlasciciel == -1) {
-                alert('nitk nie jest właścicielem');
+                licytujPole(obecny.pozycja);
             } else {
                 alert('wlascicielem jest inny gracz');
             }
         } else {
             alert('jesteś właścicielem');
         }
+    } else if (obecny.pozycja == 38) {
+        alert('trafiłeś na pole 38');
     }
-}
+};
+
+const licytujPole = (licytowane) => {
+    let zaklad = 0;
+    let uczestnicy = [...kolejnosc];
+    let teraz = kto;
+    let licytator = gracz[uczestnicy[teraz]];
+    let ile_uczestnikow = liczba_graczy;
+
+    zablokowany = true;
+
+    zmienEkran(undefined, '#okienko');
+    $('#okienko').html(
+        `<h3 class="kwota">Aktualna kwota to ${zaklad}$</h3><h3 class="licytator">Aktualny licytator to ${licytator.nazwa}</h3><div class="guzik" id="kwota1">1</div><div class="guzik" id="kwota10">10</div><div class="guzik" id="kwota50">50</div><div class="guzik" id="kwota100">100</div><div class="guzik" id="pas">Pas</div>`
+    );
+
+    $('.guzik').click(function () {
+        const kwota = parseInt(this.id.replace('kwota', ''));
+        const index = uczestnicy.indexOf(gracz.findIndex((gracz) => gracz.nazwa === licytator.nazwa));
+
+        if (this.id != 'pas') {
+            if (!licytator.czyPieniadze(zaklad + kwota)) {
+                alert('nie masz tyle pieniedzy');
+            } else {
+                zaklad += kwota;
+                $('.kwota').html(`Aktualna kwota to ${zaklad}$`);
+            }
+        } else {
+            index > -1 ? (uczestnicy[index] = -1) : alert('Błąd! Odśwież stronę');
+            ile_uczestnikow--;
+        }
+        do {
+            teraz + 1 > liczba_graczy - 1 ? (teraz = 0) : teraz++;
+        } while (uczestnicy[teraz] == -1);
+
+        licytator = gracz[uczestnicy[teraz]];
+        $('.licytator').html(`Aktualny licytator to ${licytator.nazwa}`);
+        if (ile_uczestnikow === 1) {
+            $('#okienko').html(`<h3>${licytator.nazwa} jest zwycięzcą licytacji!</h3>`);
+            licytator.dodajPosiadane(licytowane);
+            licytator.odejmijPieniadze(zaklad);
+        }
+    });
+};

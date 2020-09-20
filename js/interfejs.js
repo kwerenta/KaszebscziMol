@@ -1,17 +1,17 @@
 const maksymalna_liczba_graczy = 6;
-let liczba_graczy = 2;
+let liczba_graczy = 3; //TY^MCZASOWO 3 zamiast 2
 let zablokowany = false;
 let aktywnynr = 0;
-let kolejnosc = [];
+const kolejnosc = [];
 
 const zmienEkran = (doSchowania, doPokazania, czas = 500) => {
-    $(`${doSchowania}, ${doPokazania}`).css('transition', `opacity ${czas / 1000}s ease-in-out`);
-    $(`${doSchowania}, ${doPokazania}`).css('-moz-transition', `opacity ${czas / 1000}s ease-in-out`);
-    $(`${doSchowania}, ${doPokazania}`).css('-webkit-transition', `opacity ${czas / 1000}s ease-in-out`);
+    $(`${doSchowania}, ${doPokazania}`).css('transition', `${czas / 1000}s`);
+    $(`${doSchowania}, ${doPokazania}`).css('-moz-transition', `${czas / 1000}s`);
+    $(`${doSchowania}, ${doPokazania}`).css('-webkit-transition', `${czas / 1000}s`);
     $(doSchowania).css('opacity', '0');
     setTimeout(function () {
         $(doSchowania).css('display', 'none');
-        $(doPokazania).css('display', 'block');
+        $(doPokazania).css('display', 'flex');
     }, czas);
     setTimeout(function () {
         $(doPokazania).css('opacity', '1');
@@ -26,7 +26,6 @@ $('.graj#glowna').click(function () {
 $('.gracz.dodaj').click(function () {
     if (!zablokowany) {
         zablokowany = true;
-        $('.gracz.nr1').css('margin-left', '15px');
         gracz[liczba_graczy] = new Gracz();
         liczba_graczy++;
         zmienEkran('.gracz.dodaj', `.gracz.dodaj, .gracz.nr${liczba_graczy}`);
@@ -57,7 +56,7 @@ $('.gracz').click(function () {
 //Zmiana nazwy gracza
 $('#nazwa_gracza').on('focusout keydown', function (e) {
     const nazwa = $(this).val();
-    console.log(e);
+    e.preventDefault();
     if (e.type === 'focusout' || e.keyCode === 13) {
         if (nazwa != '' && nazwa.length > 2) {
             $('.aktywny h2').html(nazwa);
@@ -117,12 +116,13 @@ function wyswietlKolejnosc() {
     zablokowany = true;
     $('#okienko').html(function () {
         let lista = '';
+        // Losowanie kolejności graczy
         while (kolejnosc.length < liczba_graczy) {
-            let losowa = Math.floor(Math.random() * liczba_graczy) + 1;
+            let losowa = Math.floor(Math.random() * liczba_graczy);
             if (kolejnosc.indexOf(losowa) === -1) kolejnosc.push(losowa);
         }
         for (i = 0; i < liczba_graczy; i++) {
-            nr = kolejnosc[i] - 1;
+            nr = kolejnosc[i];
             lista += `<li><span style="color:${gracz[nr].kolor};">${gracz[nr].nazwa}</span></li>`;
         }
         return `<h1>Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
