@@ -39,12 +39,16 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
             this.dodajPosiadane(ktore);
         }
     };
+    this.przesunPionek = (gdzie) => {};
 }
 
 let gracz = [];
-gracz[0] = new Gracz('Kamil', 'rgb(225, 177, 44)');
+gracz[0] = new Gracz('Kamil', 'rgb(0, 151, 230)');
 gracz[1] = new Gracz('Andrzej', 'rgb(232, 65, 24)');
-gracz[2] = new Gracz('Janusz', 'rgb(232, 65, 24)');
+gracz[2] = new Gracz('Zbigniew', 'rgb(68, 189, 50)');
+gracz[3] = new Gracz('Bronisław', 'rgb(225, 177, 44)');
+gracz[4] = new Gracz('Kazimierz', 'rgb(140, 122, 230)');
+gracz[5] = new Gracz('Wacław', 'rgb(119, 140, 163)');
 
 let kostka1;
 let kostka2;
@@ -52,6 +56,25 @@ let tura = 0;
 let kto = 0;
 let aktualny = 0;
 let obecny;
+
+const pomalujPola = () => {
+    pole.forEach(({ kolor }, index) => {
+        $('.pole::before').css('contet', 'XDD');
+    });
+};
+
+const ustawPionki = () => {
+    gracz.forEach(({ nazwa, kolor }) => {
+        $('#p0').append(`<div class=pionek${nazwa} style="background-color:${kolor}; width:10px; height:10px;"></div>`);
+    });
+};
+
+const przesunPionek = ({ nazwa, kolor, pozycja }) => {
+    $(`.pionek${nazwa}`).remove();
+    $(`#p${pozycja}`).append(
+        `<div class=pionek${nazwa} style="background-color:${kolor}; width:10px; height:10px;"></div>`
+    );
+};
 
 const rzutKoscmi = () => {
     kostka1 = Math.floor(Math.random() * 6) + 1;
@@ -63,6 +86,7 @@ const zmianaGracza = () => {
     obecny = gracz[aktualny];
     rzutKoscmi();
     obecny.zmianaPozycji(kostka1, kostka2);
+    przesunPionek(obecny);
 
     kto++;
     if (kto > liczba_graczy - 1) {

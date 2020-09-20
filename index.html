@@ -5,31 +5,75 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Kaszëbsczi Mól</title>
 
-        <script src="js/jquery-3.5.1.min.js"></script>
+        <script src="js/jquery-3.5.1.slim.min.js"></script>
         <link rel="stylesheet" href="css/style.css" />
+
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;400;700&display=swap"
+            rel="stylesheet"
+        />
     </head>
     <body>
-        <header>
-            <div class="gora glowna">
-                <div id="logo">
-                    <h1>Kaszëbsczi <span style="color: #fbc531">Mól</span></h1>
-                    <p>Kaszubska gra polegająca na handlu nieruchomościami</p>
+        <!-- <main class="tlo">
+            <header>
+                <div class="gora glowna">
+                    <div id="logo">
+                        <h1>Kaszëbsczi <span style="color: #fbc531">Mól</span></h1>
+                        <p>Kaszubska gra polegająca na handlu nieruchomościami</p>
+                    </div>
+                    <div class="graj" id="glowna">ZAGRAJ</div>
                 </div>
-                <div class="graj" id="glowna">ZAGRAJ</div>
-            </div>
-        </header>
+            </header>
 
-        <section>
-            <div class="dol glowna">
-                <div class="cechy">jakiś zajawowy element</div>
-                <div class="cechy" id="srodkowy">inny zajawa</div>
-                <div class="cechy">zajawa totalna</div>
-                <div style="clear: both"></div>
-            </div>
-        </section>
+            <section>
+                <div class="dol glowna">
+                    <div class="cechy">jakiś zajawowy element</div>
+                    <div class="cechy" id="srodkowy">inny zajawa</div>
+                    <div class="cechy">zajawa totalna</div>
+                    <div style="clear: both"></div>
+                </div>
+            </section>
 
-        <section>
-            <div id="przygotowanie">
+            <section id="przygotowanie">
+                <article class="gracz nr1">
+                    <header class="dane">
+                        <h4>Numer 1</h4>
+                        <h4>Nazwa</h4>
+                    </header>
+                </article>
+                <article class="gracz nr2">
+                    <header class="dane">
+                        <h4>Numer 2</h4>
+                        <h4>Nazwa</h4>
+                    </header>
+                </article>
+                <article class="gracz nr3">
+                    <header class="dane">
+                        <h4>Numer 3</h4>
+                        <h4>Nazwa</h4>
+                    </header>
+                </article>
+                <article class="gracz nr4">
+                    <header class="dane">
+                        <h4>Numer 4</h4>
+                        <h4>Nazwa</h4>
+                    </header>
+                </article>
+                <article class="gracz nr5">
+                    <header class="dane">
+                        <h4>Numer 5</h4>
+                        <h4>Nazwa</h4>
+                    </header>
+                </article>
+                <article class="gracz nr6">
+                    <header class="dane">
+                        <h4>Numer 6</h4>
+                        <h4>Nazwa</h4>
+                    </header>
+                </article>
+                <article class="gracz dodaj">
+                    <header class="dane">+</header>
+                </article>
                 <div class="gora">
                     <div class="gracze_edycja">
                         <div class="gracz nr1">
@@ -93,21 +137,20 @@
                         </select>
                     </div>
                 </div>
-            </div>
-        </section>
-
+            </section>
+        </main> -->
         <main>
             <div id="plansza">
                 <div class="pole naroznik" id="p20"></div>
-                <div class="pole" id="p21"></div>
-                <div class="pole" id="p22"></div>
-                <div class="pole" id="p23"></div>
-                <div class="pole" id="p24"></div>
-                <div class="pole" id="p25"></div>
-                <div class="pole" id="p26"></div>
-                <div class="pole" id="p27"></div>
-                <div class="pole" id="p28"></div>
-                <div class="pole" id="p29"></div>
+                <div class="pole gorny" id="p21"></div>
+                <div class="pole gorny" id="p22"></div>
+                <div class="pole gorny" id="p23"></div>
+                <div class="pole gorny" id="p24"></div>
+                <div class="pole gorny" id="p25"></div>
+                <div class="pole gorny" id="p26"></div>
+                <div class="pole gorny" id="p27"></div>
+                <div class="pole gorny" id="p28"></div>
+                <div class="pole gorny" id="p29"></div>
                 <div class="pole naroznik" id="p30"></div>
 
                 <div class="pole lewy" id="p19"></div>
@@ -146,7 +189,7 @@
                 <div class="pole" id="p4"></div>
                 <div class="pole" id="p3"></div>
                 <div class="pole" id="p2"></div>
-                <div class="pole" id="p1"><img src="img/1.jpg" width="60px" height="80px" /></div>
+                <div class="pole" id="p1"></div>
                 <div class="pole naroznik" id="p0"></div>
 
                 <div id="powiekszenie"></div>
@@ -156,5 +199,8 @@
         <script src="js/karty.js"></script>
         <script src="js/interfejs.js"></script>
         <script src="js/rozgrywka.js"></script>
+        <script>
+            wyswietlKolejnosc();
+        </script>
     </body>
 </html>

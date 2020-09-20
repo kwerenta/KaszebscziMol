@@ -125,6 +125,8 @@ function wyswietlKolejnosc() {
             nr = kolejnosc[i];
             lista += `<li><span style="color:${gracz[nr].kolor};">${gracz[nr].nazwa}</span></li>`;
         }
+        ustawPionki();
+        pomalujPola();
         return `<h1>Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
     });
     $('.kontynuuj').click(function () {
