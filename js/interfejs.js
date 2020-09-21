@@ -113,6 +113,14 @@ $('.pole').hover(
 );
 
 function wyswietlKolejnosc() {
+    const okienko = document.querySelector('#okienko');
+    TweenMax.from(okienko, 1, {
+        opacity: 0,
+        scale: 0.5,
+        transformOrigin: 'center center',
+        ease: Elastic.easeOut.config(1, 0.5),
+    });
+
     zablokowany = true;
     $('#okienko').html(function () {
         let lista = '';
@@ -130,7 +138,12 @@ function wyswietlKolejnosc() {
         return `<h1>Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
     });
     $('.kontynuuj').click(function () {
-        zmienEkran('#okienko');
+        TweenMax.to(okienko, 0.5, {
+            opacity: 0,
+            scale: 0,
+            transformOrigin: 'center center',
+            ease: Back.easeOut.config(1, 0.5),
+        });
         zablokowany = false;
         zmianaGracza();
     });

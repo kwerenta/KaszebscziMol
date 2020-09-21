@@ -46,9 +46,9 @@ let gracz = [];
 gracz[0] = new Gracz('Kamil', 'rgb(0, 151, 230)');
 gracz[1] = new Gracz('Andrzej', 'rgb(232, 65, 24)');
 gracz[2] = new Gracz('Zbigniew', 'rgb(68, 189, 50)');
-gracz[3] = new Gracz('Bronisław', 'rgb(225, 177, 44)');
-gracz[4] = new Gracz('Kazimierz', 'rgb(140, 122, 230)');
-gracz[5] = new Gracz('Wacław', 'rgb(119, 140, 163)');
+// gracz[3] = new Gracz('Bronisław', 'rgb(225, 177, 44)');
+// gracz[4] = new Gracz('Kazimierz', 'rgb(140, 122, 230)');
+// gracz[5] = new Gracz('Wacław', 'rgb(119, 140, 163)');
 
 let kostka1;
 let kostka2;
@@ -65,15 +65,38 @@ const pomalujPola = () => {
 
 const ustawPionki = () => {
     gracz.forEach(({ nazwa, kolor }) => {
-        $('#p0').append(`<div class=pionek${nazwa} style="background-color:${kolor}; width:10px; height:10px;"></div>`);
+        $('#p0').append(
+            `<div class=pionek${nazwa} style="background-color:${kolor}; width:10px; height:10px; border-radius: 50%;"></div>`
+        );
     });
 };
 
 const przesunPionek = ({ nazwa, kolor, pozycja }) => {
+    let pionek = document.querySelector(`.pionek${nazwa}`);
+    let lokalizacja = pionek.getBoundingClientRect();
+    let left = Math.round(lokalizacja.left);
+    let top = Math.round(lokalizacja.top);
+
+    $(`.przesun${nazwa}`).remove();
+    $('body').append(
+        `<div class=przesun${nazwa} style="background-color:${kolor}; width:10px; height:10px; top:${top}px; left:${left}px; position: absolute; border-radius: 50%;"></div>`
+    );
+
     $(`.pionek${nazwa}`).remove();
     $(`#p${pozycja}`).append(
-        `<div class=pionek${nazwa} style="background-color:${kolor}; width:10px; height:10px;"></div>`
+        `<div class=pionek${nazwa} style="background-color:${kolor}; width:10px; height:10px; visibility: hidden; border-radius: 50%;"></div>`
     );
+
+    pionek = document.querySelector(`.pionek${nazwa}`);
+    lokalizacja = pionek.getBoundingClientRect();
+    left = Math.round(lokalizacja.left);
+    top = Math.round(lokalizacja.top);
+    const przesun = document.querySelector(`.przesun${nazwa}`);
+    const tl = new TimelineMax();
+    tl.set(przesun, { display: 'block' })
+        .to(przesun, 2, { top: `${top}px`, left: `${left}px` })
+        .set(pionek, { visibility: 'visible' })
+        .set(przesun, { display: 'none' });
 };
 
 const rzutKoscmi = () => {
@@ -97,7 +120,7 @@ const zmianaGracza = () => {
     if (![0, 10, 20, 30, 38].includes(obecny.pozycja)) {
         if (!pole[obecny.pozycja].czyWlasciciel(aktualny)) {
             if (pole[obecny.pozycja].wlasciciel == -1) {
-                licytujPole(obecny.pozycja);
+                //licytujPole(obecny.pozycja);
             } else {
                 alert('wlascicielem jest inny gracz');
             }
