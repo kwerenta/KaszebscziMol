@@ -1,8 +1,165 @@
 const maksymalna_liczba_graczy = 6;
-let liczba_graczy = 3; //TY^MCZASOWO 3 zamiast 2
+let liczba_graczy = 3; //TYMCZASOWO 3 zamiast 2
 let zablokowany = false;
 let aktywnynr = 0;
 const kolejnosc = [];
+
+// Chowa ekran ładowania
+// $(window).on('load', function () {
+//     const tlo = document.querySelector('.tlo');
+//     TweenMax.to(tlo, 3, { y: '-100%' });
+// });
+
+//Animacja wzoru kaszubskiego
+const animacjaWzor = () => {
+    const tl = new TimelineMax();
+    const obiekt = document.getElementById('wzor').contentDocument;
+    const wzor = document.getElementById('wzor');
+
+    const wszystko = obiekt.querySelectorAll('g[id^="g"]');
+    const inne = obiekt.querySelectorAll(
+        'g[id^="g"]:not([class^="ped"]):not([class^="srodek"]):not([class^="lodyga"])'
+    );
+    const srodek = obiekt.querySelectorAll('.srodek');
+    const lodygaPrawa = obiekt.getElementById('g88');
+    const lodygaLewa = obiekt.getElementById('g1876');
+    const pedyPrawe = obiekt.querySelectorAll('.pedPrawy');
+    const pedyLewe = obiekt.querySelectorAll('.pedLewy');
+
+    tl.set(wszystko, { opacity: 0 })
+        .set([srodek, wzor], { opacity: 1 })
+        .from(srodek, 2, { y: 500, ease: Elastic.easeOut.config(1, 0.75), onComplete: animacjaNapis })
+        .set([lodygaPrawa, lodygaLewa], { opacity: 1 })
+        .from(lodygaPrawa, 2, {
+            scale: 0,
+            transformOrigin: 'left top',
+            rotate: -20,
+            ease: Power3.easeOut,
+        })
+        .from(lodygaLewa, 2, {
+            scale: 0,
+            rotate: 20,
+            transformOrigin: 'right top',
+            ease: Power3.easeOut,
+            delay: -2,
+        })
+        .set([pedyPrawe, pedyLewe], { opacity: 1 })
+        .from([pedyPrawe, pedyLewe], 1.5, { scale: 0, ease: Power3.easeOut })
+        .set(inne, { opacity: 1 })
+        .fromTo(inne, 2, { scale: 0.5, delay: 1 }, { scale: 1 });
+};
+//Animacja logo
+const animacjaNapis = () => {
+    const fontSize = 72;
+    const vara = new Vara(
+        '.napis',
+
+        'js/fonts/Satisfy/SatisfySL.json',
+
+        [
+            {
+                text: 'K',
+                duration: 650,
+                x: -190,
+                y: 5,
+                color: '#00497c',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'a',
+                y: 50,
+                x: -140,
+                color: '#1f8ab2',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 's',
+                y: 50,
+                x: -105,
+                color: '#72c5dd',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'z',
+                y: 55,
+                x: -70,
+                color: '#fad247',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'ë',
+                y: 35,
+                x: -20,
+                color: '#ee1919',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'b',
+                y: 30,
+                x: 30,
+                color: '#ee1919',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 's',
+                y: 50,
+                x: 65,
+                color: '#fad247',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'c',
+                y: 55,
+                x: 110,
+                color: '#72c5dd',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'z',
+                y: 55,
+                x: 150,
+                color: '#1f8ab2',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'i',
+                y: 35,
+                x: 195,
+                color: '#00497c',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'M',
+                duration: 650,
+                y: 120,
+                x: -60,
+                color: '#1f8ab2',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'ó',
+                y: 140,
+                x: 0,
+                color: '#fad247',
+                fromCurrentPosition: { y: false, x: false },
+            },
+            {
+                text: 'l',
+                y: 140,
+                x: 30,
+                color: '#ee1919',
+                fromCurrentPosition: { y: false, x: false },
+            },
+        ],
+        {
+            strokeWidth: 3,
+            color: '#000',
+            fontSize: fontSize,
+            textAlign: 'center',
+            duration: 400,
+        }
+    );
+};
 
 const zmienEkran = (doSchowania, doPokazania, czas = 500) => {
     $(`${doSchowania}, ${doPokazania}`).css('transition', `${czas / 1000}s`);

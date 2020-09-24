@@ -4,36 +4,39 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Kaszëbsczi Mól</title>
+        <link rel="icon" type="image/png" href="img/icon.png" />
 
         <script src="js/jquery-3.5.1.slim.min.js"></script>
-        <link rel="stylesheet" href="css/style.css" />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"
+            integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ=="
+            crossorigin="anonymous"
+        ></script>
+        <script src="js/vara.min.js"></script>
+        <script src="js/interfejs.js"></script>
 
+        <link rel="stylesheet" href="css/style.css" />
         <link
             href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@200;400;700&display=swap"
             rel="stylesheet"
         />
     </head>
     <body>
-        <!-- <main class="tlo">
-            <header>
-                <div class="gora glowna">
-                    <div id="logo">
-                        <h1>Kaszëbsczi <span style="color: #fbc531">Mól</span></h1>
-                        <p>Kaszubska gra polegająca na handlu nieruchomościami</p>
-                    </div>
-                    <div class="graj" id="glowna">ZAGRAJ</div>
-                </div>
-            </header>
+        <header class="ladowanie">
+            <div class="tlo"></div>
+            <div class="napis"></div>
+            <div class="logo">
+                <object data="img/wzor.svg" type="image/svg+xml" id="wzor" width="100%" height="100%"></object>
+            </div>
+        </header>
+        <script>
+            // Wyświetla animację ładowania
+            setTimeout(() => {
+                animacjaWzor();
+            }, 2000);
+        </script>
 
-            <section>
-                <div class="dol glowna">
-                    <div class="cechy">jakiś zajawowy element</div>
-                    <div class="cechy" id="srodkowy">inny zajawa</div>
-                    <div class="cechy">zajawa totalna</div>
-                    <div style="clear: both"></div>
-                </div>
-            </section>
-
+        <!-- <main>
             <section id="przygotowanie">
                 <article class="gracz nr1">
                     <header class="dane">
@@ -74,43 +77,6 @@
                 <article class="gracz dodaj">
                     <header class="dane">+</header>
                 </article>
-                <div class="gora">
-                    <div class="gracze_edycja">
-                        <div class="gracz nr1">
-                            <h4>Gracz 1</h4>
-                            <h2>Nazwa gracza</h2>
-                            <div class="kolor"></div>
-                        </div>
-                        <div class="gracz nr2">
-                            <h4>Gracz 2</h4>
-                            <h2>Nazwa gracza</h2>
-                            <div class="kolor"></div>
-                        </div>
-                        <div class="gracz nr3">
-                            <h4>Gracz 3</h4>
-                            <h2>Nazwa gracza</h2>
-                            <div class="kolor"></div>
-                        </div>
-                        <div class="gracz nr4">
-                            <h4>Gracz 4</h4>
-                            <h2>Nazwa gracza</h2>
-                            <div class="kolor"></div>
-                        </div>
-                        <div class="gracz nr5">
-                            <h4>Gracz 5</h4>
-                            <h2>Nazwa gracza</h2>
-                            <div class="kolor"></div>
-                        </div>
-                        <div class="gracz nr6">
-                            <h4>Gracz 6</h4>
-                            <h2>Nazwa gracza</h2>
-                            <div class="kolor"></div>
-                        </div>
-                        <div class="gracz dodaj">+</div>
-                        <div style="clear: both"></div>
-                    </div>
-                    <div class="graj" id="start">START</div>
-                </div>
                 <div class="dol">
                     <div class="gracze_edycja">
                         <div id="blad">
@@ -196,16 +162,7 @@
                 <div id="okienko"></div>
             </div>
         </main>
-        <script
-            src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"
-            integrity="sha512-IQLehpLoVS4fNzl7IfH8Iowfm5+RiMGtHykgZJl9AWMgqx0AmJ6cRWcB+GaGVtIsnC4voMfm8f2vwtY+6oPjpQ=="
-            crossorigin="anonymous"
-        ></script>
         <script src="js/karty.js"></script>
-        <script src="js/interfejs.js"></script>
         <script src="js/rozgrywka.js"></script>
-        <script>
-            wyswietlKolejnosc();
-        </script>
     </body>
 </html>

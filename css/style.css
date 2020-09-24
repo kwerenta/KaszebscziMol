@@ -6,9 +6,41 @@
 body {
     font-family: 'Roboto Mono', monospace;
     color: #f5f6fa;
-    overflow: hidden;
     background-color: #353b48;
     /* user-select: none; */
+}
+#wzor {
+    opacity: 0;
+}
+.ladowanie {
+    height: 100vh;
+    width: 100vw;
+    z-index: 99;
+    position: relative;
+}
+.logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    width: 1000px;
+    height: auto;
+}
+.napis {
+    position: fixed;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    width: 1000px;
+}
+.tlo {
+    height: 100vh;
+    width: 100vw;
+    background-color: #ceedf3;
+    z-index: 98;
+    position: relative;
 }
 .gora {
     width: 100vw;
