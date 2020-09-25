@@ -13,7 +13,6 @@
             crossorigin="anonymous"
         ></script>
         <script src="js/vara.min.js"></script>
-        <script src="js/interfejs.js"></script>
 
         <link rel="stylesheet" href="css/style.css" />
         <link
@@ -22,7 +21,7 @@
         />
     </head>
     <body>
-        <header class="ladowanie">
+        <header class="menu">
             <div class="tlo"></div>
             <div class="napis"></div>
             <div class="logo">
@@ -30,14 +29,18 @@
             </div>
         </header>
         <script>
-            // Wyświetla animację ładowania
-            setTimeout(() => {
-                animacjaWzor();
-            }, 2000);
+            // Wyświetla animację ekranu głównego
+            const skrypt = document.createElement('script');
+            skrypt.setAttribute('src', 'js/interfejs.js');
+            document.body.appendChild(skrypt);
+            skrypt.onload = function () {
+                setTimeout(() => {
+                    animacjaWzor();
+                }, 1000);
+            };
         </script>
 
-        <!-- <main>
-            <section id="przygotowanie">
+        <!-- <section class="przygotowanie">
                 <article class="gracz nr1">
                     <header class="dane">
                         <h4>Numer 1</h4>
@@ -103,10 +106,9 @@
                         </select>
                     </div>
                 </div>
-            </section>
-        </main> -->
+            </section> -->
         <main>
-            <div id="plansza">
+            <div class="plansza">
                 <div class="pole naroznik" id="p20"></div>
                 <div class="pole gorny" id="p21"></div>
                 <div class="pole gorny" id="p22"></div>
@@ -160,6 +162,7 @@
 
                 <div id="powiekszenie"></div>
                 <div id="okienko"></div>
+                <div id="okno"></div>
             </div>
         </main>
         <script src="js/karty.js"></script>

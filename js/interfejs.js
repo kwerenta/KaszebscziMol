@@ -1,13 +1,14 @@
 const maksymalna_liczba_graczy = 6;
-let liczba_graczy = 3; //TYMCZASOWO 3 zamiast 2
-let zablokowany = false;
+let liczba_graczy = 6; //TYMCZASOWO zamiast 2
+let zablokowany = true;
 let aktywnynr = 0;
 const kolejnosc = [];
 
 // Chowa ekran ładowania
 // $(window).on('load', function () {
-//     const tlo = document.querySelector('.tlo');
-//     TweenMax.to(tlo, 3, { y: '-100%' });
+const tlo = document.querySelector('.menu');
+$(tlo).css('display', 'none');
+//     TweenMax.to(tlo, 3, { y: '-100%', display: 'none' });
 // });
 
 //Animacja wzoru kaszubskiego
@@ -161,6 +162,40 @@ const animacjaNapis = () => {
     );
 };
 
+const wyswietlOkienko = (element = document.querySelector('#okienko')) => {
+    $(element).css('visibility', 'visible');
+    TweenMax.fromTo(
+        element,
+        1,
+        {
+            opacity: 0,
+            scale: 0.5,
+        },
+        {
+            opacity: 1,
+            scale: 1,
+            transformOrigin: 'center center',
+            ease: Elastic.easeOut.config(1, 0.5),
+        }
+    );
+};
+const schowajOkienko = (element = document.querySelector('#okienko')) => {
+    TweenMax.fromTo(
+        element,
+        1,
+        {
+            opacity: 1,
+            scale: 1,
+        },
+        {
+            opacity: 0,
+            scale: 0.5,
+            transformOrigin: 'center center',
+            ease: Back.easeOut.config(1, 0.5),
+        }
+    );
+};
+
 const zmienEkran = (doSchowania, doPokazania, czas = 500) => {
     $(`${doSchowania}, ${doPokazania}`).css('transition', `${czas / 1000}s`);
     $(`${doSchowania}, ${doPokazania}`).css('-moz-transition', `${czas / 1000}s`);
@@ -199,7 +234,7 @@ $('.gracz.dodaj').click(function () {
 $('.gracz').click(function () {
     if ($(this).attr('class') != 'gracz dodaj' && !$(this).hasClass('aktywny')) {
         const id = $(this).attr('class');
-        aktywnynr = parseInt(id.substr(id.length - 1)) - 1;
+        aktywnynr = parseInt(id.substr(id.length - 1)) - 1; //Zamiana klasy na numer gracza
 
         $('.gracz.aktywny').removeClass('aktywny');
         $(this).addClass('aktywny');
@@ -248,36 +283,26 @@ $('.graj#start').click(function () {
 });
 
 //Wyświetlanie powiększania najechanej karty
-
 let licznik;
 $('.pole').hover(
     function () {
         if (!zablokowany) {
             clearTimeout(licznik);
             $('#powiekszenie').html(`<h3>${this.id}</h3>`);
-            $('#powiekszenie').css('visibility', 'visible');
-            $('#powiekszenie').css('opacity', '1');
+            wyswietlOkienko('#powiekszenie');
         }
     },
     function () {
-        licznik = setTimeout(function () {
-            $('#powiekszenie').css('opacity', '0');
-            setTimeout(function () {
-                $('#powiekszenie').css('visibility', 'hidden');
+        if (!zablokowany) {
+            licznik = setTimeout(function () {
+                schowajOkienko('#powiekszenie');
             }, 300);
-        }, 20);
+        }
     }
 );
 
 function wyswietlKolejnosc() {
-    const okienko = document.querySelector('#okienko');
-    TweenMax.from(okienko, 1, {
-        opacity: 0,
-        scale: 0.5,
-        transformOrigin: 'center center',
-        ease: Elastic.easeOut.config(1, 0.5),
-    });
-
+    wyswietlOkienko();
     zablokowany = true;
     $('#okienko').html(function () {
         let lista = '';
@@ -295,13 +320,9 @@ function wyswietlKolejnosc() {
         return `<h1>Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
     });
     $('.kontynuuj').click(function () {
-        TweenMax.to(okienko, 0.5, {
-            opacity: 0,
-            scale: 0,
-            transformOrigin: 'center center',
-            ease: Back.easeOut.config(1, 0.5),
-        });
+        schowajOkienko();
         zablokowany = false;
-        zmianaGracza();
+        wyswietlAkcje();
+        $('.kontynuuj').off();
     });
 }
