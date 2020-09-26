@@ -106,6 +106,7 @@ const rzutKoscmi = () => {
     kostka1 = Math.floor(Math.random() * 6) + 1;
     kostka2 = Math.floor(Math.random() * 6) + 1;
 };
+
 const wyswietlAkcje = () => {
     aktualny = kolejnosc[kto];
     obecny = gracz[aktualny];
@@ -176,7 +177,7 @@ const wyswietlAkcje = () => {
             const strona = this.id.substr(6, 1);
             const numer = $('#wybor-oferta').children('option:selected').val();
             const drugastrona = gracz[numer];
-            console.log(kwota, strona);
+
             if (strona == 'L') {
                 if (kwota != 0) {
                     if (!obecny.czyPieniadze(oferowane + kwota)) {
@@ -216,8 +217,9 @@ const wyswietlAkcje = () => {
         });
     });
 };
+
 const wykonajRuch = () => {
-    const nieZakup = [0, 10, 20, 30, 38];
+    const nieZakup = [0, 2, 4, 7, 10, 17, 20, 22, 30, 33, 36, 38];
 
     rzutKoscmi();
     obecny.zmianaPozycji(kostka1, kostka2);
@@ -229,18 +231,73 @@ const wykonajRuch = () => {
         tura++;
     }
 
-    if (!nieZakup.includes(obecny.pozycja)) {
-        if (!pole[obecny.pozycja].czyWlasciciel(aktualny)) {
-            if (pole[obecny.pozycja].wlasciciel == -1) {
-                //licytujPole(obecny.pozycja);
-            } else {
-                alert('wlascicielem jest inny gracz');
+    !nieZakup.includes(obecny.pozycja)
+        ? !pole[obecny.pozycja].czyWlasciciel(aktualny)
+            ? pole[obecny.pozycja].wlasciciel == -1
+                ? wyswietlRuch(1)
+                : wyswietlRuch(3)
+            : wykonajRuch(2)
+        : wykonajRuch(0);
+};
+
+const wyswietlRuch = (kod) => {
+    const obecnePole = pole[obecny.pozycja];
+    let kodHTML = `<h1><span class="czerwony">${obecnePole.nazwa}<span></h1>
+    <h3><span style="color: ${obecny.kolor}">${obecny.nazwa} | ${obecny.pieniadze}$</span></h3>`;
+
+    //Kody możliwości na jakie mógł trafić gracz
+    //0 - Pole bez akcji
+    //1 - Pole bez właściciela
+    //2 - Gracz jest właścicielem
+    //3 - Właścicielem pola jest inny gracz
+    //4 - Pole doboru kart
+
+    switch (kod) {
+        case 0:
+            console.log('Pole bez akcji');
+            break;
+        case 1:
+            //Pole bez właściciela
+            kodHTML += `
+            <h3><span class="czerwony">Cena: ${obecnePole.cena}$</span></h3>
+            <div class="zakup">
+                <div class="kontynuuj" id="kup">Kup pole</div>
+                <div class="kontynuuj" id="licytuj">Licytuj</div>
+            </div>`;
+            break;
+        case 2:
+            console.log('Gracz jest właścicielem');
+            break;
+        case 3:
+            console.log('Właścicielem pola jest inny gracz');
+            break;
+        case 4:
+            console.log('Pole doboru kart');
+            break;
+        default:
+            alert('Błąd! Odśwież stronę!');
+            break;
+    }
+
+    $('#okienko').html(kodHTML);
+    wyswietlOkienko();
+
+    switch (kod) {
+        case 1:
+            $('#licytuj').click(function () {
+                schowajOkienko();
+                licytujPole(obecny.pozycja);
+                $('#licytuj').off();
+            });
+            if (!obecny.czyPieniadze(obecnePole.cena)) $('#kup').addClass('nieaktywny');
+            else {
+                $('#kup').click(function () {
+                    obecny.kupPole(obecny.pozycja);
+                    schowajOkienko();
+                    wyswietlAkcje();
+                    $('#kup').off();
+                });
             }
-        } else {
-            alert('jesteś właścicielem');
-        }
-    } else if (obecny.pozycja == 38) {
-        alert('trafiłeś na pole 38');
     }
 };
 
@@ -251,13 +308,14 @@ const licytujPole = (licytowane) => {
     let teraz = kto;
     let licytator = gracz[uczestnicy[teraz]];
     let ile_uczestnikow = liczba_graczy;
+    let LicytatorNazwa = `<span style="color: ${licytator.kolor}">${licytator.nazwa}</span>`;
 
     zablokowany = true;
 
     $('#okienko').html(
         `<h1><span class="czerwony">${licytowanePole.nazwa}</span></h1>
         <h3 class="zaklad">Aktualna oferta: <span class="czerwony">${zaklad}$</span></h3>
-        <h3 class="licytator">Obecny licytator: <span class="czerwony">${licytator.nazwa}</span></h3>
+        <h3 class="licytator">Obecny licytator: ${LicytatorNazwa}</h3>
         <div class="guziki">
             <div class="guzik kwota" id="kwota1"><p>1$</p></div>
             <div class="guzik kwota" id="kwota10"><p>10$</p></div>
@@ -287,12 +345,15 @@ const licytujPole = (licytowane) => {
             teraz + 1 > liczba_graczy - 1 ? (teraz = 0) : teraz++;
         } while (uczestnicy[teraz] == -1);
 
+        //Koniec licytacji - ekran wygranej
         licytator = gracz[uczestnicy[teraz]];
-        $('.licytator').html(`Obecny licytator: <span class="czerwony">${licytator.nazwa}</span>`);
+        LicytatorNazwa = `<span style="color: ${licytator.kolor}">${licytator.nazwa}</span>`;
+
+        $('.licytator').html(`Obecny licytator: ${LicytatorNazwa}</span>`);
         if (ile_uczestnikow === 1) {
             $('#okienko').html(`
             <h1><span class="czerwony">${licytowanePole.nazwa}</span></h1>
-            <h3>Zwycięzcą licytacji jest <span class="czerwony">${licytator.nazwa}</span>!</h3>
+            <h3>Zwycięzcą licytacji jest ${LicytatorNazwa}</span>!</h3>
             <h3>Najwyższa oferta: <span class="czerwony">${zaklad}$</span></h3>
             <div class="kontynuuj">Kontynuuj</div>
             `);
@@ -304,7 +365,7 @@ const licytujPole = (licytowane) => {
                 schowajOkienko();
                 zablokowany = false;
                 $('.kontynuuj').off();
-                wykonajRuch();
+                wyswietlAkcje();
             });
         }
     });

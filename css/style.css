@@ -97,9 +97,10 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    height: 700px;
-    width: 700px;
+    height: 704px;
+    width: 704px;
     background-color: #00497c;
+    border: 2px solid #fad247;
     -webkit-box-shadow: 0px 0px 40px 4px rgba(0, 0, 0, 1);
     -moz-box-shadow: 0px 0px 40px 4px rgba(0, 0, 0, 1);
     box-shadow: 0px 0px 40px 4px rgba(0, 0, 0, 1);
@@ -191,6 +192,7 @@ body {
     margin-left: 50px;
 }
 #okienko h1,
+#okienko h3,
 #okno h1,
 #okno h3 {
     text-align: center;
@@ -201,7 +203,8 @@ body {
     -moz-box-shadow: 0px 0px 50px 6px rgba(0, 0, 0, 1);
     box-shadow: 0px 0px 50px 6px rgba(0, 0, 0, 1);
 }
-.oferta {
+.oferta,
+.zakup {
     display: flex;
     width: 100%;
     align-items: center;
@@ -232,9 +235,12 @@ body {
     -moz-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-.kontynuuj:hover {
+.kontynuuj:not(.nieaktywny):hover {
     background-color: #fad247;
     color: #00497c;
+    -webkit-box-shadow: 0px 0px 20px 4px rgba(250, 210, 71, 1);
+    -moz-box-shadow: 0px 0px 20px 4px rgba(250, 210, 71, 1);
+    box-shadow: 0px 0px 20px 4px rgba(250, 210, 71, 1);
 }
 .guzik {
     margin: 0;
@@ -285,12 +291,18 @@ body {
 #ofertaP50 {
     margin-right: 5px;
 }
-
-.kontynuuj.oferuj {
+#wymiana {
+    margin-right: 0;
+}
+.kontynuuj.oferuj,
+.zakup .kontynuuj {
     width: 100%;
     position: static;
     transform: translate(0, 0);
-    flex: 1 50%;
+    flex: 1 45%;
+}
+.zakup .kontynuuj {
+    margin: 50px 5px;
 }
 .guzik.kwota {
     font-size: 20px;
@@ -309,4 +321,9 @@ h3.akcja {
 }
 .czerwony {
     color: #ee1919;
+}
+.nieaktywny {
+    cursor: default;
+    background-color: #ee1919;
+    color: #fad247;
 }

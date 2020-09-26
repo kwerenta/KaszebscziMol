@@ -162,16 +162,17 @@ const animacjaNapis = () => {
     );
 };
 
-const wyswietlOkienko = (element = document.querySelector('#okienko')) => {
-    $(element).css('visibility', 'visible');
+const wyswietlOkienko = (element = '#okienko') => {
     TweenMax.fromTo(
         element,
         1,
         {
+            visibility: 'hidden',
             opacity: 0,
             scale: 0.5,
         },
         {
+            visibility: 'visible',
             opacity: 1,
             scale: 1,
             transformOrigin: 'center center',
@@ -179,18 +180,24 @@ const wyswietlOkienko = (element = document.querySelector('#okienko')) => {
         }
     );
 };
-const schowajOkienko = (element = document.querySelector('#okienko')) => {
+const schowajOkienko = (element = '#okienko') => {
+    const ustawHidden = () => {
+        $(element).css('visibility', 'hidden');
+    };
     TweenMax.fromTo(
         element,
         1,
         {
+            visibility: 'visible',
             opacity: 1,
             scale: 1,
         },
         {
+            visibility: 'hidden',
             opacity: 0,
             scale: 0.5,
             transformOrigin: 'center center',
+            onComplete: ustawHidden,
             ease: Back.easeOut.config(1, 0.5),
         }
     );
@@ -312,7 +319,7 @@ function wyswietlKolejnosc() {
             if (kolejnosc.indexOf(losowa) === -1) kolejnosc.push(losowa);
         }
         for (i = 0; i < liczba_graczy; i++) {
-            nr = kolejnosc[i];
+            const nr = kolejnosc[i];
             lista += `<li><span style="color:${gracz[nr].kolor};">${gracz[nr].nazwa}</span></li>`;
         }
         ustawPionki();
