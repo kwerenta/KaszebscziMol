@@ -182,7 +182,7 @@ const wyswietlOkienko = (element = '#okienko') => {
 };
 const schowajOkienko = (element = '#okienko') => {
     const ustawHidden = () => {
-        $(element).css('visibility', 'hidden');
+        TweenMax.set(element, { visibility: 'hidden' });
     };
     TweenMax.fromTo(
         element,
@@ -193,12 +193,11 @@ const schowajOkienko = (element = '#okienko') => {
             scale: 1,
         },
         {
-            visibility: 'hidden',
             opacity: 0,
             scale: 0.5,
             transformOrigin: 'center center',
             onComplete: ustawHidden,
-            ease: Back.easeOut.config(1, 0.5),
+            ease: Back.easeInOut.config(4),
         }
     );
 };

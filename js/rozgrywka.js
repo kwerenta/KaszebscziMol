@@ -41,6 +41,21 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
             alert('Błąd! Odśwież stronę!');
         }
     };
+    this.kupDomek = (ktore) => {
+        if (this.czyPieniadze(200)) {
+            this.odejmijPieniadze(200);
+            pole[ktore].dodajDomek();
+        } else {
+            alert('Błąd! Odśwież stronę!');
+        }
+    };
+    this.zaplacCzynsz = (ktore) => {
+        if (this.czyPieniadze(pole[ktore].czynsz)) {
+            this.przelejPieniadze(pole[ktore].czynsz, pole[ktore].wlasciciel);
+        } else {
+            alert('Błąd! Odśwież stronę!');
+        }
+    };
 }
 
 let gracz = [];
@@ -130,17 +145,22 @@ const wyswietlAkcje = () => {
         wykonajRuch();
     });
     $('#wymiana').click(function () {
-        let oferowane = 0;
-        let chciane = 0;
-        let lista = '<select id="wybor-oferta">';
-        gracz.forEach(({ nazwa, kolor }, index) => {
-            if (obecny.nazwa !== nazwa) lista += `<option value="${index}" style="color:${kolor}">${nazwa}</option>`;
-        });
-        lista += '</select>';
+        wyswietlWymiane();
+    });
+};
 
-        //Wyświetlenie okna wymiany
-        $('#okno').html(
-            `<h1><span class="czerwony">Wymiana</span></h1>
+const wyswietlWymiane = () => {
+    let oferowane = 0;
+    let chciane = 0;
+    let lista = '<select id="wybor-oferta">';
+    gracz.forEach(({ nazwa, kolor }, index) => {
+        if (obecny.nazwa !== nazwa) lista += `<option value="${index}" style="color:${kolor}">${nazwa}</option>`;
+    });
+    lista += '</select>';
+
+    //Wyświetlenie okna wymiany
+    $('#okno').html(
+        `<h1><span class="czerwony">Wymiana</span></h1>
             <div class="oferta">
                 <div class="ofertaL">
                     <h3><span class="czerwony">${obecny.nazwa}</span></h3>
@@ -167,59 +187,59 @@ const wyswietlAkcje = () => {
                     <div class="kontynuuj oferuj" id="anuluj">Anuluj ofertę</div>
                 </div>
             </div>`
-        );
+    );
 
-        wyswietlOkienko('#okno');
+    wyswietlOkienko('#okno');
 
-        //Zmiana kwot pieniężnych transakcji
-        $('.guzik').click(function () {
-            const kwota = parseInt(this.id.substr(7));
-            const strona = this.id.substr(6, 1);
-            const numer = $('#wybor-oferta').children('option:selected').val();
-            const drugastrona = gracz[numer];
+    //Zmiana kwot pieniężnych transakcji
+    $('.guzik').click(function () {
+        const kwota = parseInt(this.id.substr(7));
+        const strona = this.id.substr(6, 1);
+        const numer = $('#wybor-oferta').children('option:selected').val();
+        const drugastrona = gracz[numer];
 
-            if (strona == 'L') {
-                if (kwota != 0) {
-                    if (!obecny.czyPieniadze(oferowane + kwota)) {
-                        alert('nie masz tyle pieniedzy');
-                    } else {
-                        oferowane += kwota;
-                        $('h3.oferowane > span').text(`${oferowane}$`);
-                    }
+        if (strona == 'L') {
+            if (kwota != 0) {
+                if (!obecny.czyPieniadze(oferowane + kwota)) {
+                    alert('nie masz tyle pieniedzy');
                 } else {
-                    oferowane = 0;
+                    oferowane += kwota;
                     $('h3.oferowane > span').text(`${oferowane}$`);
                 }
-            } else if (strona == 'P') {
-                if (kwota != 0) {
-                    if (!drugastrona.czyPieniadze(chciane + kwota)) {
-                        alert('nie masz tyle pieniedzy');
-                    } else {
-                        chciane += kwota;
-                        $('.ofertaP h3 > span').text(`${chciane}$`);
-                    }
+            } else {
+                oferowane = 0;
+                $('h3.oferowane > span').text(`${oferowane}$`);
+            }
+        } else if (strona == 'P') {
+            if (kwota != 0) {
+                if (!drugastrona.czyPieniadze(chciane + kwota)) {
+                    alert('nie masz tyle pieniedzy');
                 } else {
-                    chciane = 0;
+                    chciane += kwota;
                     $('.ofertaP h3 > span').text(`${chciane}$`);
                 }
+            } else {
+                chciane = 0;
+                $('.ofertaP h3 > span').text(`${chciane}$`);
             }
-        });
+        }
+    });
 
-        //Złożenie, bądź anulowanie oferty wymiany
-        $('.kontynuuj').click(function () {
-            const numer = $('#wybor-oferta').children('option:selected').val();
-            const drugastrona = gracz[numer];
+    //Złożenie, bądź anulowanie oferty wymiany
+    $('.kontynuuj').click(function () {
+        const numer = $('#wybor-oferta').children('option:selected').val();
+        const drugastrona = gracz[numer];
 
-            if (this.id == 'anuluj') schowajOkienko('#okno');
-            else if (this.id == 'zloz') {
-                console.log(drugastrona.nazwa);
-            }
-        });
+        if (this.id == 'anuluj') schowajOkienko('#okno');
+        else if (this.id == 'zloz') {
+            console.log(drugastrona.nazwa);
+        }
     });
 };
 
 const wykonajRuch = () => {
     const nieZakup = [0, 2, 4, 7, 10, 17, 20, 22, 30, 33, 36, 38];
+    const poleKarty = [2, 7, 17, 22, 33, 36];
 
     rzutKoscmi();
     obecny.zmianaPozycji(kostka1, kostka2);
@@ -236,8 +256,10 @@ const wykonajRuch = () => {
             ? pole[obecny.pozycja].wlasciciel == -1
                 ? wyswietlRuch(1)
                 : wyswietlRuch(3)
-            : wykonajRuch(2)
-        : wykonajRuch(0);
+            : wyswietlRuch(2)
+        : poleKarty.includes(obecny.pozycja)
+        ? wyswietlRuch(4)
+        : wyswietlRuch(0);
 };
 
 const wyswietlRuch = (kod) => {
@@ -254,7 +276,10 @@ const wyswietlRuch = (kod) => {
 
     switch (kod) {
         case 0:
-            console.log('Pole bez akcji');
+            //Pole bez akcji
+            kodHTML += `
+            <h3>Totalna czilera</h3>
+            <div class="kontynuuj" id="dalej">Kontynuuj</div>`;
             break;
         case 1:
             //Pole bez właściciela
@@ -266,13 +291,32 @@ const wyswietlRuch = (kod) => {
             </div>`;
             break;
         case 2:
-            console.log('Gracz jest właścicielem');
+            //Gracz jest właścicielem
+            kodHTML += `
+            <h3><span class="czerwony">Ilość domków: ${obecnePole.domek}</span></h3>
+            <h3><span class="czerwony">Aktualny czynsz: ${obecnePole.czynsz}</span></h3>
+            <div class="guziki">
+                <div class="guzik" id="kup">Kup domek</div>
+                <div class="guzik" id="koniec">Zakończ ruch</div>
+            </div>`;
             break;
         case 3:
-            console.log('Właścicielem pola jest inny gracz');
+            //Właścicielem pola jest inny gracz
+            kodHTML += `
+            <h3><span class="czerwony">Czynsz: ${obecnePole.czynsz}</span></h3>
+            <div class="guziki">
+                <div class="guzik" id="zaplac">Zapłać czynsz</div>
+                <div class="guzik" id="zarzadzaj">Zarządzaj nieruchomościami</div>
+                <div class="guzik" id="wymiana">Wymień się</div>
+            </div>`;
             break;
         case 4:
-            console.log('Pole doboru kart');
+            //Pole doboru kart
+            const wylosowanaKarta = karta[losujKarte()];
+
+            kodHTML += `
+            <h3>${wylosowanaKarta.tekst}</h3>
+            <div class="kontynuuj" id="dalej">Kontynuuj</div>`;
             break;
         default:
             alert('Błąd! Odśwież stronę!');
@@ -282,8 +326,18 @@ const wyswietlRuch = (kod) => {
     $('#okienko').html(kodHTML);
     wyswietlOkienko();
 
+    //Przypisanie przyciskom odpowiednich działań
     switch (kod) {
+        case 0:
+            //Pole bez akcji
+            $('#dalej').click(function () {
+                schowajOkienko();
+                wyswietlAkcje();
+                $('#dalej').off();
+            });
+            break;
         case 1:
+            //Pole bez właściciela
             $('#licytuj').click(function () {
                 schowajOkienko();
                 licytujPole(obecny.pozycja);
@@ -298,7 +352,55 @@ const wyswietlRuch = (kod) => {
                     $('#kup').off();
                 });
             }
+            break;
+        case 2:
+            //Gracz jest właścicielem
+            $('#koniec').click(function () {
+                schowajOkienko();
+                wyswietlAkcje();
+                $('#licytuj').off();
+            });
+            if (!obecny.czyPieniadze(200)) $('#kup').addClass('nieaktywny');
+            else {
+                $('#kup').click(function () {
+                    console.log('click');
+                    obecny.kupDomek(obecny.pozycja);
+                    schowajOkienko();
+                    wyswietlAkcje();
+                    $('#kup').off();
+                });
+            }
+            break;
+        case 3:
+            //Właścicielem pola jest inny gracz
+            //Wymiana i zarządzaj są przypisane już w wyswietlAkcje()
+            if (!obecny.czyPieniadze(obecnePole.czynsz)) $('#zaplac').addClass('nieaktywny');
+            else {
+                $('#zaplac').click(function () {
+                    obecny.zaplacCzynsz(obecny.pozycja);
+                    obecny.schowajOkienko();
+                    wyswietlAkcje();
+                    $('#zaplac').off();
+                });
+            }
+            break;
+        case 4:
+            //Pole doboru kart
+            $('#dalej').click(function () {
+                schowajOkienko();
+                wyswietlAkcje();
+                $('#dalej').off();
+            });
+            break;
+        default:
+            alert('Błąd! Odśwież stronę!');
+            break;
     }
+};
+
+const losujKarte = () => {
+    const iloscKart = karta.length - 1;
+    return Math.round(Math.random() * iloscKart);
 };
 
 const licytujPole = (licytowane) => {

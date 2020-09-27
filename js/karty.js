@@ -1,9 +1,9 @@
-function Pole(nazwa, cena, kolor, czynsz = []) {
+function Pole(nazwa, cena, kolor, czynsze = []) {
     this.nazwa = nazwa;
     this.cena = cena || 0;
     this.kolor = kolor || '#fff';
 
-    this.czynsz = czynsz;
+    this.czynsz = czynsze[0];
 
     this.domek = 0;
 
@@ -14,6 +14,13 @@ function Pole(nazwa, cena, kolor, czynsz = []) {
     };
     this.zmienWlasciciela = (kto) => {
         this.wlasciciel = kto;
+    };
+    this.dodajDomek = () => {
+        this.domek++;
+        this.zmienCzynsz();
+    };
+    this.zmienCzynsz = () => {
+        this.czynsz = czynsze[this.domek];
     };
 }
 
