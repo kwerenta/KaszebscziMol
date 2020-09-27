@@ -251,6 +251,7 @@ const wykonajRuch = () => {
         tura++;
     }
 
+    //Wyświetlenie odpowiedniego okna w zależności od pola, na którym stoi gracz
     !nieZakup.includes(obecny.pozycja)
         ? !pole[obecny.pozycja].czyWlasciciel(aktualny)
             ? pole[obecny.pozycja].wlasciciel == -1
@@ -360,7 +361,7 @@ const wyswietlRuch = (kod) => {
                 wyswietlAkcje();
                 $('#licytuj').off();
             });
-            if (!obecny.czyPieniadze(200)) $('#kup').addClass('nieaktywny');
+            if (!obecny.czyPieniadze(200) && obecnePole.domek < 6) $('#kup').addClass('nieaktywny');
             else {
                 $('#kup').click(function () {
                     console.log('click');
