@@ -67,30 +67,38 @@ pole[37] = new Pole('Dino Mściszewice', 350, '#303030', [80, 150, 200, 350, 500
 pole[38] = new Pole('Podatek?', 350, '#303030', [80]);
 pole[39] = new Pole('Mściszevice City', 400, '#303030', [80]);
 
-function Karta(tekst, dzialanie) {
+function Karta(tekst, dzialanie, parametr) {
     this.tekst = tekst;
+    this.parametr = parametr;
     this.dzialanie = dzialanie;
+
+    this.wykonaj = () => {
+        if (this.dzialanie == 'dodaj') return obecny.dodajPieniadze(this.parametr);
+        else if (this.dzialanie == 'odejmij') return obecny.odejmijPieniadze(this.parametr);
+        else if (this.dzialanie == 'kazdemu') return obecny.przelejKazdemu(this.parametr);
+    };
 }
 
 const karta = [];
 
-karta[0] = new Karta(
-    'Wygrywasz Snuff World Championship! Otrzymujesz 500$',
-    'Stworzyc funkcje dodaj i odejmij pieniadze'
-);
+karta[0] = new Karta('Wygrywasz Snuff World Championship! Otrzymujesz 500$', 'dodaj', 500);
 karta[1] = new Karta(
     'Turysta zapytał się, którędy do stolicy Kaszub. Pokazując trzy kierunki świata zostałeś okradziony. Tracisz 250$',
-    'Stworzyc funkcje dodaj i odejmij pieniadze'
+    'odejmij',
+    250
 );
 karta[2] = new Karta(
     'Zostałeś zaproszony na Browargedon. Zaproszenie zostało natychmiast przyjęte, a tytuł mistrzowski trafia w twoje ręcej. Jako nagrodę dostajesz 300$',
-    'Stworzyc funkcje dodaj i odejmij pieniadze'
+    'dodaj',
+    300
 );
 karta[3] = new Karta(
     'W trakcie Bimbergedonu nie udało Ci się pokonać pierwszej konkurencji, jaką było wejście po schodach. Dla odbudowania wizerunku płacisz każdemu graczowi 50$',
-    'Stworzyc funkcje dodaj i odejmij pieniadze'
+    'kazdemu',
+    50
 );
 karta[4] = new Karta(
     'Uszkodziłeś deskę sedesową w toalecie gospodarza imprezy. Pokrywasz koszty i tracisz 100$',
-    'Stworzyc funkcje dodaj i odejmij pieniadze'
+    'odejmij',
+    100
 );

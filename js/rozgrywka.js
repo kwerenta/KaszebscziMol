@@ -2,16 +2,22 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
     this.nazwa = nazwa;
     this.kolor = kolor;
     this.awatar = awatar;
+
     this.pieniadze = 1500;
     this.pozycja = 0;
+    this.wiezenie = 0;
 
     this.posiadane = [];
 
-    this.zmianaPozycji = (kostka1, kostka2) => {
-        this.pozycja += kostka1 + kostka2;
-        if (this.pozycja > 39) {
-            this.pozycja -= 40;
-            this.dodajPieniadze(200);
+    this.zmianaPozycji = (kostka1, kostka2, konkretna = -1) => {
+        if (konkretna == -1) {
+            this.pozycja += kostka1 + kostka2;
+            if (this.pozycja > 39) {
+                this.pozycja -= 40;
+                this.dodajPieniadze(200);
+            }
+        } else {
+            this.pozycja = konkretna;
         }
     };
     this.dodajPieniadze = (ile) => {
@@ -52,6 +58,16 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
     this.zaplacCzynsz = (ktore) => {
         if (this.czyPieniadze(pole[ktore].czynsz)) {
             this.przelejPieniadze(pole[ktore].czynsz, pole[ktore].wlasciciel);
+        } else {
+            alert('Błąd! Odśwież stronę!');
+        }
+    };
+    this.przelejKazdemu = (ile) => {
+        const ileGraczy = liczba_graczy - 2; //Liczba graczy liczona jest od 1 i odliczyć trzeba obecnego gracza.
+        if (this.czyPieniadze(ileGraczy * ile)) {
+            gracz.forEach(({ nazwa }, index) => {
+                if (this.nazwa !== nazwa) this.przelejPieniadze(ile, index);
+            });
         } else {
             alert('Błąd! Odśwież stronę!');
         }
@@ -129,8 +145,10 @@ const wyswietlAkcje = () => {
     zablokowany = true;
     $('#okienko').css('border-color', obecny.kolor);
     //Wyświetlenie okna akcji gracza
-    $('#okienko').html(
-        `<h1><span style="color: ${obecny.kolor}">${obecny.nazwa}</span></h1>
+
+    if (obecny.wiezenie == 0) {
+        $('#okienko').html(
+            `<h1><span style="color: ${obecny.kolor}">${obecny.nazwa}</span></h1>
         <h3 class="akcja"><span class="czerwony">${obecny.pieniadze}$</span><h3>
         <h3 class="akcja"><span class="czerwony">${pole[obecny.pozycja].nazwa}</span><h3>
         <div class="guziki">
@@ -138,15 +156,46 @@ const wyswietlAkcje = () => {
             <div class="guzik akcja" id="zarzadzaj"><p>Zarządzaj nieruchomościami</p></div>
             <div class="guzik akcja" id="wymiana"><p>Wymiana</p></div>
         </div>`
-    );
-    wyswietlOkienko();
-    $('#rzut').click(function () {
-        schowajOkienko();
-        wykonajRuch();
-    });
-    $('#wymiana').click(function () {
-        wyswietlWymiane();
-    });
+        );
+
+        wyswietlOkienko();
+
+        $('#rzut').click(function () {
+            schowajOkienko();
+            wykonajRuch();
+        });
+        $('#wymiana').click(function () {
+            wyswietlWymiane();
+        });
+    } else {
+        obecny.wiezenie--;
+        $('#okienko').html(
+            `<h1><span style="color: ${obecny.kolor}">${obecny.nazwa}</span></h1>
+        <h3 class="akcja"><span class="czerwony">${obecny.pieniadze}$</span><h3>
+        <h3 class="akcja"><span class="czerwony">${pole[obecny.pozycja].nazwa}</span><h3>
+        <h3>Liczba tur do wyjścia z więzienia: ${obecny.wiezenie}<h3>
+        <div class="guziki">
+            <div class="guzik akcja" id="dublet"><p>Rzuć koścmi</p></div>
+            <div class="guzik akcja" id="kaucja"><p>Zapłać kaucję</p></div>
+        </div>`
+        );
+
+        wyswietlOkienko();
+
+        $('#dublet').click(function () {
+            //DO ZROBIENIA Funkcja sprawdzająca czy gracz wyrzucił dublet
+            schowajOkienko();
+            wykonajRuch();
+        });
+        if (!obecny.czyPieniadze(50)) $('#kaucja').addClass('nieaktywny');
+        else {
+            $('#kaucja').click(function () {
+                obecny.odejmijPieniadze(50);
+                schowajOkienko();
+                wykonajRuch();
+            });
+        }
+    }
 };
 
 const wyswietlWymiane = () => {
@@ -242,6 +291,9 @@ const wykonajRuch = () => {
     const poleKarty = [2, 7, 17, 22, 33, 36];
 
     rzutKoscmi();
+    kostka1 = 15;
+    kostka2 = 15;
+
     obecny.zmianaPozycji(kostka1, kostka2);
     przesunPionek(obecny);
 
@@ -278,9 +330,20 @@ const wyswietlRuch = (kod) => {
     switch (kod) {
         case 0:
             //Pole bez akcji
-            kodHTML += `
-            <h3>Totalna czilera</h3>
-            <div class="kontynuuj" id="dalej">Kontynuuj</div>`;
+            obecny.pozycja == 30
+                ? (kodHTML += `<h3>Trafiasz do żukowa na 3 tury. Podczas swojej tury możesz spróbować wyrzucić dublet lub zapłacić kaucję w wysokości 50$.</h3>`)
+                : (kodHTML += `<h3>Totalna czilera</h3>`);
+            kodHTML += `<div class="kontynuuj" id="dalej">Kontynuuj</div>`;
+
+            $('#okienko').html(kodHTML);
+            wyswietlOkienko();
+
+            $('#dalej').click(function () {
+                if (obecny.pozycja == 30) doWiezienia();
+                schowajOkienko();
+                wyswietlAkcje();
+                $('#dalej').off();
+            });
             break;
         case 1:
             //Pole bez właściciela
@@ -290,55 +353,10 @@ const wyswietlRuch = (kod) => {
                 <div class="kontynuuj" id="kup">Kup pole</div>
                 <div class="kontynuuj" id="licytuj">Licytuj</div>
             </div>`;
-            break;
-        case 2:
-            //Gracz jest właścicielem
-            kodHTML += `
-            <h3><span class="czerwony">Ilość domków: ${obecnePole.domek}</span></h3>
-            <h3><span class="czerwony">Aktualny czynsz: ${obecnePole.czynsz}</span></h3>
-            <div class="guziki">
-                <div class="guzik" id="kup">Kup domek</div>
-                <div class="guzik" id="koniec">Zakończ ruch</div>
-            </div>`;
-            break;
-        case 3:
-            //Właścicielem pola jest inny gracz
-            kodHTML += `
-            <h3><span class="czerwony">Czynsz: ${obecnePole.czynsz}</span></h3>
-            <div class="guziki">
-                <div class="guzik" id="zaplac">Zapłać czynsz</div>
-                <div class="guzik" id="zarzadzaj">Zarządzaj nieruchomościami</div>
-                <div class="guzik" id="wymiana">Wymień się</div>
-            </div>`;
-            break;
-        case 4:
-            //Pole doboru kart
-            const wylosowanaKarta = karta[losujKarte()];
 
-            kodHTML += `
-            <h3>${wylosowanaKarta.tekst}</h3>
-            <div class="kontynuuj" id="dalej">Kontynuuj</div>`;
-            break;
-        default:
-            alert('Błąd! Odśwież stronę!');
-            break;
-    }
+            $('#okienko').html(kodHTML);
+            wyswietlOkienko();
 
-    $('#okienko').html(kodHTML);
-    wyswietlOkienko();
-
-    //Przypisanie przyciskom odpowiednich działań
-    switch (kod) {
-        case 0:
-            //Pole bez akcji
-            $('#dalej').click(function () {
-                schowajOkienko();
-                wyswietlAkcje();
-                $('#dalej').off();
-            });
-            break;
-        case 1:
-            //Pole bez właściciela
             $('#licytuj').click(function () {
                 schowajOkienko();
                 licytujPole(obecny.pozycja);
@@ -356,10 +374,21 @@ const wyswietlRuch = (kod) => {
             break;
         case 2:
             //Gracz jest właścicielem
+            kodHTML += `
+            <h3><span class="czerwony">Ilość domków: ${obecnePole.domek}</span></h3>
+            <h3><span class="czerwony">Aktualny czynsz: ${obecnePole.czynsz}</span></h3>
+            <div class="guziki">
+                <div class="guzik" id="kup">Kup domek</div>
+                <div class="guzik" id="koniec">Zakończ ruch</div>
+            </div>`;
+
+            $('#okienko').html(kodHTML);
+            wyswietlOkienko();
+
             $('#koniec').click(function () {
                 schowajOkienko();
                 wyswietlAkcje();
-                $('#licytuj').off();
+                $('#koniec').off();
             });
             if (!obecny.czyPieniadze(200) && obecnePole.domek < 6) $('#kup').addClass('nieaktywny');
             else {
@@ -374,12 +403,22 @@ const wyswietlRuch = (kod) => {
             break;
         case 3:
             //Właścicielem pola jest inny gracz
-            //Wymiana i zarządzaj są przypisane już w wyswietlAkcje()
+            kodHTML += `
+            <h3><span class="czerwony">Czynsz: ${obecnePole.czynsz}$</span></h3>
+            <div class="guziki">
+                <div class="guzik" id="zaplac">Zapłać czynsz</div>
+                <div class="guzik" id="zarzadzaj">Zarządzaj nieruchomościami</div>
+                <div class="guzik" id="wymiana">Wymień się</div>
+            </div>`;
+
+            $('#okienko').html(kodHTML);
+            wyswietlOkienko();
+
             if (!obecny.czyPieniadze(obecnePole.czynsz)) $('#zaplac').addClass('nieaktywny');
             else {
                 $('#zaplac').click(function () {
                     obecny.zaplacCzynsz(obecny.pozycja);
-                    obecny.schowajOkienko();
+                    schowajOkienko();
                     wyswietlAkcje();
                     $('#zaplac').off();
                 });
@@ -387,7 +426,17 @@ const wyswietlRuch = (kod) => {
             break;
         case 4:
             //Pole doboru kart
+            var wylosowanaKarta = karta[losujKarte()];
+
+            kodHTML += `
+            <h3>${wylosowanaKarta.tekst}</h3>
+            <div class="kontynuuj" id="dalej">Kontynuuj</div>`;
+
+            $('#okienko').html(kodHTML);
+            wyswietlOkienko();
+
             $('#dalej').click(function () {
+                wylosowanaKarta.wykonaj();
                 schowajOkienko();
                 wyswietlAkcje();
                 $('#dalej').off();
@@ -402,6 +451,12 @@ const wyswietlRuch = (kod) => {
 const losujKarte = () => {
     const iloscKart = karta.length - 1;
     return Math.round(Math.random() * iloscKart);
+};
+
+const doWiezienia = () => {
+    obecny.zmianaPozycji(0, 0, 10);
+    przesunPionek(obecny);
+    obecny.wiezenie = 3;
 };
 
 const licytujPole = (licytowane) => {

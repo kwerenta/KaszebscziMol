@@ -1,5 +1,5 @@
 const maksymalna_liczba_graczy = 6;
-let liczba_graczy = 6; //TYMCZASOWO zamiast 2
+let liczba_graczy = 2; //TYMCZASOWO zamiast 2
 let zablokowany = true;
 let aktywnynr = 0;
 const kolejnosc = [];
