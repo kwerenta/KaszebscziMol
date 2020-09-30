@@ -5,7 +5,7 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
 
     this.pieniadze = 1500;
     this.pozycja = 0;
-    this.wiezenie = 0;
+    this.wiezienie = 0;
 
     this.posiadane = [];
 
@@ -137,6 +137,9 @@ const rzutKoscmi = () => {
     kostka1 = Math.floor(Math.random() * 6) + 1;
     kostka2 = Math.floor(Math.random() * 6) + 1;
 };
+const czyDublet = () => {
+    return kostka1 == kostka2;
+};
 
 const wyswietlAkcje = () => {
     aktualny = kolejnosc[kto];
@@ -146,7 +149,7 @@ const wyswietlAkcje = () => {
     $('#okienko').css('border-color', obecny.kolor);
     //Wyświetlenie okna akcji gracza
 
-    if (obecny.wiezenie == 0) {
+    if (obecny.wiezienie == 0) {
         $('#okienko').html(
             `<h1><span style="color: ${obecny.kolor}">${obecny.nazwa}</span></h1>
         <h3 class="akcja"><span class="czerwony">${obecny.pieniadze}$</span><h3>
@@ -168,22 +171,21 @@ const wyswietlAkcje = () => {
             wyswietlWymiane();
         });
     } else {
-        obecny.wiezenie--;
+        obecny.wiezienie--;
         $('#okienko').html(
             `<h1><span style="color: ${obecny.kolor}">${obecny.nazwa}</span></h1>
         <h3 class="akcja"><span class="czerwony">${obecny.pieniadze}$</span><h3>
         <h3 class="akcja"><span class="czerwony">${pole[obecny.pozycja].nazwa}</span><h3>
-        <h3>Liczba tur do wyjścia z więzienia: ${obecny.wiezenie}<h3>
+        <h3 id="wiezienieTury">Liczba tur do wyjścia z więzienia: ${obecny.wiezienie}<h3>
         <div class="guziki">
             <div class="guzik akcja" id="dublet"><p>Rzuć koścmi</p></div>
             <div class="guzik akcja" id="kaucja"><p>Zapłać kaucję</p></div>
         </div>`
         );
-
+        if (obecny.wiezienie == 0) $('#wiezienieTury').text('Wychodzisz z więzenia!');
         wyswietlOkienko();
 
         $('#dublet').click(function () {
-            //DO ZROBIENIA Funkcja sprawdzająca czy gracz wyrzucił dublet
             schowajOkienko();
             wykonajRuch();
         });
@@ -291,16 +293,19 @@ const wykonajRuch = () => {
     const poleKarty = [2, 7, 17, 22, 33, 36];
 
     rzutKoscmi();
-    kostka1 = 15;
-    kostka2 = 15;
 
-    obecny.zmianaPozycji(kostka1, kostka2);
-    przesunPionek(obecny);
+    if (!czyDublet()) {
+        kto++;
+        if (kto > liczba_graczy - 1) {
+            kto = 0;
+            tura++;
+        }
+    }
 
-    kto++;
-    if (kto > liczba_graczy - 1) {
-        kto = 0;
-        tura++;
+    if (obecny.wiezienie == 0 || (obecny.wiezienie > 0 && czyDublet())) {
+        obecny.zmianaPozycji(kostka1, kostka2);
+        przesunPionek(obecny);
+        obecny.wiezienie = 0;
     }
 
     //Wyświetlenie odpowiedniego okna w zależności od pola, na którym stoi gracz
@@ -332,14 +337,17 @@ const wyswietlRuch = (kod) => {
             //Pole bez akcji
             obecny.pozycja == 30
                 ? (kodHTML += `<h3>Trafiasz do żukowa na 3 tury. Podczas swojej tury możesz spróbować wyrzucić dublet lub zapłacić kaucję w wysokości 50$.</h3>`)
-                : (kodHTML += `<h3>Totalna czilera</h3>`);
+                : obecny.wiezienie == 0
+                ? (kodHTML += `<h3>Totalna czilera</h3>`)
+                : (kodHTML += `<h3>Nie udało Ci się trafić dubletu. Pozostajesz w Żukowie.</h3>`);
+
             kodHTML += `<div class="kontynuuj" id="dalej">Kontynuuj</div>`;
 
             $('#okienko').html(kodHTML);
             wyswietlOkienko();
 
             $('#dalej').click(function () {
-                if (obecny.pozycja == 30) doWiezienia();
+                if (obecny.pozycja == 30 && obecny.wiezienie == 0) doWiezienia();
                 schowajOkienko();
                 wyswietlAkcje();
                 $('#dalej').off();
@@ -350,8 +358,8 @@ const wyswietlRuch = (kod) => {
             kodHTML += `
             <h3><span class="czerwony">Cena: ${obecnePole.cena}$</span></h3>
             <div class="zakup">
-                <div class="kontynuuj" id="kup">Kup pole</div>
-                <div class="kontynuuj" id="licytuj">Licytuj</div>
+                <div class="guzik akcja" id="kup">Kup pole</div>
+                <div class="guzik akcja" id="licytuj">Licytuj</div>
             </div>`;
 
             $('#okienko').html(kodHTML);
@@ -376,10 +384,10 @@ const wyswietlRuch = (kod) => {
             //Gracz jest właścicielem
             kodHTML += `
             <h3><span class="czerwony">Ilość domków: ${obecnePole.domek}</span></h3>
-            <h3><span class="czerwony">Aktualny czynsz: ${obecnePole.czynsz}</span></h3>
+            <h3><span class="czerwony">Aktualny czynsz: ${obecnePole.czynsz}$</span></h3>
             <div class="guziki">
-                <div class="guzik" id="kup">Kup domek</div>
-                <div class="guzik" id="koniec">Zakończ ruch</div>
+                <div class="guzik akcja" id="kup">Kup domek</div>
+                <div class="guzik akcja" id="koniec">Zakończ ruch</div>
             </div>`;
 
             $('#okienko').html(kodHTML);
@@ -406,9 +414,9 @@ const wyswietlRuch = (kod) => {
             kodHTML += `
             <h3><span class="czerwony">Czynsz: ${obecnePole.czynsz}$</span></h3>
             <div class="guziki">
-                <div class="guzik" id="zaplac">Zapłać czynsz</div>
-                <div class="guzik" id="zarzadzaj">Zarządzaj nieruchomościami</div>
-                <div class="guzik" id="wymiana">Wymień się</div>
+                <div class="guzik akcja" id="zaplac">Zapłać czynsz</div>
+                <div class="guzik akcja" id="zarzadzaj">Zarządzaj nieruchomościami</div>
+                <div class="guzik akcja" id="wymiana">Wymień się</div>
             </div>`;
 
             $('#okienko').html(kodHTML);
@@ -456,7 +464,7 @@ const losujKarte = () => {
 const doWiezienia = () => {
     obecny.zmianaPozycji(0, 0, 10);
     przesunPionek(obecny);
-    obecny.wiezenie = 3;
+    obecny.wiezienie = 3;
 };
 
 const licytujPole = (licytowane) => {
