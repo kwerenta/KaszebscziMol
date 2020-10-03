@@ -149,7 +149,6 @@ const wyswietlAkcje = () => {
     zablokowany = true;
     $('#okienko').css('border-color', obecny.kolor);
 
-    //Wyświetlenie okna akcji gracza
     const okienkoHTML = `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
         <div class="informacja stanKonta">
@@ -158,6 +157,8 @@ const wyswietlAkcje = () => {
         </div>
         <h3 class="informacja obecnePole" style="background-color: ${obecnePole.kolor}">${obecnePole.nazwa}<h3>
     </div>`;
+
+    //Wyświetlenie okna akcji gracza
 
     if (obecny.wiezienie == 0) {
         $('#okienko').html(
@@ -188,7 +189,7 @@ const wyswietlAkcje = () => {
 
         $('#rzut').click(function () {
             schowajOkienko();
-            wykonajRuch();
+            wyswietlKosci();
         });
         $('#wymiana').click(function () {
             wyswietlWymiane();
@@ -208,14 +209,15 @@ const wyswietlAkcje = () => {
 
         $('#dublet').click(function () {
             schowajOkienko();
-            wykonajRuch();
+            wyswietlKosci();
         });
         if (!obecny.czyPieniadze(50)) $('#kaucja').addClass('nieaktywny');
         else {
             $('#kaucja').click(function () {
                 obecny.odejmijPieniadze(50);
+                obecny.wiezienie = 0;
                 schowajOkienko();
-                wykonajRuch();
+                wyswietlKosci();
             });
         }
     }
@@ -309,11 +311,46 @@ const wyswietlWymiane = () => {
     });
 };
 
+const wyswietlKosci = () => {
+    const cyfry = ['one', 'two', 'three', 'four', 'five', 'six'];
+
+    rzutKoscmi();
+
+    const ikona1 = `<i class="fas fa-dice-${cyfry[kostka1 - 1]}"></i>`;
+    const ikona2 = `<i class="fas fa-dice-${cyfry[kostka2 - 1]}"></i>`;
+
+    let dublet;
+
+    czyDublet() ? (dublet = `<h3>Dublet!</h3>`) : (dublet = '');
+
+    wyswietlOkienko();
+
+    $('#okienko').html(
+        `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
+        <div class="informacje">
+            <div class="informacja wylosowano">
+                <h3>Przesuwasz się o ${kostka1 + kostka2}</h3>
+                ${dublet}
+            </div>
+            <div class="informacja kosci">
+                <div class="ikona kosci">
+                    ${ikona1}
+                    ${ikona2}
+                </div>
+            </div>
+        </div>
+        <div class="kontynuuj">Kontynuuj</div>`
+    );
+
+    $('.kontynuuj').click(() => {
+        schowajOkienko();
+        wykonajRuch();
+    });
+};
+
 const wykonajRuch = () => {
     const nieZakup = [0, 2, 4, 7, 10, 17, 20, 22, 30, 33, 36, 38];
     const poleKarty = [2, 7, 17, 22, 33, 36];
-
-    rzutKoscmi();
 
     if (!czyDublet()) {
         kto++;

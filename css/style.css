@@ -329,6 +329,16 @@ h1.numer {
 .informacja h3 {
     z-index: 5;
 }
+.informacja.wylosowano {
+    flex: 1;
+    background-color: #1f8ab2;
+    margin-right: 20px;
+    flex-direction: column;
+}
+.informacja.kosci {
+    flex: 1;
+    background-color: #00497c;
+}
 .przyciski {
     display: flex;
     justify-content: space-around;

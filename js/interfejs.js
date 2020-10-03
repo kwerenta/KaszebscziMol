@@ -6,7 +6,7 @@ const kolejnosc = [];
 
 // Chowa ekran ładowania
 // $(window).on('load', function () {
-
+$('.menu').css('display', 'none');
 //     TweenMax.to(tlo, 3, { y: '-100%', display: 'none' });
 // });
 
