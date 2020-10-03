@@ -75,12 +75,12 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
 }
 
 let gracz = [];
-gracz[0] = new Gracz('Kamil', 'rgb(0, 151, 230)');
-gracz[1] = new Gracz('Andrzej', 'rgb(232, 65, 24)');
-gracz[2] = new Gracz('Zbigniew', 'rgb(68, 189, 50)');
-gracz[3] = new Gracz('Bronisław', 'rgb(225, 177, 44)');
-gracz[4] = new Gracz('Kazimierz', 'rgb(140, 122, 230)');
-gracz[5] = new Gracz('Wacław', 'rgb(119, 140, 163)');
+gracz[0] = new Gracz('SzesnaścieZnaków', 'rgb(41, 128, 185)');
+gracz[1] = new Gracz('Dwanaście123', 'rgb(142, 68, 173)');
+gracz[2] = new Gracz('Zbigniew', 'rgb(39, 174, 96)');
+gracz[3] = new Gracz('Bronisław', 'rgb(230, 126, 34)');
+gracz[4] = new Gracz('Kazimierz', 'rgb(192, 57, 43)');
+gracz[5] = new Gracz('Wacław', 'rgb(127, 140, 141)');
 
 let kostka1;
 let kostka2;
@@ -144,20 +144,25 @@ const czyDublet = () => {
 const wyswietlAkcje = () => {
     aktualny = kolejnosc[kto];
     obecny = gracz[aktualny];
+    const obecnePole = pole[obecny.pozycja];
 
     zablokowany = true;
     $('#okienko').css('border-color', obecny.kolor);
+
     //Wyświetlenie okna akcji gracza
+    const okienkoHTML = `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
+    <div class="informacje">
+        <div class="informacja stanKonta"><h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1></div>
+        <h3 class="informacja obecnePole" style="background-color: ${obecnePole.kolor}">${obecnePole.nazwa}<h3>
+    </div>`;
 
     if (obecny.wiezienie == 0) {
         $('#okienko').html(
-            `<h1><span style="color: ${obecny.kolor}">${obecny.nazwa}</span></h1>
-        <h3 class="akcja"><span class="czerwony">${obecny.pieniadze}$</span><h3>
-        <h3 class="akcja"><span class="czerwony">${pole[obecny.pozycja].nazwa}</span><h3>
-        <div class="guziki">
-            <div class="guzik akcja" id="rzut"><p>Rzuć koścmi</p></div>
-            <div class="guzik akcja" id="zarzadzaj"><p>Zarządzaj nieruchomościami</p></div>
-            <div class="guzik akcja" id="wymiana"><p>Wymiana</p></div>
+            `${okienkoHTML}
+            <div class="przyciski">
+            <div class="przycisk akcja" id="rzut"><h3>Rzut koścmi</h3></div>
+            <div class="przycisk akcja" id="zarzadzaj"><h3>Zarządzanie</h3></div>
+            <div class="przycisk akcja" id="wymiana"><h3>Wymiana</h3></div>
         </div>`
         );
 
@@ -173,10 +178,8 @@ const wyswietlAkcje = () => {
     } else {
         obecny.wiezienie--;
         $('#okienko').html(
-            `<h1><span style="color: ${obecny.kolor}">${obecny.nazwa}</span></h1>
-        <h3 class="akcja"><span class="czerwony">${obecny.pieniadze}$</span><h3>
-        <h3 class="akcja"><span class="czerwony">${pole[obecny.pozycja].nazwa}</span><h3>
-        <h3 id="wiezienieTury">Liczba tur do wyjścia z więzienia: ${obecny.wiezienie}<h3>
+            `${okienkoHTML}
+            <h3 id="wiezienieTury">Liczba tur do wyjścia z więzienia: ${obecny.wiezienie}<h3>
         <div class="guziki">
             <div class="guzik akcja" id="dublet"><p>Rzuć koścmi</p></div>
             <div class="guzik akcja" id="kaucja"><p>Zapłać kaucję</p></div>

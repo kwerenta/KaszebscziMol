@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 body {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Open Sans', sans-serif;
     color: #f5f6fa;
     background-color: #1f8ab2;
     /* user-select: none; */
@@ -79,7 +79,7 @@ body {
     margin-left: -130px;
 }
 .aktywny {
-    border: 3px solid #fbc531;
+    border: 3px solid #fad247;
     height: 600px;
     width: 420px;
 }
@@ -104,6 +104,7 @@ body {
     -webkit-box-shadow: 0px 0px 40px 4px rgba(0, 0, 0, 1);
     -moz-box-shadow: 0px 0px 40px 4px rgba(0, 0, 0, 1);
     box-shadow: 0px 0px 40px 4px rgba(0, 0, 0, 1);
+    border-radius: 16px;
 }
 .pole {
     width: 60px;
@@ -128,6 +129,18 @@ body {
 .naroznik {
     width: 80px;
     height: 80px;
+}
+.naroznik#p0 {
+    border-bottom-right-radius: 16px;
+}
+.naroznik#p10 {
+    border-bottom-left-radius: 16px;
+}
+.naroznik#p20 {
+    border-top-left-radius: 16px;
+}
+.naroznik#p30 {
+    border-top-right-radius: 16px;
 }
 .lewy,
 .prawy {
@@ -155,9 +168,6 @@ body {
     clear: both;
     margin-right: 540px;
 }
-#p10 {
-    clear: both;
-}
 #powiekszenie {
     height: 400px;
     width: 300px;
@@ -181,15 +191,36 @@ body {
     background-color: #f5f6fa;
     height: 300px;
     width: 500px;
-    padding: 5px;
     border: 5px solid #fad247;
-    border-radius: 5px;
+    border-radius: 10px;
     visibility: hidden;
     color: #00497c;
+    box-shadow: 0px 0px 30px 4px rgba(0, 0, 0, 1);
 }
-#okienko ol {
-    margin-top: 10px;
-    margin-left: 50px;
+#okno ol {
+    font-size: 22px;
+    color: #fff;
+    font-weight: 700;
+    margin-top: 5px;
+    list-style: none;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+#okno ol li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+    border-radius: 20px;
+    flex: 0 40%;
+    box-shadow: inset 0px 0px 50px -20px rgba(0, 0, 0, 0.75);
+}
+h1.numer {
+    font-size: 48px;
 }
 #okienko h1,
 #okienko h3,
@@ -203,6 +234,14 @@ body {
     -moz-box-shadow: 0px 0px 50px 6px rgba(0, 0, 0, 1);
     box-shadow: 0px 0px 50px 6px rgba(0, 0, 0, 1);
 }
+.tytul {
+    background-color: #fad247;
+    padding-bottom: 5px;
+}
+#okienko .tytul {
+    color: #fff;
+}
+
 .oferta,
 .zakup {
     display: flex;
@@ -217,31 +256,111 @@ body {
 }
 
 .kontynuuj {
-    position: absolute;
-    bottom: 20px;
+    position: relative;
+    bottom: -10px;
     left: 50%;
     transform: translate(-50%);
-    width: 30%;
-    padding: 5px;
+    width: 150px;
+    padding: 10px;
     font-size: 22px;
-    font-weight: 700;
-    border: 3px solid #fad247;
-    border-radius: 10px;
+    font-weight: 900;
+    border-radius: 15px;
     cursor: pointer;
     text-align: center;
     background-color: #00497c;
     color: #fad247;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
+    box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.15);
     transition: all 0.3s ease-in-out;
 }
-.kontynuuj:not(.nieaktywny):hover {
-    background-color: #fad247;
-    color: #00497c;
-    -webkit-box-shadow: 0px 0px 20px 4px rgba(250, 210, 71, 1);
-    -moz-box-shadow: 0px 0px 20px 4px rgba(250, 210, 71, 1);
-    box-shadow: 0px 0px 20px 4px rgba(250, 210, 71, 1);
+.kontynuuj::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 15px;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 20px 8px rgba(250, 210, 71, 0.6);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
 }
+.kontynuuj:not(.nieaktywny):hover::after {
+    opacity: 1;
+}
+.kontynuuj:not(.nieaktywny):hover {
+    color: #00497c;
+    background-color: #fad247;
+}
+.nieaktywny {
+    cursor: default;
+    background-color: #ee1919;
+    color: #fad247;
+}
+.informacje {
+    width: 100%;
+    display: flex;
+    padding: 20px;
+}
+.informacja {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 75px;
+    height: 75px;
+    color: #fff;
+    flex: 0 30%;
+    border-radius: 15px;
+    box-shadow: inset 0px 0px 50px -20px rgba(0, 0, 0, 0.75);
+}
+.informacja.stanKonta {
+    background-color: #64a100;
+    display: flex;
+    justify-content: space-evenly;
+    font-size: 24px;
+    flex: 1;
+    margin-right: 20px;
+}
+.informacja.obecnePole {
+    flex: 2;
+}
+.przyciski {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    padding: 20px;
+}
+.przycisk {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #00497c;
+    text-align: center;
+    color: #f5f6fa;
+    width: 25%;
+    height: 75px;
+    flex: 1;
+    margin-right: 10px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-in-out;
+}
+.przycisk.akcja:first-child {
+    background-color: #00497c;
+}
+.przycisk.akcja:nth-child(2) {
+    background-color: #1f8ab2;
+}
+.przycisk.akcja:last-child {
+    margin-right: 0;
+    background-color: #72c5dd;
+}
+.przycisk:not(.nieaktywny):hover {
+    color: #00497c;
+    background-color: #fad247;
+}
+
 .guzik {
     margin: 0;
     width: 15%;
@@ -256,15 +375,11 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 5px;
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
 .guzik:not(.nieaktywny):hover {
     background-color: #fad247;
     color: #00497c;
-    -webkit-box-shadow: 0px 0px 16px 2px rgba(250, 210, 71, 1);
-    -moz-box-shadow: 0px 0px 16px 2px rgba(250, 210, 71, 1);
     box-shadow: 0px 0px 16px 2px rgba(250, 210, 71, 1);
 }
 .guziki {
@@ -294,9 +409,6 @@ body {
 #ofertaP50 {
     margin-right: 5px;
 }
-#wymiana {
-    margin-right: 0;
-}
 .kontynuuj.oferuj,
 .zakup .kontynuuj {
     width: 100%;
@@ -314,19 +426,6 @@ h3.licytator,
 h3.zaklad {
     margin: 10px 0 0 10px;
 }
-h3.akcja {
-    text-align: center;
-    margin: 0;
-}
-.guzik.akcja {
-    font-size: 12px;
-    height: 40px;
-}
 .czerwony {
     color: #ee1919;
-}
-.nieaktywny {
-    cursor: default;
-    background-color: #ee1919;
-    color: #fad247;
 }

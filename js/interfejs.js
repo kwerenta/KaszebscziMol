@@ -1,5 +1,5 @@
 const maksymalna_liczba_graczy = 6;
-let liczba_graczy = 2; //TYMCZASOWO zamiast 2
+let liczba_graczy = 6; //TYMCZASOWO zamiast 2
 let zablokowany = true;
 let aktywnynr = 0;
 const kolejnosc = [];
@@ -308,9 +308,9 @@ $('.pole').hover(
 );
 
 function wyswietlKolejnosc() {
-    wyswietlOkienko();
+    wyswietlOkienko('#okno');
     zablokowany = true;
-    $('#okienko').html(function () {
+    $('#okno').html(function () {
         let lista = '';
         // Losowanie kolejności graczy
         while (kolejnosc.length < liczba_graczy) {
@@ -319,14 +319,17 @@ function wyswietlKolejnosc() {
         }
         for (i = 0; i < liczba_graczy; i++) {
             const nr = kolejnosc[i];
-            lista += `<li><span style="color:${gracz[nr].kolor};">${gracz[nr].nazwa}</span></li>`;
+            let wielkosc = '';
+            gracz[nr].nazwa.length > 11 ? (wielkosc = 'font-size: 14px;') : (wielkosc = '');
+            lista += `<li style="background-color:${gracz[nr].kolor}; ${wielkosc}">
+            ${gracz[nr].nazwa}<h1 class="numer">${i + 1}</h1></li>`;
         }
         ustawPionki();
         pomalujPola();
-        return `<h1>Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
+        return `<h1 class="tytul">Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
     });
     $('.kontynuuj').click(function () {
-        schowajOkienko();
+        schowajOkienko('#okno');
         zablokowany = false;
         wyswietlAkcje();
         $('.kontynuuj').off();
