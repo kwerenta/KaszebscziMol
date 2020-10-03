@@ -221,6 +221,7 @@ body {
 }
 h1.numer {
     font-size: 48px;
+    z-index: 10;
 }
 #okienko h1,
 #okienko h3,
@@ -303,6 +304,7 @@ h1.numer {
     padding: 20px;
 }
 .informacja {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -324,6 +326,9 @@ h1.numer {
 .informacja.obecnePole {
     flex: 2;
 }
+.informacja h3 {
+    z-index: 5;
+}
 .przyciski {
     display: flex;
     justify-content: space-around;
@@ -331,6 +336,7 @@ h1.numer {
     padding: 20px;
 }
 .przycisk {
+    position: relative;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -345,6 +351,12 @@ h1.numer {
     border-radius: 15px;
     box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease-in-out;
+    transition-property: background-color, color;
+}
+.przycisk h3 {
+    z-index: 5;
+    font-size: 22px;
+    text-shadow: 3px 1px 2px rgba(0, 0, 0, 0.6);
 }
 .przycisk.akcja:first-child {
     background-color: #00497c;
@@ -359,6 +371,29 @@ h1.numer {
 .przycisk:not(.nieaktywny):hover {
     color: #00497c;
     background-color: #fad247;
+}
+.przycisk:not(.nieaktywny):hover h3 {
+    text-shadow: none;
+}
+.przycisk:not(.nieaktywny):hover .ikona {
+    color: #d8b025;
+}
+.ikona {
+    font-size: 56px;
+    position: absolute;
+    transition: color 0.3s ease-in-out;
+}
+.ikona.akcja.rzut {
+    color: #337caf;
+}
+.ikona.akcja.zarzadzaj {
+    color: #00577f;
+}
+.ikona.akcja.wymiana {
+    color: #3f92aa;
+}
+.ikona.pieniadze {
+    color: #316e00;
 }
 
 .guzik {

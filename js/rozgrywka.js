@@ -152,7 +152,10 @@ const wyswietlAkcje = () => {
     //Wyświetlenie okna akcji gracza
     const okienkoHTML = `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
-        <div class="informacja stanKonta"><h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1></div>
+        <div class="informacja stanKonta">
+            <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
+            <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
+        </div>
         <h3 class="informacja obecnePole" style="background-color: ${obecnePole.kolor}">${obecnePole.nazwa}<h3>
     </div>`;
 
@@ -160,9 +163,24 @@ const wyswietlAkcje = () => {
         $('#okienko').html(
             `${okienkoHTML}
             <div class="przyciski">
-            <div class="przycisk akcja" id="rzut"><h3>Rzut koścmi</h3></div>
-            <div class="przycisk akcja" id="zarzadzaj"><h3>Zarządzanie</h3></div>
-            <div class="przycisk akcja" id="wymiana"><h3>Wymiana</h3></div>
+                <div class="przycisk akcja" id="rzut">
+                    <h3>Rzut koścmi</h3>
+                    <div class="ikona akcja rzut">
+                        <i class="fas fa-dice"></i>
+                    </div>
+                </div>
+                <div class="przycisk akcja" id="zarzadzaj">
+                    <h3>Zarządzanie</h3>
+                    <div class="ikona akcja zarzadzaj">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </div>
+                <div class="przycisk akcja" id="wymiana">
+                    <h3>Wymiana</h3>
+                    <div class="ikona akcja wymiana">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                </div>
         </div>`
         );
 

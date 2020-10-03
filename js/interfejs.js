@@ -6,8 +6,7 @@ const kolejnosc = [];
 
 // Chowa ekran ładowania
 // $(window).on('load', function () {
-const tlo = document.querySelector('.menu');
-$(tlo).css('display', 'none');
+
 //     TweenMax.to(tlo, 3, { y: '-100%', display: 'none' });
 // });
 
@@ -46,8 +45,12 @@ const animacjaWzor = () => {
         })
         .set([pedyPrawe, pedyLewe], { opacity: 1 })
         .from([pedyPrawe, pedyLewe], 1.5, { scale: 0, ease: Power3.easeOut })
-        .set(inne, { opacity: 1 })
-        .fromTo(inne, 2, { scale: 0.5, delay: 1 }, { scale: 1 });
+        .staggerFromTo(
+            inne,
+            0.05,
+            { opacity: 0, scale: 0.5, delay: 1 },
+            { opacity: 1, scale: 1, stagger: { amount: 4, from: 'center' } }
+        );
 };
 //Animacja logo
 const animacjaNapis = () => {
