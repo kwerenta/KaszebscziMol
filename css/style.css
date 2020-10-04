@@ -243,8 +243,7 @@ h1.numer {
     color: #fff;
 }
 
-.oferta,
-.zakup {
+.oferta {
     display: flex;
     width: 100%;
     align-items: center;
@@ -293,11 +292,6 @@ h1.numer {
     color: #00497c;
     background-color: #fad247;
 }
-.nieaktywny {
-    cursor: default;
-    background-color: #ee1919;
-    color: #fad247;
-}
 .informacje {
     width: 100%;
     display: flex;
@@ -309,11 +303,15 @@ h1.numer {
     align-items: center;
     justify-content: space-evenly;
     width: 75px;
-    height: 75px;
+    height: 80px;
     color: #fff;
     flex: 0 30%;
     border-radius: 15px;
     box-shadow: inset 0px 0px 50px -20px rgba(0, 0, 0, 0.75);
+}
+.informacja h1,
+.informacja h3 {
+    z-index: 5;
 }
 .informacja.stanKonta {
     background-color: #64a100;
@@ -325,9 +323,20 @@ h1.numer {
 }
 .informacja.obecnePole {
     flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
-.informacja h3 {
-    z-index: 5;
+.informacja.licytator {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-right: 20px;
+    background-color: #00497c;
+    line-height: 0;
+}
+.informacja .dodatkowa {
+    font-size: 14px;
 }
 .informacja.wylosowano {
     flex: 1;
@@ -355,7 +364,7 @@ h1.numer {
     text-align: center;
     color: #f5f6fa;
     width: 25%;
-    height: 75px;
+    height: 80px;
     flex: 1;
     margin-right: 10px;
     border-radius: 15px;
@@ -371,12 +380,16 @@ h1.numer {
 .przycisk.akcja:first-child {
     background-color: #00497c;
 }
-.przycisk.akcja:nth-child(2) {
-    background-color: #1f8ab2;
-}
 .przycisk.akcja:last-child {
     margin-right: 0;
     background-color: #72c5dd;
+}
+.przycisk.akcja:nth-child(2) {
+    background-color: #1f8ab2;
+}
+.przycisk.kwota:last-child {
+    margin-right: 0;
+    background-color: #1f8ab2;
 }
 .przycisk:not(.nieaktywny):hover {
     color: #00497c;
@@ -388,15 +401,28 @@ h1.numer {
 .przycisk:not(.nieaktywny):hover .ikona {
     color: #d8b025;
 }
+.nieaktywny {
+    cursor: default;
+    background-color: #ee1919 !important;
+    color: #fad247;
+}
+.nieaktywny .ikona {
+    color: #bb0000 !important;
+}
 .ikona {
     font-size: 56px;
     position: absolute;
     transition: color 0.3s ease-in-out;
 }
-.ikona.akcja.rzut {
+.ikona.akcja.rzut,
+.ikona.akcja.zakup,
+.ikona.dolar,
+.ikona.czlowiek {
     color: #337caf;
 }
-.ikona.akcja.zarzadzaj {
+.ikona.akcja.zarzadzaj,
+.ikona.akcja.licytacja,
+.ikona.akcja.zakonczenie {
     color: #00577f;
 }
 .ikona.akcja.wymiana {
@@ -404,6 +430,14 @@ h1.numer {
 }
 .ikona.pieniadze {
     color: #316e00;
+}
+.kartaTekst {
+    background-color: #ceedf3;
+    margin: 20px;
+    padding: 10px;
+    height: 40%;
+    border-radius: 15px;
+    box-shadow: inset 0px 0px 50px -20px rgba(0, 0, 0, 0.75);
 }
 
 .guzik {
@@ -454,22 +488,11 @@ h1.numer {
 #ofertaP50 {
     margin-right: 5px;
 }
-.kontynuuj.oferuj,
-.zakup .kontynuuj {
+.kontynuuj.oferuj {
     width: 100%;
     position: static;
     transform: translate(0, 0);
     flex: 1 45%;
-}
-.zakup .kontynuuj {
-    margin: 50px 5px;
-}
-.guzik.kwota {
-    font-size: 20px;
-}
-h3.licytator,
-h3.zaklad {
-    margin: 10px 0 0 10px;
 }
 .czerwony {
     color: #ee1919;

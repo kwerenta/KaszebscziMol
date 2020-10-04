@@ -28,8 +28,8 @@ const pole = [40];
 
 pole[0] = new Pole('START', 0, '#ee1919', 50);
 pole[1] = new Pole('Wejherowo', 350, '#303030', [80, 150, 200, 350, 500, 750]);
-pole[2] = new Pole('Kasa społeczna?', 350, '#303030', 80);
-pole[3] = new Pole('Wejherowo', 350, '#303030', 80);
+pole[2] = new Pole('Kasa społeczna?', 350, '#303030', [80]);
+pole[3] = new Pole('Wejherowo', 350, '#303030', [80]);
 pole[4] = new Pole('Podatek?', 0, '#303030');
 pole[5] = new Pole('PKM Kościerzyna', 200, '#303030', [80]);
 pole[6] = new Pole('Kartuzy', 350, '#303030', [80]);

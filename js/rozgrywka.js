@@ -6,6 +6,7 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
     this.pieniadze = 1500;
     this.pozycja = 0;
     this.wiezienie = 0;
+    this.dublet = 0;
 
     this.posiadane = [];
 
@@ -148,6 +149,7 @@ const wyswietlAkcje = () => {
 
     zablokowany = true;
     $('#okienko').css('border-color', obecny.kolor);
+    $('#okno').css('border-color', obecny.kolor);
 
     const okienkoHTML = `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
@@ -155,7 +157,9 @@ const wyswietlAkcje = () => {
             <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
             <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
         </div>
-        <h3 class="informacja obecnePole" style="background-color: ${obecnePole.kolor}">${obecnePole.nazwa}<h3>
+        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}">
+            <h3>${obecnePole.nazwa}<h3>
+        </div>
     </div>`;
 
     //Wyświetlenie okna akcji gracza
@@ -182,7 +186,7 @@ const wyswietlAkcje = () => {
                         <i class="fas fa-exchange-alt"></i>
                     </div>
                 </div>
-        </div>`
+            </div>`
         );
 
         wyswietlOkienko();
@@ -319,9 +323,15 @@ const wyswietlKosci = () => {
     const ikona1 = `<i class="fas fa-dice-${cyfry[kostka1 - 1]}"></i>`;
     const ikona2 = `<i class="fas fa-dice-${cyfry[kostka2 - 1]}"></i>`;
 
-    let dublet;
+    let kolorDublet = 'color: ';
+    obecny.dublet == 1
+        ? (kolorDublet += '#fad247;')
+        : obecny.dublet == 2
+        ? (kolorDublet += '#ee1919;')
+        : (kolorDublet += '#fff;');
 
-    czyDublet() ? (dublet = `<h3>Dublet!</h3>`) : (dublet = '');
+    let dublet;
+    czyDublet() ? (dublet = `<h3 style="${kolorDublet}">Dublet!</h3>`) : (dublet = '');
 
     wyswietlOkienko();
 
@@ -353,12 +363,13 @@ const wykonajRuch = () => {
     const poleKarty = [2, 7, 17, 22, 33, 36];
 
     if (!czyDublet()) {
+        obecny.dublet = 0;
         kto++;
         if (kto > liczba_graczy - 1) {
             kto = 0;
             tura++;
         }
-    }
+    } else obecny.dublet++;
 
     if (obecny.wiezienie == 0 || (obecny.wiezienie > 0 && czyDublet())) {
         obecny.zmianaPozycji(kostka1, kostka2);
@@ -380,8 +391,17 @@ const wykonajRuch = () => {
 
 const wyswietlRuch = (kod) => {
     const obecnePole = pole[obecny.pozycja];
-    let kodHTML = `<h1><span class="czerwony">${obecnePole.nazwa}<span></h1>
-    <h3><span style="color: ${obecny.kolor}">${obecny.nazwa} | ${obecny.pieniadze}$</span></h3>`;
+    let kodHTML = `
+    <h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
+    <div class="informacje">
+        <div class="informacja stanKonta">
+            <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
+            <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
+        </div>
+        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}">
+            <h3>${obecnePole.nazwa}<h3>
+        </div>
+    </div>`;
 
     //Kody możliwości na jakie mógł trafić gracz
     //0 - Pole bez akcji
@@ -414,14 +434,25 @@ const wyswietlRuch = (kod) => {
         case 1:
             //Pole bez właściciela
             kodHTML += `
-            <h3><span class="czerwony">Cena: ${obecnePole.cena}$</span></h3>
-            <div class="zakup">
-                <div class="guzik akcja" id="kup">Kup pole</div>
-                <div class="guzik akcja" id="licytuj">Licytuj</div>
+            <div class="przyciski">
+                <div class="przycisk akcja" id="kup">
+                    <h3>Zakup pola</h3>
+                    <div class="ikona akcja zakup">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
+                <div class="przycisk akcja" id="licytuj">
+                    <h3>Licytacja</h3>
+                    <div class="ikona akcja licytacja">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                    </div>
+                </div>
             </div>`;
 
             $('#okienko').html(kodHTML);
             wyswietlOkienko();
+
+            $('.informacja.obecnePole').append(`<h3 class="dodatkowa">Cena: ${obecnePole.cena}$</h3>`);
 
             $('#licytuj').click(function () {
                 schowajOkienko();
@@ -441,15 +472,27 @@ const wyswietlRuch = (kod) => {
         case 2:
             //Gracz jest właścicielem
             kodHTML += `
-            <h3><span class="czerwony">Ilość domków: ${obecnePole.domek}</span></h3>
-            <h3><span class="czerwony">Aktualny czynsz: ${obecnePole.czynsz}$</span></h3>
-            <div class="guziki">
-                <div class="guzik akcja" id="kup">Kup domek</div>
-                <div class="guzik akcja" id="koniec">Zakończ ruch</div>
+            <div class="przyciski">
+                <div class="przycisk akcja" id="kup">
+                    <h3>Zakup domku</h3>
+                    <div class="ikona akcja zakup">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
+                <div class="przycisk akcja" id="koniec">
+                    <h3>Zakończenie ruchu</h3>
+                    <div class="ikona akcja zakonczenie">
+                        <i class="fas fa-step-forward"></i>
+                    </div>
+                </div>
             </div>`;
 
             $('#okienko').html(kodHTML);
             wyswietlOkienko();
+
+            $('.informacja.obecnePole').append(
+                `<h3 class="dodatkowa">Czynsz: ${obecnePole.czynsz}$ | Ilość domków: ${obecnePole.domek}</i></h3>`
+            );
 
             $('#koniec').click(function () {
                 schowajOkienko();
@@ -470,15 +513,31 @@ const wyswietlRuch = (kod) => {
         case 3:
             //Właścicielem pola jest inny gracz
             kodHTML += `
-            <h3><span class="czerwony">Czynsz: ${obecnePole.czynsz}$</span></h3>
-            <div class="guziki">
-                <div class="guzik akcja" id="zaplac">Zapłać czynsz</div>
-                <div class="guzik akcja" id="zarzadzaj">Zarządzaj nieruchomościami</div>
-                <div class="guzik akcja" id="wymiana">Wymień się</div>
+            <div class="przyciski">
+                <div class="przycisk akcja" id="zaplac">
+                    <h3>Zapłata czynszu</h3>
+                    <div class="ikona akcja zakup">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
+                <div class="przycisk akcja" id="zarzadzaj">
+                    <h3>Zarządzanie</h3>
+                    <div class="ikona akcja zarzadzaj">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                </div>
+                <div class="przycisk akcja" id="wymiana">
+                    <h3>Wymiana</h3>
+                    <div class="ikona akcja wymiana">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                </div>
             </div>`;
 
             $('#okienko').html(kodHTML);
             wyswietlOkienko();
+
+            $('.informacja.obecnePole').append(`<h3 class="dodatkowa">Czynsz: ${obecnePole.czynsz}$</h3>`);
 
             if (!obecny.czyPieniadze(obecnePole.czynsz)) $('#zaplac').addClass('nieaktywny');
             else {
@@ -492,18 +551,18 @@ const wyswietlRuch = (kod) => {
             break;
         case 4:
             //Pole doboru kart
-            var wylosowanaKarta = karta[losujKarte()];
+            const wylosowanaKarta = karta[losujKarte()];
 
             kodHTML += `
-            <h3>${wylosowanaKarta.tekst}</h3>
+            <h3 class="kartaTekst">${wylosowanaKarta.tekst}</h3>
             <div class="kontynuuj" id="dalej">Kontynuuj</div>`;
 
-            $('#okienko').html(kodHTML);
-            wyswietlOkienko();
+            $('#okno').html(kodHTML);
+            wyswietlOkienko('#okno');
 
             $('#dalej').click(function () {
                 wylosowanaKarta.wykonaj();
-                schowajOkienko();
+                schowajOkienko('#okno');
                 wyswietlAkcje();
                 $('#dalej').off();
             });
@@ -532,25 +591,51 @@ const licytujPole = (licytowane) => {
     let teraz = kto;
     let licytator = gracz[uczestnicy[teraz]];
     let ile_uczestnikow = liczba_graczy;
-    let LicytatorNazwa = `<span style="color: ${licytator.kolor}">${licytator.nazwa}</span>`;
 
     zablokowany = true;
 
+    $('#okienko').css('border-color', licytowanePole.kolor);
+
     $('#okienko').html(
-        `<h1><span class="czerwony">${licytowanePole.nazwa}</span></h1>
-        <h3 class="zaklad">Aktualna oferta: <span class="czerwony">${zaklad}$</span></h3>
-        <h3 class="licytator">Obecny licytator: ${LicytatorNazwa}</h3>
-        <div class="guziki">
-            <div class="guzik kwota" id="kwota1"><p>1$</p></div>
-            <div class="guzik kwota" id="kwota10"><p>10$</p></div>
-            <div class="guzik kwota" id="kwota50"><p>50$</p></div>
-            <div class="guzik kwota" id="kwota100"><p>100$</p></div>
-            <div class="guzik kwota" id="kwota0"><p>Pas</p></div>
+        `
+        <h1 class="tytul" style="background-color: ${licytowanePole.kolor}">${licytowanePole.nazwa}</h1>
+        <div class="informacje">
+            <div class="informacja licytator">
+                <h3 class="licytatorNazwa">${licytator.nazwa}</h3>
+                <h1>${obecny.pieniadze}$</h1>
+                <div class="ikona czlowiek"><i class="fas fa-user"></i></div>
+            </div>
+            <div class="informacja obecnePole" style="background-color: ${licytowanePole.kolor}; flex: 1;">
+                <h3 class="dodatkowa">Aktualna oferta</h3>
+                <h1 class="zaklad">${zaklad}$</h1>
+            </div>
+        </div>
+        <div class="przyciski">
+            <div class="przycisk kwota" id="kwota1">
+                <h3>1</h3>
+                <div class="ikona dolar"><i class="fas fa-dollar-sign"></i></div>
+            </div>
+            <div class="przycisk kwota" id="kwota10">
+                <h3>10</h3>
+                <div class="ikona dolar"><i class="fas fa-dollar-sign"></i></div>
+            </div>
+            <div class="przycisk kwota" id="kwota50">
+                <h3>50</h3>
+                <div class="ikona dolar"><i class="fas fa-dollar-sign"></i></div>
+            </div>
+            <div class="przycisk kwota" id="kwota100">
+                <h3>100</h3>
+                <div class="ikona dolar"><i class="fas fa-dollar-sign"></i></div>
+            </div>
+            <div class="przycisk kwota" id="kwota0">
+                <h3>Pas</h3>
+                <div class="ikona akcja zakonczenie"><i class="fas fa-step-forward"></i></div>
+            </div>
         </div>`
     );
     wyswietlOkienko();
 
-    $('.guzik').click(function () {
+    $('.przycisk').click(function () {
         const kwota = parseInt(this.id.replace('kwota', ''));
         const index = uczestnicy.indexOf(gracz.findIndex((gracz) => gracz.nazwa === licytator.nazwa));
 
@@ -559,7 +644,7 @@ const licytujPole = (licytowane) => {
                 alert('nie masz tyle pieniedzy');
             } else {
                 zaklad += kwota;
-                $('.zaklad').html(`Aktualna oferta: <span class="czerwony">${zaklad}$</span>`);
+                $('.zaklad').html(`${zaklad}$`);
             }
         } else {
             index > -1 ? (uczestnicy[index] = -1) : alert('Błąd! Odśwież stronę');
@@ -569,16 +654,24 @@ const licytujPole = (licytowane) => {
             teraz + 1 > liczba_graczy - 1 ? (teraz = 0) : teraz++;
         } while (uczestnicy[teraz] == -1);
 
-        //Koniec licytacji - ekran wygranej
         licytator = gracz[uczestnicy[teraz]];
-        LicytatorNazwa = `<span style="color: ${licytator.kolor}">${licytator.nazwa}</span>`;
+        $('.licytatorNazwa').html(licytator.nazwa);
 
-        $('.licytator').html(`Obecny licytator: ${LicytatorNazwa}</span>`);
+        //Koniec licytacji - ekran wygranej
         if (ile_uczestnikow === 1) {
             $('#okienko').html(`
-            <h1><span class="czerwony">${licytowanePole.nazwa}</span></h1>
-            <h3>Zwycięzcą licytacji jest ${LicytatorNazwa}</span>!</h3>
-            <h3>Najwyższa oferta: <span class="czerwony">${zaklad}$</span></h3>
+            <h1 class="tytul" style="background-color: ${licytowanePole.kolor}">${licytowanePole.nazwa}</h1>
+            <div class="informacje">
+                <div class="informacja licytator">
+                    <h3 class="dodatkowa">Zwycięzca</h3>
+                    <h3 class="licytatorNazwa">${licytator.nazwa}</h3>
+                    <div class="ikona czlowiek"><i class="fas fa-user"></i></div>
+                </div>
+                <div class="informacja obecnePole" style="background-color: ${licytowanePole.kolor}; flex: 1;">
+                    <h3 class="dodatkowa">Zwycięska oferta</h3>
+                    <h1 class="zaklad">${zaklad}$</h1>
+                </div>
+            </div>
             <div class="kontynuuj">Kontynuuj</div>
             `);
 
