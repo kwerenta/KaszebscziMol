@@ -640,9 +640,7 @@ const licytujPole = (licytowane) => {
         const index = uczestnicy.indexOf(gracz.findIndex((gracz) => gracz.nazwa === licytator.nazwa));
 
         if (kwota !== 0) {
-            if (!licytator.czyPieniadze(zaklad + kwota)) {
-                alert('nie masz tyle pieniedzy');
-            } else {
+            if (licytator.czyPieniadze(zaklad + kwota)) {
                 zaklad += kwota;
                 $('.zaklad').html(`${zaklad}$`);
             }
@@ -650,12 +648,19 @@ const licytujPole = (licytowane) => {
             index > -1 ? (uczestnicy[index] = -1) : alert('Błąd! Odśwież stronę');
             ile_uczestnikow--;
         }
-        do {
-            teraz + 1 > liczba_graczy - 1 ? (teraz = 0) : teraz++;
-        } while (uczestnicy[teraz] == -1);
+        if (licytator.czyPieniadze(zaklad + kwota)) {
+            do {
+                teraz + 1 > liczba_graczy - 1 ? (teraz = 0) : teraz++;
+            } while (uczestnicy[teraz] == -1);
+        }
 
         licytator = gracz[uczestnicy[teraz]];
         $('.licytatorNazwa').html(licytator.nazwa);
+
+        $('.przycisk.kwota').each(function () {
+            const wartosc = parseInt(this.id.replace('kwota', ''));
+            if (!licytator.czyPieniadze(zaklad + wartosc)) $(this).addClass('nieaktywny');
+        });
 
         //Koniec licytacji - ekran wygranej
         if (ile_uczestnikow === 1) {
