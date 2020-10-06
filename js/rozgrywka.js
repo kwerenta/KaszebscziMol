@@ -606,7 +606,7 @@ const licytujPole = (licytowane) => {
         <div class="informacje">
             <div class="informacja licytator">
                 <h3 class="licytatorNazwa">${licytator.nazwa}</h3>
-                <h1>${obecny.pieniadze}$</h1>
+                <h1 class="licytatorPieniadze">${licytator.pieniadze}$</h1>
                 <div class="ikona czlowiek"><i class="fas fa-user"></i></div>
             </div>
             <div class="informacja obecnePole" style="background-color: ${licytowanePole.kolor}; flex: 1;">
@@ -641,7 +641,7 @@ const licytujPole = (licytowane) => {
 
     $('.przycisk.kwota').each(function () {
         const wartosc = parseInt(this.id.replace('kwota', ''));
-        if (!licytator.czyPieniadze(zaklad + wartosc)) $(`#kwota${wartosc}`).addClass('nieaktywny');
+        if (!licytator.czyPieniadze(zaklad + wartosc) && wartosc > 0) $(`#kwota${wartosc}`).addClass('nieaktywny');
     });
 
     $('.przycisk').click(function () {
@@ -650,15 +650,15 @@ const licytujPole = (licytowane) => {
 
         if (kwota !== 0) {
             if (licytator.czyPieniadze(zaklad + kwota)) {
+                do {
+                    teraz + 1 > liczba_graczy - 1 ? (teraz = 0) : teraz++;
+                } while (uczestnicy[teraz] == -1);
                 zaklad += kwota;
                 $('.zaklad').html(`${zaklad}$`);
             }
         } else {
             index > -1 ? (uczestnicy[index] = -1) : alert('Błąd! Odśwież stronę');
             ile_uczestnikow--;
-        }
-
-        if (licytator.czyPieniadze(zaklad + kwota)) {
             do {
                 teraz + 1 > liczba_graczy - 1 ? (teraz = 0) : teraz++;
             } while (uczestnicy[teraz] == -1);
@@ -666,10 +666,12 @@ const licytujPole = (licytowane) => {
 
         licytator = gracz[uczestnicy[teraz]];
         $('.licytatorNazwa').html(licytator.nazwa);
+        $('.licytatorPieniadze').html(licytator.pieniadze + '$');
 
         $('.przycisk.kwota').each(function () {
             const wartosc = parseInt(this.id.replace('kwota', ''));
-            if (!licytator.czyPieniadze(zaklad + wartosc)) $(`#kwota${wartosc}`).addClass('nieaktywny');
+            if (!licytator.czyPieniadze(zaklad + wartosc) && wartosc > 0) $(`#kwota${wartosc}`).addClass('nieaktywny');
+            else $(`#kwota${wartosc}`).removeClass('nieaktywny');
         });
 
         //Koniec licytacji - ekran wygranej
