@@ -234,10 +234,6 @@ body {
     flex: 0 40%;
     box-shadow: inset 0px 0px 50px -20px rgba(0, 0, 0, 0.75);
 }
-h1.numer {
-    font-size: 48px;
-    z-index: 10;
-}
 #okienko h1,
 #okienko h3,
 #okno h1,
@@ -269,7 +265,6 @@ h1.numer {
     flex: 1 45%;
     margin: 20px 10px 0 10px;
 }
-
 .kontynuuj {
     position: absolute;
     bottom: 20px;
@@ -328,10 +323,15 @@ h1.numer {
 .informacja h3 {
     z-index: 5;
 }
+h1.numer {
+    font-size: 48px;
+    z-index: 10;
+    margin-left: 10px;
+}
 .informacja.stanKonta {
     background-color: #64a100;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     font-size: 24px;
     flex: 1;
     margin-right: 20px;
