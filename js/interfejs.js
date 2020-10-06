@@ -6,7 +6,7 @@ const kolejnosc = [];
 
 // Chowa ekran ładowania
 // $(window).on('load', function () {
-$('.menu').css('display', 'none');
+const menu = () => $('.menu').css('display', 'none');
 //     TweenMax.to(tlo, 3, { y: '-100%', display: 'none' });
 // });
 
@@ -25,6 +25,9 @@ const animacjaWzor = () => {
     const lodygaLewa = obiekt.getElementById('g1876');
     const pedyPrawe = obiekt.querySelectorAll('.pedPrawy');
     const pedyLewe = obiekt.querySelectorAll('.pedLewy');
+
+    const startAnimacja = document.querySelector('.startAnimacja');
+    const start = document.querySelector('.kontynuuj.start');
 
     tl.set(wszystko, { opacity: 0 })
         .set([srodek, wzor], { opacity: 1 })
@@ -50,7 +53,21 @@ const animacjaWzor = () => {
             0.05,
             { opacity: 0, scale: 0.5, delay: 1 },
             { opacity: 1, scale: 1, stagger: { amount: 4, from: 'center' } }
-        );
+        )
+        .set(startAnimacja, { display: 'block', y: -210 })
+        .fromTo(
+            startAnimacja,
+            1,
+            { x: '-50%', width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#e84118' },
+            {
+                x: '-50%',
+                y: -50,
+                ease: Elastic.easeOut.config(1, 0.5),
+            }
+        )
+        .to(startAnimacja, 1, { width: '150px', height: '65px', borderRadius: '15px', backgroundColor: '#00497C' })
+        .to(start, 0.5, { opacity: 1, display: 'block' })
+        .to(startAnimacja, 0.2, { opacity: 0, display: 'none' });
 };
 //Animacja logo
 const animacjaNapis = () => {
@@ -205,22 +222,11 @@ const schowajOkienko = (element = '#okienko') => {
     );
 };
 
-const zmienEkran = (doSchowania, doPokazania, czas = 500) => {
-    $(`${doSchowania}, ${doPokazania}`).css('transition', `${czas / 1000}s`);
-    $(`${doSchowania}, ${doPokazania}`).css('-moz-transition', `${czas / 1000}s`);
-    $(`${doSchowania}, ${doPokazania}`).css('-webkit-transition', `${czas / 1000}s`);
-    $(doSchowania).css('opacity', '0');
-    setTimeout(function () {
-        $(doSchowania).css('display', 'none');
-        $(doPokazania).css('display', 'flex');
-    }, czas);
-    setTimeout(function () {
-        $(doPokazania).css('opacity', '1');
-    }, czas + 20);
-};
 //Przejście do ekranu przygotowywania rozgrywki
-$('.graj#glowna').click(function () {
-    zmienEkran('#graj, .gora.glowna, #logo, .dol.glowna, .cechy', '#przygotowanie');
+$('.kontynuuj.start').click(function () {
+    menu();
+    wyswietlKolejnosc();
+    $('.kontynuuj.start').off();
 });
 
 //Dodanie kolejnego gracza

@@ -32,6 +32,8 @@
             <div class="logo">
                 <object data="img/wzor.svg" type="image/svg+xml" id="wzor" width="100%" height="100%"></object>
             </div>
+            <div class="startAnimacja"></div>
+            <div class="kontynuuj start"><h2>START</h2></div>
         </header>
         <script>
             // Wyświetla animację ekranu głównego
@@ -39,9 +41,11 @@
             skrypt.setAttribute('src', 'js/interfejs.js');
             document.body.appendChild(skrypt);
             skrypt.onload = function () {
-                setTimeout(() => {
-                    animacjaWzor();
-                }, 1000);
+                $('#wzor').ready(function () {
+                    setTimeout(() => {
+                        animacjaWzor();
+                    }, 1000);
+                });
             };
         </script>
 

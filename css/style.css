@@ -7,6 +7,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     color: #f5f6fa;
     background-color: #1f8ab2;
+    overflow: hidden;
     /* user-select: none; */
 }
 #wzor {
@@ -29,18 +30,32 @@ body {
 }
 .napis {
     position: fixed;
-    top: 50vh;
-    left: 50vw;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -110%);
     z-index: 99;
     width: 1000px;
 }
 .tlo {
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     background-color: #ceedf3;
     z-index: 98;
-    position: relative;
+    position: absolute;
+}
+.startAnimacja {
+    display: none;
+    z-index: 98;
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    padding: 15px;
+}
+.kontynuuj.start {
+    display: none;
+    opacity: 0;
+    z-index: 99;
+    transform: translate(-50%, -200%);
 }
 .przygotowanie {
     opacity: 0;
@@ -256,8 +271,8 @@ h1.numer {
 }
 
 .kontynuuj {
-    position: relative;
-    bottom: -10px;
+    position: absolute;
+    bottom: 20px;
     left: 50%;
     transform: translate(-50%);
     width: 150px;
@@ -269,7 +284,7 @@ h1.numer {
     text-align: center;
     background-color: #00497c;
     color: #fad247;
-    box-shadow: 0 5px 10px 2px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 10px 4px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease-in-out;
 }
 .kontynuuj::after {

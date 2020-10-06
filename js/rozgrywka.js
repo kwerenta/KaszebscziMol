@@ -148,8 +148,12 @@ const wyswietlAkcje = () => {
     const obecnePole = pole[obecny.pozycja];
 
     zablokowany = true;
-    $('#okienko').css('border-color', obecny.kolor);
-    $('#okno').css('border-color', obecny.kolor);
+    setTimeout(() => {
+        $('#okienko').css('border-color', obecny.kolor);
+    }, 150);
+    setTimeout(() => {
+        $('#okno').css('border-color', obecny.kolor);
+    }, 300);
 
     const okienkoHTML = `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
@@ -635,6 +639,11 @@ const licytujPole = (licytowane) => {
     );
     wyswietlOkienko();
 
+    $('.przycisk.kwota').each(function () {
+        const wartosc = parseInt(this.id.replace('kwota', ''));
+        if (!licytator.czyPieniadze(zaklad + wartosc)) $(`#kwota${wartosc}`).addClass('nieaktywny');
+    });
+
     $('.przycisk').click(function () {
         const kwota = parseInt(this.id.replace('kwota', ''));
         const index = uczestnicy.indexOf(gracz.findIndex((gracz) => gracz.nazwa === licytator.nazwa));
@@ -648,6 +657,7 @@ const licytujPole = (licytowane) => {
             index > -1 ? (uczestnicy[index] = -1) : alert('Błąd! Odśwież stronę');
             ile_uczestnikow--;
         }
+
         if (licytator.czyPieniadze(zaklad + kwota)) {
             do {
                 teraz + 1 > liczba_graczy - 1 ? (teraz = 0) : teraz++;
@@ -659,7 +669,7 @@ const licytujPole = (licytowane) => {
 
         $('.przycisk.kwota').each(function () {
             const wartosc = parseInt(this.id.replace('kwota', ''));
-            if (!licytator.czyPieniadze(zaklad + wartosc)) $(this).addClass('nieaktywny');
+            if (!licytator.czyPieniadze(zaklad + wartosc)) $(`#kwota${wartosc}`).addClass('nieaktywny');
         });
 
         //Koniec licytacji - ekran wygranej
