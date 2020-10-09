@@ -49,8 +49,8 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
         }
     };
     this.kupDomek = (ktore) => {
-        if (this.czyPieniadze(200)) {
-            this.odejmijPieniadze(200);
+        if (this.czyPieniadze(pole[ktore].cenaDomek)) {
+            this.odejmijPieniadze(pole[ktore].cenaDomek);
             pole[ktore].dodajDomek();
         } else {
             alert('Błąd! Odśwież stronę!');
@@ -92,17 +92,13 @@ let obecny;
 
 const pomalujPola = () => {
     pole.forEach(({ kolor }, index) => {
-        $(`#p${index}`).addClass('pole-kolor');
-        const pole = document.querySelector('.pole-kolor').style;
-        pole.setProperty('--background', `${kolor}`);
+        $(`#p${index}`).append('<div class="poleKolor"></div>');
+        $(`#p${index} .poleKolor`).css('background-color', kolor);
     });
 };
-
 const ustawPionki = () => {
     gracz.forEach(({ nazwa, kolor }) => {
-        $('#p0').append(
-            `<div class=pionek${nazwa} style="background-color:${kolor}; width:10px; height:10px; border-radius: 50%;"></div>`
-        );
+        $('#p0').append(`<div class="pionek pionek${nazwa}" style="background-color:${kolor};"></div>`);
     });
 };
 
@@ -112,24 +108,26 @@ const przesunPionek = ({ nazwa, kolor, pozycja }) => {
     let left = Math.round(lokalizacja.left);
     let top = Math.round(lokalizacja.top);
 
-    $(`.przesun${nazwa}`).remove();
+    $(`.przesuwanyPionek${nazwa}`).remove();
     $('body').append(
-        `<div class=przesun${nazwa} style="background-color:${kolor}; width:10px; height:10px; top:${top}px; left:${left}px; position: absolute; border-radius: 50%;"></div>`
+        `<div class="pionek przesuwanyPionek${nazwa}" style="background-color:${kolor}; top:${top}px; left:${left}px; position: absolute;"></div>`
     );
-
     $(`.pionek${nazwa}`).remove();
+
     $(`#p${pozycja}`).append(
-        `<div class=pionek${nazwa} style="background-color:${kolor}; width:10px; height:10px; visibility: hidden; border-radius: 50%;"></div>`
+        `<div class="pionek pionek${nazwa}" style="background-color:${kolor}; visibility: hidden;"></div>`
     );
 
     pionek = document.querySelector(`.pionek${nazwa}`);
     lokalizacja = pionek.getBoundingClientRect();
     left = Math.round(lokalizacja.left);
     top = Math.round(lokalizacja.top);
-    const przesun = document.querySelector(`.przesun${nazwa}`);
+    const przesun = document.querySelector(`.przesuwanyPionek${nazwa}`);
+    const czas = (kostka1 + kostka2) * 0.3;
+
     const tl = new TimelineMax();
     tl.set(przesun, { display: 'block' })
-        .to(przesun, 2, { top: `${top}px`, left: `${left}px` })
+        .to(przesun, czas, { top: `${top}px`, left: `${left}px` })
         .set(pionek, { visibility: 'visible' })
         .set(przesun, { display: 'none' });
 };
@@ -142,10 +140,22 @@ const czyDublet = () => {
     return kostka1 == kostka2;
 };
 
+const losujKarte = () => {
+    const iloscKart = karta.length - 1;
+    return Math.round(Math.random() * iloscKart);
+};
+
+const doWiezienia = () => {
+    obecny.zmianaPozycji(0, 0, 10);
+    przesunPionek(obecny);
+    obecny.wiezienie = 3;
+};
+
 const wyswietlAkcje = () => {
     aktualny = kolejnosc[kto];
     obecny = gracz[aktualny];
     const obecnePole = pole[obecny.pozycja];
+    let kolorInf = '';
 
     zablokowany = true;
     setTimeout(() => {
@@ -155,13 +165,14 @@ const wyswietlAkcje = () => {
         $('#okno').css('border-color', obecny.kolor);
     }, 300);
 
+    if (['#f5f6fa', '#AAE0FA', '#FEF200'].includes(obecnePole.kolor)) kolorInf = 'color: #00497c;';
     const okienkoHTML = `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
         <div class="informacja stanKonta">
             <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
             <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
         </div>
-        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}">
+        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}; ${kolorInf}">
             <h3>${obecnePole.nazwa}<h3>
         </div>
     </div>`;
@@ -199,6 +210,9 @@ const wyswietlAkcje = () => {
             schowajOkienko();
             wyswietlKosci();
         });
+        $('#zarzadzaj').click(function () {
+            wyswietlZarzadzaj();
+        });
         $('#wymiana').click(function () {
             wyswietlWymiane();
         });
@@ -207,9 +221,19 @@ const wyswietlAkcje = () => {
         $('#okienko').html(
             `${okienkoHTML}
             <h3 id="wiezienieTury">Liczba tur do wyjścia z więzienia: ${obecny.wiezienie}<h3>
-        <div class="guziki">
-            <div class="guzik akcja" id="dublet"><p>Rzuć koścmi</p></div>
-            <div class="guzik akcja" id="kaucja"><p>Zapłać kaucję</p></div>
+            <div class="przyciski">
+            <div class="przycisk akcja" id="dublet">
+                <h3>Rzut koścmi</h3>
+                <div class="ikona akcja rzut">
+                    <i class="fas fa-dice"></i>
+                </div>
+            </div>
+            <div class="przycisk akcja" id="kaucja">
+                <h3>Zapłata kaucji</h3>
+                <div class="ikona akcja wymiana">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                </div>
+            </div>
         </div>`
         );
         if (obecny.wiezienie == 0) $('#wiezienieTury').text('Wychodzisz z więzenia!');
@@ -319,6 +343,56 @@ const wyswietlWymiane = () => {
     });
 };
 
+const wyswietlZarzadzaj = () => {
+    let lista = '';
+    obecny.posiadane.forEach((numer) => {
+        const nieruchomosc = pole[numer];
+        lista += `
+        <div class="posiadany" id="${numer}">
+            <div class="kolor" style="background-color: ${nieruchomosc.kolor};"></div>
+            <h3 class="nazwa">${nieruchomosc.nazwa}</h3>
+            <div class="przyciski">
+                <div class="przycisk zarzadzaj" id="kup${numer}">
+                    <h3>Zakup domku</h3>
+                    <h3>${nieruchomosc.cenaDomek}$</h3>
+                    <div class="ikona akcja zakup">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
+                <div class="przycisk zarzadzaj" id="zastaw${numer}">
+                    <h3>Zastaw</h3>
+                    <h3>${nieruchomosc.hipoteka}$</h3>
+                    <div class="ikona akcja zakup">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    $('#okno').html(`
+    <h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
+    <div class="informacje">
+        <div class="informacja stanKonta">
+            <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
+            <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
+        </div>
+        <div class="przycisk akcja" id="bankructwo">
+            <h3>Bankructwo<h3>
+        </div>
+    </div>
+    <div class="posiadane">
+        ${lista}
+    </div>
+    <div class="kontynuuj" id="wroc">Wróć</div>`);
+    wyswietlOkienko('#okno');
+
+    $('#wroc').click(function () {
+        schowajOkienko('#okno');
+        $('#wroc').off();
+    });
+};
+
 const wyswietlKosci = () => {
     const cyfry = ['one', 'two', 'three', 'four', 'five', 'six'];
 
@@ -395,6 +469,8 @@ const wykonajRuch = () => {
 
 const wyswietlRuch = (kod) => {
     const obecnePole = pole[obecny.pozycja];
+    let kolorInf = '';
+    if (['#f5f6fa', '#AAE0FA', '#FEF200'].includes(obecnePole.kolor)) kolorInf = 'color: #00497c;';
     let kodHTML = `
     <h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
@@ -402,7 +478,7 @@ const wyswietlRuch = (kod) => {
             <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
             <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
         </div>
-        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}">
+        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}; ${kolorInf}">
             <h3>${obecnePole.nazwa}<h3>
         </div>
     </div>`;
@@ -418,19 +494,19 @@ const wyswietlRuch = (kod) => {
         case 0:
             //Pole bez akcji
             obecny.pozycja == 30
-                ? (kodHTML += `<h3>Trafiasz do żukowa na 3 tury. Podczas swojej tury możesz spróbować wyrzucić dublet lub zapłacić kaucję w wysokości 50$.</h3>`)
+                ? (kodHTML += `<h3 class="kartaTekst">Trafiasz do żukowa na 3 tury. Podczas swojej tury możesz spróbować wyrzucić dublet lub zapłacić kaucję w wysokości 50$.</h3>`)
                 : obecny.wiezienie == 0
-                ? (kodHTML += `<h3>Totalna czilera</h3>`)
-                : (kodHTML += `<h3>Nie udało Ci się trafić dubletu. Pozostajesz w Żukowie.</h3>`);
+                ? (kodHTML += `<h3 class="kartaTekst">Totalna czilera</h3>`)
+                : (kodHTML += `<h3 class="kartaTekst">Nie udało Ci się trafić dubletu. Pozostajesz w Żukowie.</h3>`);
 
             kodHTML += `<div class="kontynuuj" id="dalej">Kontynuuj</div>`;
 
-            $('#okienko').html(kodHTML);
-            wyswietlOkienko();
+            $('#okno').html(kodHTML);
+            wyswietlOkienko('#okno');
 
             $('#dalej').click(function () {
                 if (obecny.pozycja == 30 && obecny.wiezienie == 0) doWiezienia();
-                schowajOkienko();
+                schowajOkienko('#okno');
                 wyswietlAkcje();
                 $('#dalej').off();
             });
@@ -479,6 +555,7 @@ const wyswietlRuch = (kod) => {
             <div class="przyciski">
                 <div class="przycisk akcja" id="kup">
                     <h3>Zakup domku</h3>
+                    <h3>${obecnePole.cenaDomek}$</h3>
                     <div class="ikona akcja zakup">
                         <i class="fas fa-shopping-cart"></i>
                     </div>
@@ -503,7 +580,7 @@ const wyswietlRuch = (kod) => {
                 wyswietlAkcje();
                 $('#koniec').off();
             });
-            if (!obecny.czyPieniadze(200) && obecnePole.domek < 6) $('#kup').addClass('nieaktywny');
+            if (!obecny.czyPieniadze(obecnePole.cenaDomek) && obecnePole.domek < 6) $('#kup').addClass('nieaktywny');
             else {
                 $('#kup').click(function () {
                     console.log('click');
@@ -575,17 +652,6 @@ const wyswietlRuch = (kod) => {
             alert('Błąd! Odśwież stronę!');
             break;
     }
-};
-
-const losujKarte = () => {
-    const iloscKart = karta.length - 1;
-    return Math.round(Math.random() * iloscKart);
-};
-
-const doWiezienia = () => {
-    obecny.zmianaPozycji(0, 0, 10);
-    przesunPionek(obecny);
-    obecny.wiezienie = 3;
 };
 
 const licytujPole = (licytowane) => {

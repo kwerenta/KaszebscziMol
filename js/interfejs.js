@@ -58,7 +58,7 @@ const animacjaWzor = () => {
         .fromTo(
             startAnimacja,
             1,
-            { x: '-50%', width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#e84118' },
+            { x: '-50%', width: '28px', height: '28px', borderRadius: '50%', backgroundColor: '#ee1919' },
             {
                 x: '-50%',
                 y: -50,
