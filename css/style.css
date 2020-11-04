@@ -239,7 +239,8 @@ body {
     color: #00497c;
     box-shadow: 0px 0px 30px 4px rgba(0, 0, 0, 1);
 }
-#okno ol {
+#okno ol,
+.lista {
     font-size: 22px;
     color: #fff;
     font-weight: 700;
@@ -249,7 +250,8 @@ body {
     flex-flow: row wrap;
     justify-content: space-evenly;
 }
-#okno ol li {
+#okno ol li,
+.lista li {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -260,6 +262,12 @@ body {
     border-radius: 20px;
     flex: 0 40%;
     box-shadow: inset 0px 0px 50px -20px rgba(0, 0, 0, 0.75);
+}
+.lista li {
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
 }
 #okienko h1,
 #okienko h3,
@@ -277,21 +285,6 @@ body {
     background-color: #fad247;
     padding-bottom: 5px;
     color: #fff;
-}
-#okienko .tytul {
-    color: #fff;
-}
-
-.oferta {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    flex-flow: row wrap;
-}
-.ofertaL,
-.ofertaP {
-    flex: 1 45%;
-    margin: 20px 10px 0 10px;
 }
 .kontynuuj {
     position: absolute;
@@ -335,6 +328,9 @@ body {
     display: flex;
     padding: 20px;
 }
+.informacje.wymiana {
+    padding-bottom: 6px;
+}
 .informacja {
     position: relative;
     display: flex;
@@ -376,6 +372,21 @@ h1.numer {
     flex: 1;
     margin-right: 20px;
     background-color: #00497c;
+    line-height: 0;
+}
+.informacja.wymiana {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    line-height: 0;
+    background-color: #1f8ab2;
+}
+.informacja.wymianaWartoscL,
+.informacja.wymianaWartoscP {
+    flex: 100%;
+    margin-bottom: 10px;
+    background-color: #00497c;
+    flex-direction: column;
     line-height: 0;
 }
 .informacja .dodatkowa {
@@ -529,61 +540,60 @@ h1.numer {
 ::-webkit-scrollbar-thumb:window-inactive {
     background: rgba(0, 0, 0, 0.4);
 }
-
-.guzik {
-    margin: 0;
-    width: 15%;
-    height: 32px;
-    background-color: #00497c;
-    text-align: center;
-    color: #f5f6fa;
-    cursor: pointer;
-    flex: auto;
-    margin-right: 10px;
+.oferta {
     display: flex;
+    width: 100%;
     align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    transition: all 0.3s ease-in-out;
-}
-.guzik:not(.nieaktywny):hover {
-    background-color: #fad247;
-    color: #00497c;
-    box-shadow: 0px 0px 16px 2px rgba(250, 210, 71, 1);
-}
-.guziki {
-    margin-top: 50px;
-    display: flex;
-    width: 100%;
-}
-.oferta select {
-    font-size: 1.17em;
-    font-weight: 700;
-    width: 100%;
-    text-align: center;
-    height: 25px;
-    color: #ee1919;
-}
-.oferta .guziki {
     flex-flow: row wrap;
-    margin: 0 0 10px 0;
 }
-.oferta .guziki > .guzik {
+.ofertaL,
+.ofertaP {
     flex: 1 45%;
-    margin: 10px 0 0 0;
 }
-#ofertaL1,
-#ofertaL50,
-#ofertaP1,
-#ofertaP50 {
-    margin-right: 5px;
+.ofertaL .kontynuuj {
+    left: 25%;
 }
-.kontynuuj.oferuj {
+.ofertaP .kontynuuj {
+    left: 75%;
+}
+.oferta .przyciski {
+    flex-flow: row wrap;
+    padding-top: 5px;
+}
+.ofertaL .przyciski {
+    padding-right: 10px;
+}
+.ofertaP .przyciski {
+    padding-left: 10px;
+}
+.oferta .przycisk {
+    flex: 1 20%;
+    height: 45px;
+}
+.oferta .przycisk:nth-child(6) {
+    margin-right: 0;
+}
+.oferta .reset {
+    margin-top: 10px;
+}
+.oferta .nieruchomosc {
+    flex: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+}
+.informacje .lista {
+    position: absolute;
+    top: 70px;
+    background-color: #ceedf3;
+    list-style: none;
     width: 100%;
-    position: static;
-    transform: translate(0, 0);
-    flex: 1 45%;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    font-weight: 700;
+    font-size: 20px;
+    z-index: 15;
+    text-align: center;
 }
-.czerwony {
-    color: #ee1919;
+.lista li:hover {
+    box-shadow: inset 0px 0px 40px -20px rgba(0, 0, 0, 0.5);
 }

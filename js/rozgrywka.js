@@ -64,7 +64,7 @@ function Gracz(nazwa, kolor = 'rgb(245, 246, 250)', awatar) {
         }
     };
     this.przelejKazdemu = (ile) => {
-        const ileGraczy = liczba_graczy - 2; //Liczba graczy liczona jest od 1 i odliczyć trzeba obecnego gracza.
+        const ileGraczy = liczba_graczy - 2; //Liczba graczy liczona jest od 1 i trzeba odjąć obecnego gracza.
         if (this.czyPieniadze(ileGraczy * ile)) {
             gracz.forEach(({ nazwa }, index) => {
                 if (this.nazwa !== nazwa) this.przelejPieniadze(ile, index);
@@ -80,11 +80,9 @@ gracz[0] = new Gracz('SzesnaścieZnaków', 'rgb(41, 128, 185)');
 gracz[1] = new Gracz('Dwanaście123', 'rgb(142, 68, 173)');
 gracz[2] = new Gracz('Zbigniew', 'rgb(39, 174, 96)');
 gracz[3] = new Gracz('Bronisław', 'rgb(230, 126, 34)');
-gracz[4] = new Gracz('Kazimierz', 'rgb(192, 57, 43)');
-gracz[5] = new Gracz('Wacław', 'rgb(127, 140, 141)');
 
-let kostka1;
-let kostka2;
+
+let kostka1 = 0, kostka2 = 0;
 let tura = 0;
 let kto = 0;
 let aktualny = 0;
@@ -155,7 +153,7 @@ const wyswietlAkcje = () => {
     aktualny = kolejnosc[kto];
     obecny = gracz[aktualny];
     const obecnePole = pole[obecny.pozycja];
-    let kolorInf = '';
+    let kolorInformacja = '';
 
     zablokowany = true;
     setTimeout(() => {
@@ -165,14 +163,14 @@ const wyswietlAkcje = () => {
         $('#okno').css('border-color', obecny.kolor);
     }, 300);
 
-    if (['#f5f6fa', '#AAE0FA', '#FEF200'].includes(obecnePole.kolor)) kolorInf = 'color: #00497c;';
+    if (['#f5f6fa', '#AAE0FA', '#FEF200'].includes(obecnePole.kolor)) kolorInformacja = 'color: #00497c;';
     const okienkoHTML = `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
         <div class="informacja stanKonta">
             <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
             <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
         </div>
-        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}; ${kolorInf}">
+        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}; ${kolorInformacja}">
             <h3>${obecnePole.nazwa}<h3>
         </div>
     </div>`;
@@ -217,6 +215,7 @@ const wyswietlAkcje = () => {
             wyswietlWymiane();
         });
     } else {
+        // Okno akcji w przypadku, gdy gracz jest w więzieniu
         obecny.wiezienie--;
         $('#okienko').html(
             `${okienkoHTML}
@@ -258,93 +257,149 @@ const wyswietlAkcje = () => {
 const wyswietlWymiane = () => {
     let oferowane = 0;
     let chciane = 0;
-    let lista = '<select id="wybor-oferta">';
-    gracz.forEach(({ nazwa, kolor }, index) => {
-        if (obecny.nazwa !== nazwa) lista += `<option value="${index}" style="color:${kolor}">${nazwa}</option>`;
+    let lista = '<ul class="lista">';
+    gracz.forEach(({ nazwa, kolor, pieniadze }, index) => {
+        let wielkosc = '';
+        // Zmiana wielkości czcionki w zależności od długości nazwy
+        nazwa.length > 11 ? (wielkosc = 'font-size: 18px;') : (wielkosc = '');
+        if (obecny.nazwa !== nazwa) lista += `<li id=lista${index} style="background-color:${kolor}; ${wielkosc}">
+        ${nazwa}<h3>${pieniadze}$</h3></li>`;
     });
-    lista += '</select>';
-
-    //Wyświetlenie okna wymiany
+    lista += '</ul>';
+    
     $('#okno').html(
-        `<h1><span class="czerwony">Wymiana</span></h1>
-            <div class="oferta">
-                <div class="ofertaL">
-                    <h3><span class="czerwony">${obecny.nazwa}</span></h3>
-                    <h3 class="oferowane"><span class="czerwony">${oferowane}$</span></h3>
-                    <div class="guziki">
-                        <div class="guzik kwota" id="ofertaL1"><p>1$</p></div>
-                        <div class="guzik kwota" id="ofertaL10"><p>10$</p></div>
-                        <div class="guzik kwota" id="ofertaL50"><p>50$</p></div>
-                        <div class="guzik kwota" id="ofertaL100"><p>100$</p></div>
-                        <div class="guzik kwota" id="ofertaL0"><p>Reset</p></div>
-                    </div>
-                    <div class="kontynuuj oferuj" id="zloz">Złóż ofertę</div>
-                </div>
-                <div class="ofertaP">
-                    ${lista}
-                    <h3><span class="czerwony">${chciane}$</span></h3>
-                    <div class="guziki">
-                        <div class="guzik kwota" id="ofertaP1"><p>1$</p></div>
-                        <div class="guzik kwota" id="ofertaP10"><p>10$</p></div>
-                        <div class="guzik kwota" id="ofertaP50"><p>50$</p></div>
-                        <div class="guzik kwota" id="ofertaP100"><p>100$</p></div>
-                        <div class="guzik kwota" id="ofertaP0"><p>Reset</p></div>
-                    </div>
-                    <div class="kontynuuj oferuj" id="anuluj">Anuluj ofertę</div>
-                </div>
-            </div>`
+        `<h1 class="tytul" style="background-color: ${obecny.kolor}">Wybierz gracza</h1>
+        ${lista}
+        <div class="kontynuuj" id="wroc">Wróć</div>`
     );
-
+   
     wyswietlOkienko('#okno');
 
-    //Zmiana kwot pieniężnych transakcji
-    $('.guzik').click(function () {
-        const kwota = parseInt(this.id.substr(7));
-        const strona = this.id.substr(6, 1);
-        const numer = $('#wybor-oferta').children('option:selected').val();
-        const drugastrona = gracz[numer];
+    //Wyświetlenie okna wymiany
+    let wybrany;
+    $('.lista li').click(function (){
+        wybrany = this.id.substr(5);
+        const drugastrona = gracz[wybrany];
+        $('.informacje .lista').css('display','none');
+        $('#okno').html(
+            `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
+            <div class="informacje wymiana">
+                <div class="informacja stanKonta">
+                    <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
+                    <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
+                </div>
+                <div class="informacja wymiana" id="wybierz">
+                    <h3 class="drugiNazwa">${gracz[wybrany].nazwa}</h3>
+                    <h3 class="drugiPieniadze">${gracz[wybrany].pieniadze}$</h3>
+                </div>          
+            </div>
+            <div class="oferta">
+                <div class="ofertaL">
+                    <div class="przyciski">
+                    <div class="informacja wymianaWartoscL">
+                        <h3 class="oferowane" style="font-size: 24px;">${oferowane}$</h3>
+                        <h3 style="font-size: 18px;">Ilość nieruchomości: ${obecny.posiadane.length}</h3>
+                    </div>
+                        <div class="przycisk nieruchomosc" id="ofertaL-1"><p>Nieruchomość</p></div>
+                        <div class="przycisk kwota" id="ofertaL1"><p>1$</p></div>
+                        <div class="przycisk kwota" id="ofertaL10"><p>10$</p></div>
+                        <div class="przycisk kwota" id="ofertaL50"><p>50$</p></div>
+                        <div class="przycisk kwota" id="ofertaL100"><p>100$</p></div>
+                        <div class="przycisk kwota reset" id="ofertaL0"><p>Reset</p></div>
+                    </div>
+                    <div class="kontynuuj" id="wroc">Anuluj</div>
+                </div>
+                <div class="ofertaP">
+                    <div class="przyciski">
+                    <div class="informacja wymianaWartoscL">
+                        <h3 class="chciane" style="font-size: 24px;">${chciane}$</h3>
+                        <h3 style="font-size: 18px;">Ilość nieruchomości: ${drugastrona.posiadane.length}</h3>
+                    </div>
+                        <div class="przycisk nieruchomosc" id="ofertaP-1"><p>Nieruchomość</p></div>
+                        <div class="przycisk kwota" id="ofertaP1"><p>1$</p></div>
+                        <div class="przycisk kwota" id="ofertaP10"><p>10$</p></div>
+                        <div class="przycisk kwota" id="ofertaP50"><p>50$</p></div>
+                        <div class="przycisk kwota" id="ofertaP100"><p>100$</p></div>
+                        <div class="przycisk kwota reset" id="ofertaP0"><p>Reset</p></div>
+                    </div>
+                    <div class="kontynuuj" id="zloz">Złóż ofertę</div>
+                </div>
+            </div>`
+        );
 
-        if (strona == 'L') {
-            if (kwota != 0) {
-                if (!obecny.czyPieniadze(oferowane + kwota)) {
-                    alert('nie masz tyle pieniedzy');
-                } else {
-                    oferowane += kwota;
-                    $('h3.oferowane > span').text(`${oferowane}$`);
-                }
-            } else {
-                oferowane = 0;
-                $('h3.oferowane > span').text(`${oferowane}$`);
-            }
-        } else if (strona == 'P') {
-            if (kwota != 0) {
-                if (!drugastrona.czyPieniadze(chciane + kwota)) {
-                    alert('nie masz tyle pieniedzy');
-                } else {
-                    chciane += kwota;
-                    $('.ofertaP h3 > span').text(`${chciane}$`);
-                }
-            } else {
-                chciane = 0;
-                $('.ofertaP h3 > span').text(`${chciane}$`);
-            }
+        $('.informacja.wymiana').css('background-color',gracz[wybrany].kolor);
+        
+        if (obecny.posiadane.length == 0) $('#ofertaL-1').addClass('nieaktywny')
+        else {
+            $('#ofertaL-1').click(function () {
+                console.log('listaL');
+            })
         }
+        if (drugastrona.posiadane.length == 0) $('#ofertaP-1').addClass('nieaktywny')
+        else {
+            $('#ofertaP-1').click(function () {
+                console.log('listaP');
+            })
+        }
+        //Zmiana pieniężnej wartości wymiany
+        $('.przycisk.kwota').click(function () {
+            const kwota = parseInt(this.id.substr(7));
+            const strona = this.id.substr(6, 1);
+
+            if (strona == 'L') {
+                if (kwota > 0) {
+                    if (obecny.czyPieniadze(oferowane + kwota)) {
+                        oferowane += kwota;
+                        $('h3.oferowane').text(`${oferowane}$`);
+                    }
+                }
+                else {
+                    oferowane = 0;
+                    $('h3.oferowane').text(`${oferowane}$`);
+                }
+            } else if (strona == 'P') {
+                if (kwota != 0) {
+                    if (drugastrona.czyPieniadze(chciane + kwota)) {
+                        chciane += kwota;
+                        $('h3.chciane').text(`${chciane}$`);
+                    }
+                } else {
+                    chciane = 0;
+                    $('h3.chciane').text(`${chciane}$`);
+                }
+            }
+
+            //Zmiana wyglądu przycisków w zależności od stanu konta
+            $('.ofertaL .przycisk.kwota').each(function () {
+                const wartosc = parseInt(this.id.substr(7));
+                if (!obecny.czyPieniadze(oferowane + wartosc) && wartosc > 0) $(`#ofertaL${wartosc}`).addClass('nieaktywny');
+                else $(`#ofertaL${wartosc}`).removeClass('nieaktywny');
+            });
+            $('.ofertaP .przycisk.kwota').each(function () {
+                const wartosc = parseInt(this.id.substr(7));
+                if (!drugastrona.czyPieniadze(chciane + wartosc) && wartosc > 0) $(`#ofertaP${wartosc}`).addClass('nieaktywny');
+                else $(`#ofertaP${wartosc}`).removeClass('nieaktywny');
+            });
+        });
+
+        wyswietlOkienko('#okno');
+
+        $('#wroc').click(function () {
+            schowajOkienko('#okno');
+            $('#wroc').off();
+        });
     });
 
-    //Złożenie, bądź anulowanie oferty wymiany
-    $('.kontynuuj').click(function () {
-        const numer = $('#wybor-oferta').children('option:selected').val();
-        const drugastrona = gracz[numer];
-
-        if (this.id == 'anuluj') schowajOkienko('#okno');
-        else if (this.id == 'zloz') {
-            console.log(drugastrona.nazwa);
-        }
+    $('#wroc').click(function () {
+        schowajOkienko('#okno');
+        $('#wroc').off();
     });
 };
 
 const wyswietlZarzadzaj = () => {
     let lista = '';
+
+    //Tworzenie graficznej listy posiadanych nieruchomości 
     obecny.posiadane.forEach((numer) => {
         const nieruchomosc = pole[numer];
         lista += `
@@ -370,8 +425,10 @@ const wyswietlZarzadzaj = () => {
         </div>`;
     });
 
-    $('#okno').html(`
-    <h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
+    if(obecny.posiadane.length < 1) lista = '<h3 style="margin-left: auto; margin-right: auto; padding-top: 50px">Nie posiadasz żadnych nieruchomości</h3>';
+
+    $('#okno').html(
+    `<h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
         <div class="informacja stanKonta">
             <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
@@ -384,7 +441,8 @@ const wyswietlZarzadzaj = () => {
     <div class="posiadane">
         ${lista}
     </div>
-    <div class="kontynuuj" id="wroc">Wróć</div>`);
+    <div class="kontynuuj" id="wroc">Wróć</div>`
+    );
     wyswietlOkienko('#okno');
 
     $('#wroc').click(function () {
@@ -410,7 +468,6 @@ const wyswietlKosci = () => {
 
     let dublet;
     czyDublet() ? (dublet = `<h3 style="${kolorDublet}">Dublet!</h3>`) : (dublet = '');
-
     wyswietlOkienko();
 
     $('#okienko').html(
@@ -454,7 +511,6 @@ const wykonajRuch = () => {
         przesunPionek(obecny);
         obecny.wiezienie = 0;
     }
-
     //Wyświetlenie odpowiedniego okna w zależności od pola, na którym stoi gracz
     !nieZakup.includes(obecny.pozycja)
         ? !pole[obecny.pozycja].czyWlasciciel(aktualny)
@@ -469,8 +525,8 @@ const wykonajRuch = () => {
 
 const wyswietlRuch = (kod) => {
     const obecnePole = pole[obecny.pozycja];
-    let kolorInf = '';
-    if (['#f5f6fa', '#AAE0FA', '#FEF200'].includes(obecnePole.kolor)) kolorInf = 'color: #00497c;';
+    let kolorInformacja = '';
+    if (['#f5f6fa', '#AAE0FA', '#FEF200'].includes(obecnePole.kolor)) kolorInformacja = 'color: #00497c;';
     let kodHTML = `
     <h1 class="tytul" style="background-color: ${obecny.kolor}">${obecny.nazwa}</h1>
     <div class="informacje">
@@ -478,13 +534,13 @@ const wyswietlRuch = (kod) => {
             <h3>${obecny.pieniadze}</h3><h1 class="numer">$</h1>
             <div class="ikona pieniadze"><i class="fas fa-wallet"></i></div>
         </div>
-        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}; ${kolorInf}">
+        <div class="informacja obecnePole" style="background-color: ${obecnePole.kolor}; ${kolorInformacja}">
             <h3>${obecnePole.nazwa}<h3>
         </div>
     </div>`;
 
     //Kody możliwości na jakie mógł trafić gracz
-    //0 - Pole bez akcji
+    //0 - Pole bez akcji (lub pójście do więzienia)
     //1 - Pole bez właściciela
     //2 - Gracz jest właścicielem
     //3 - Właścicielem pola jest inny gracz
@@ -492,7 +548,7 @@ const wyswietlRuch = (kod) => {
 
     switch (kod) {
         case 0:
-            //Pole bez akcji
+            //Pole bez akcji (lub pójście do więzienia)
             obecny.pozycja == 30
                 ? (kodHTML += `<h3 class="kartaTekst">Trafiasz do żukowa na 3 tury. Podczas swojej tury możesz spróbować wyrzucić dublet lub zapłacić kaucję w wysokości 50$.</h3>`)
                 : obecny.wiezienie == 0
@@ -583,7 +639,6 @@ const wyswietlRuch = (kod) => {
             if (!obecny.czyPieniadze(obecnePole.cenaDomek) && obecnePole.domek < 6) $('#kup').addClass('nieaktywny');
             else {
                 $('#kup').click(function () {
-                    console.log('click');
                     obecny.kupDomek(obecny.pozycja);
                     schowajOkienko();
                     wyswietlAkcje();
@@ -593,8 +648,8 @@ const wyswietlRuch = (kod) => {
             break;
         case 3:
             //Właścicielem pola jest inny gracz
-            kodHTML += `
-            <div class="przyciski">
+            kodHTML += 
+            `<div class="przyciski">
                 <div class="przycisk akcja" id="zaplac">
                     <h3>Zapłata czynszu</h3>
                     <div class="ikona akcja zakup">
@@ -661,21 +716,22 @@ const licytujPole = (licytowane) => {
     let teraz = kto;
     let licytator = gracz[uczestnicy[teraz]];
     let ile_uczestnikow = liczba_graczy;
+    let kolorTekst;
 
     zablokowany = true;
 
     $('#okienko').css('border-color', licytowanePole.kolor);
-
+    if (['#f5f6fa', '#AAE0FA', '#FEF200'].includes(licytowanePole.kolor)) kolorTekst = 'color: #00497c;';
     $('#okienko').html(
         `
-        <h1 class="tytul" style="background-color: ${licytowanePole.kolor}">${licytowanePole.nazwa}</h1>
+        <h1 class="tytul" style="background-color: ${licytowanePole.kolor}; ${kolorTekst};">${licytowanePole.nazwa}</h1>
         <div class="informacje">
             <div class="informacja licytator">
                 <h3 class="licytatorNazwa">${licytator.nazwa}</h3>
                 <h1 class="licytatorPieniadze">${licytator.pieniadze}$</h1>
                 <div class="ikona czlowiek"><i class="fas fa-user"></i></div>
             </div>
-            <div class="informacja obecnePole" style="background-color: ${licytowanePole.kolor}; flex: 1;">
+            <div class="informacja obecnePole" style="background-color: ${licytowanePole.kolor}; flex: 1; ${kolorTekst};">
                 <h3 class="dodatkowa">Aktualna oferta</h3>
                 <h1 class="zaklad">${zaklad}$</h1>
             </div>

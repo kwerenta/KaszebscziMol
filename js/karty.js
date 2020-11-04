@@ -74,6 +74,7 @@ function Karta(tekst, dzialanie, parametr) {
     this.parametr = parametr;
     this.dzialanie = dzialanie;
 
+    // Wykonanie funkcji w zależności od działania określonego w karcie
     this.wykonaj = () => {
         if (this.dzialanie == 'dodaj') return obecny.dodajPieniadze(this.parametr);
         else if (this.dzialanie == 'odejmij') return obecny.odejmijPieniadze(this.parametr);

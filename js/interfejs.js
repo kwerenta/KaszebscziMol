@@ -1,14 +1,14 @@
 const maksymalna_liczba_graczy = 6;
-let liczba_graczy = 6; //TYMCZASOWO zamiast 2
+let liczba_graczy = gracz.length; //TYMCZASOWO zamiast 2
 let zablokowany = true;
 let aktywnynr = 0;
 const kolejnosc = [];
 
-// Chowa ekran ładowania
-// $(window).on('load', function () {
-const menu = () => $('.menu').css('display', 'none');
-//     TweenMax.to(tlo, 3, { y: '-100%', display: 'none' });
-// });
+//Ukrywanie ekranu ładowania/głównego
+const menu = () => {
+    const tlo = document.querySelector('.menu');
+    TweenMax.to(tlo, 3, { y: '-100%', display: 'none' })
+};
 
 //Animacja wzoru kaszubskiego
 const animacjaWzor = () => {
@@ -67,9 +67,9 @@ const animacjaWzor = () => {
         )
         .to(startAnimacja, 1, { width: '150px', height: '65px', borderRadius: '15px', backgroundColor: '#00497C' })
         .to(start, 0.5, { opacity: 1, display: 'block' })
-        .to(startAnimacja, 0.2, { opacity: 0, display: 'none' });
+        .to(startAnimacja, 0.2, { opacity: 0, display: 'none', delay: 0.5 });
 };
-//Animacja logo
+//Animacja logo (napisu)
 const animacjaNapis = () => {
     const fontSize = 72;
     const vara = new Vara(
@@ -291,7 +291,6 @@ $('.graj#start').click(function () {
     }); */
 
     if ($('#blad h3').text() == '') {
-        zmienEkran('.gora, .dol', '#plansza');
         $('body').css('background-color', '#353b48');
         wyswietlKolejnosc();
     }
@@ -326,16 +325,18 @@ function wyswietlKolejnosc() {
             let losowa = Math.floor(Math.random() * liczba_graczy);
             if (kolejnosc.indexOf(losowa) === -1) kolejnosc.push(losowa);
         }
+        // Tworzenie graficznej listy graczy 
         for (i = 0; i < liczba_graczy; i++) {
             const nr = kolejnosc[i];
             let wielkosc = '';
+            // Zmiana wielkości czcionki w zależności od długości nazwy
             gracz[nr].nazwa.length > 11 ? (wielkosc = 'font-size: 14px;') : (wielkosc = '');
             lista += `<li style="background-color:${gracz[nr].kolor}; ${wielkosc}">
             ${gracz[nr].nazwa}<h1 class="numer">${i + 1}</h1></li>`;
         }
         ustawPionki();
         pomalujPola();
-        return `<h1 class="tytul">Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
+        return `<h1 class="tytul" style="color: #00497c;">Kolejność startu:</h1><ol>${lista}</ol><div class="kontynuuj">Kontynuuj</div>`;
     });
     $('.kontynuuj').click(function () {
         schowajOkienko('#okno');
@@ -344,3 +345,5 @@ function wyswietlKolejnosc() {
         $('.kontynuuj').off();
     });
 }
+$('.menu').css('display','none');
+wyswietlKolejnosc();
