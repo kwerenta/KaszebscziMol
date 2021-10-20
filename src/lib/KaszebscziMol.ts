@@ -20,6 +20,7 @@ export interface Player {
   position: number;
   properties: number[];
   jail: number;
+  bankrupt: boolean;
 }
 
 export interface GameState {
@@ -47,6 +48,7 @@ export const KaszebscziMol: Game<GameState> = {
       position: 0,
       properties: [],
       jail: 0,
+      bankrupt: false,
     })),
     auction: {
       price: 0,
@@ -64,7 +66,7 @@ export const KaszebscziMol: Game<GameState> = {
   turn: {
     order: {
       first: () => 0,
-      next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.numPlayers,
+      next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
       playOrder: (_, ctx) => ctx.random?.Shuffle(ctx.playOrder) ?? [],
     },
     stages: {

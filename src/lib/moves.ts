@@ -5,7 +5,18 @@ import { GameState, Player } from "./KaszebscziMol";
 import { groups } from "./configs/fields";
 
 const endTurn: Move<GameState> = (_, ctx) => ctx.events?.endTurn();
-const bankrupt: Move<GameState> = (_, ctx) => ctx.events?.pass(); // TODO usuwanie gracza
+const bankrupt: Move<GameState> = (G, ctx) => {
+  const currentPlayer = getPlayer(G, ctx);
+  currentPlayer.bankrupt = true;
+  // TEMP remove properties owned by bankrupted player
+  currentPlayer.properties = [];
+  G.fields = G.fields.map(f => ({
+    ...f,
+    owner: f.owner === currentPlayer.id ? undefined : f.owner,
+  }));
+  ctx.events?.pass({ remove: true });
+};
+
 export const defaultActions = {
   endTurn,
   bankrupt,
@@ -30,6 +41,7 @@ export const rollDice: Move<GameState> = (G, ctx) => {
       isCardField
         ? ctx.events?.setActivePlayers({
             currentPlayer: "cardField",
+            next: { currentPlayer: "noAction" },
             moveLimit: 2,
           })
         : isGoToJail
@@ -115,7 +127,6 @@ export const sellHouse: Move<GameState> = (G, ctx) => {
   field.houses ? field.houses-- : (field.houses = 0);
   currentPlayer.money += price;
   ctx.events?.setStage?.("noAction");
-  return;
 };
 
 export const drawCard: Move<GameState> = (G, ctx) => {
@@ -124,7 +135,6 @@ export const drawCard: Move<GameState> = (G, ctx) => {
 
   const card = ctx.random ? ctx.random?.Die(cards.length) - 1 : -1;
   G.card = card;
-  return;
 };
 
 export const acceptCard: Move<GameState> = (G, ctx) => {
@@ -132,6 +142,7 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
   if (G.card < 0) return INVALID_MOVE;
 
   const currentCard = cards[G.card];
+
   switch (currentCard.action) {
     case "add":
       currentPlayer.money += currentCard.amount;
@@ -147,26 +158,25 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
       ctx.playOrder.forEach(id => {
         if (id === ctx.currentPlayer) {
           currentPlayer.money -= ctx.playOrder.length * currentCard.amount;
-          return;
+        } else {
+          const player = G.players[parseInt(id)];
+          player.money += currentCard.amount;
         }
-        const player = G.players[parseInt(id)];
-        player.money += currentCard.amount;
       });
       break;
     case "getAll":
       ctx.playOrder.forEach(id => {
         if (id === ctx.currentPlayer) {
           currentPlayer.money += ctx.playOrder.length * currentCard.amount;
-          return;
-        }
-        const player = G.players[parseInt(id)];
+        } else {
+          const player = G.players[parseInt(id)];
 
-        if (player.money < currentCard.amount) {
-          console.log(`Error! Player ${id} has not enough money`);
-          return INVALID_MOVE;
+          if (player.money < currentCard.amount) {
+            console.log(`Error! Player ${id} has not enough money`);
+            return INVALID_MOVE;
+          }
+          player.money -= currentCard.amount;
         }
-        player.money -= currentCard.amount;
-        return;
       });
       break;
     case "goToJail":
