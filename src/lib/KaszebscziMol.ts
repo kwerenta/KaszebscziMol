@@ -8,6 +8,7 @@ import {
   buyProperty,
   defaultActions,
   drawCard,
+  pass,
   pay,
   rollDice,
   sellHouse,
@@ -29,6 +30,9 @@ export interface GameState {
   auction: {
     property: number;
     price: number;
+    player: string;
+    playOrder: string[];
+    playOrderPos: number;
   };
   doubles: number;
   card: number;
@@ -52,7 +56,10 @@ export const KaszebscziMol: Game<GameState> = {
     })),
     auction: {
       price: 0,
+      player: "",
       property: -1,
+      playOrder: [],
+      playOrderPos: -1,
     },
     fields,
     card: -1,
@@ -64,10 +71,17 @@ export const KaszebscziMol: Game<GameState> = {
   },
 
   turn: {
+    minMoves: 1,
     order: {
-      first: () => 0,
+      first: G =>
+        G.auction.playOrderPos === -1
+          ? 0
+          : (G.auction.playOrderPos + 1) % G.auction.playOrder.length,
       next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
-      playOrder: (_, ctx) => ctx.random?.Shuffle(ctx.playOrder) ?? [],
+      playOrder: (G, ctx) =>
+        G.auction.playOrder.length
+          ? G.auction.playOrder
+          : ctx.random?.Shuffle(ctx.playOrder) ?? [],
     },
     stages: {
       noAction: {
@@ -79,7 +93,41 @@ export const KaszebscziMol: Game<GameState> = {
       hasOwner: { moves: { pay } },
       noOwner: { moves: { buyProperty, auction } },
       cardField: { next: "noAction", moves: { drawCard, acceptCard } },
-      auction: { moves: { bid, skip: (_, ctx) => ctx.events?.endTurn() } },
+    },
+  },
+  phases: {
+    auction: {
+      onBegin: (G, ctx) => {
+        G.auction.playOrder = ctx.playOrder;
+        G.auction.playOrderPos = ctx.playOrderPos;
+      },
+      endIf: (_, ctx) => ctx.playOrder.length === 1,
+      onEnd: G => {
+        const winner = G.players[parseInt(G.auction.player)];
+        const property = G.fields[G.auction.property];
+
+        property.owner = winner.id;
+        winner.money -= G.auction.price;
+        winner.properties.push(G.auction.property);
+
+        G.auction = {
+          ...G.auction,
+          price: 0,
+          player: "",
+          property: -1,
+        };
+      },
+      turn: {
+        order: {
+          first: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
+          next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
+          playOrder: (_, ctx) => ctx.playOrder,
+        },
+      },
+      moves: {
+        bid,
+        pass,
+      },
     },
   },
 };

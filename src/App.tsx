@@ -4,7 +4,7 @@ import { Board } from "./Board";
 
 const App = Client({
   game: KaszebscziMol,
-  numPlayers: 3,
+  numPlayers: 4,
   board: Board,
   debug: true,
 });

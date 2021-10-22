@@ -42,7 +42,8 @@ export const rollDice: Move<GameState> = (G, ctx) => {
         ? ctx.events?.setActivePlayers({
             currentPlayer: "cardField",
             next: { currentPlayer: "noAction" },
-            moveLimit: 2,
+            minMoves: 2,
+            maxMoves: 2,
           })
         : isGoToJail
         ? goToJail(currentPlayer, ctx)
@@ -66,8 +67,22 @@ export const rollDice: Move<GameState> = (G, ctx) => {
 
 export const bid: Move<GameState> = (G, ctx, amount: number) => {
   const currentPlayer = getPlayer(G, ctx);
+  if (!amount || G.auction.price + amount > currentPlayer.money)
+    return INVALID_MOVE;
+  G.auction.player = currentPlayer.id;
   G.auction.price += amount;
-  currentPlayer.money -= amount;
+  ctx.events?.endTurn();
+};
+
+export const pass: Move<GameState> = (G, ctx) => {
+  ctx.events?.pass({ remove: true });
+};
+
+export const auction: Move<GameState> = (G, ctx) => {
+  const currentPlayer = getPlayer(G, ctx);
+  G.auction.player = currentPlayer.id;
+  G.auction.property = currentPlayer.position;
+  ctx.events?.setPhase("auction");
   ctx.events?.endTurn();
 };
 
@@ -81,13 +96,6 @@ export const buyProperty: Move<GameState> = (G, ctx) => {
   currentPlayer.properties.push(currentPlayer.position);
   currentPlayer.money -= price;
   ctx.events?.endStage();
-  return;
-};
-
-export const auction: Move<GameState> = (_, ctx) => {
-  ctx.events?.setActivePlayers({
-    all: "auction",
-  });
 };
 
 export const pay: Move<GameState> = (G, ctx) => {
@@ -101,7 +109,6 @@ export const pay: Move<GameState> = (G, ctx) => {
 
   currentPlayer.money -= currentRent;
   ownerPlayer.money += currentRent;
-  return;
 };
 
 export const buyHouse: Move<GameState> = (G, ctx) => {
@@ -138,8 +145,8 @@ export const drawCard: Move<GameState> = (G, ctx) => {
 };
 
 export const acceptCard: Move<GameState> = (G, ctx) => {
+  if (G.card < 0 || G.card >= cards.length) return INVALID_MOVE;
   const currentPlayer = getPlayer(G, ctx);
-  if (G.card < 0) return INVALID_MOVE;
 
   const currentCard = cards[G.card];
 
@@ -154,10 +161,11 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
       break;
 
     case "payAll":
-      if (currentPlayer.money < currentCard.amount) return INVALID_MOVE;
+      const amount = ctx.playOrder.length * currentCard.amount;
+      if (currentPlayer.money < amount) return INVALID_MOVE;
       ctx.playOrder.forEach(id => {
         if (id === ctx.currentPlayer) {
-          currentPlayer.money -= ctx.playOrder.length * currentCard.amount;
+          currentPlayer.money -= amount;
         } else {
           const player = G.players[parseInt(id)];
           player.money += currentCard.amount;
