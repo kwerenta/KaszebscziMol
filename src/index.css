@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .board-shape {
+    --size: 80px;
+    grid-template-columns: repeat(13, var(--size));
+    grid-template-rows: repeat(9, var(--size));
+    grid-template-areas:
+      ". . . . . . . . . . . . ."
+      ". c c c c c c c c c c c ."
+      ". c c c c c c c c c c c ."
+      ". c c c c c c c c c c c ."
+      ". c c c c c c c c c c c ."
+      ". c c c c c c c c c c c ."
+      ". c c c c c c c c c c c ."
+      ". c c c c c c c c c c c ."
+      ". . . . . . . . . . . . .";
+  }
+  .board-center {
+    grid-area: c;
+  }
+}
