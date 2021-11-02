@@ -32,7 +32,7 @@ export const Game = ({ G, ctx, moves }: Props): ReactElement => {
   };
   return (
     <main className="flex justify-center items-center h-screen">
-      <div className="grid board-shape gap-1 max-h-screen h-[90%]">
+      <div className="grid board-shape gap-1">
         {G.fields.map((field, i) => (
           <Tile key={i} field={field} index={i} />
         ))}
@@ -75,7 +75,7 @@ const Tile = ({ field, index }: TileProps) => {
       className={`square h-full text-black bg-white rounded-2xl flex flex-col justify-between ${
         isBuyable
           ? "after:content-end after:bg-black after:w-full after:h-4 after:rounded-b-2xl relative before:absolute before:bg-white before:w-full before:h-2 before:rounded-b-xl before:bottom-[9px]"
-          : "pb-[21px]"
+          : "pb-4"
       }`}
     >
       <div
@@ -89,7 +89,9 @@ const Tile = ({ field, index }: TileProps) => {
           {isBuyable && `$ ${field.price}`}
         </span>
       </div>
-      <span className="text-center text-3xl text-black/40">{index}</span>
+      <span className="text-center text-3xl text-black/40 flex-1 flex justify-center items-center">
+        {index}
+      </span>
     </div>
   );
 };

@@ -17,9 +17,7 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/game">
-            <div className="flex-1">
-              <GameClient />
-            </div>
+            <GameClient />
           </Route>
           <Route path="/">
             <Home />
