@@ -59,6 +59,20 @@ export const Game = ({ G, ctx, moves }: Props): ReactElement => {
           </section>
         </div>
       </div>
+      <div className="absolute right-0 h-full flex flex-col justify-center items-center gap-2">
+        {ctx.playOrder.map(playerIndex => {
+          const player = G.players[parseInt(playerIndex)];
+          return (
+            <div
+              className={`bg-white text-black px-3 py-2 rounded-l-lg ${
+                player.name === currentPlayer.name ? "font-extrabold" : ""
+              }`}
+            >
+              {player.name}
+            </div>
+          );
+        })}
+      </div>
     </main>
   );
 };
@@ -74,7 +88,7 @@ const Tile = ({ field, index }: TileProps) => {
     <div
       className={`square h-full text-black bg-white rounded-2xl flex flex-col justify-between ${
         isBuyable
-          ? "after:content-end after:bg-black after:w-full after:h-4 after:rounded-b-2xl relative before:absolute before:bg-white before:w-full before:h-2 before:rounded-b-xl before:bottom-[9px]"
+          ? "after:content-end after:bg-black after:w-full after:h-4 after:rounded-b-2xl relative before:absolute before:bg-white before:w-full before:h-[11px] before:rounded-b-xl before:bottom-[6px]"
           : "pb-4"
       }`}
     >
