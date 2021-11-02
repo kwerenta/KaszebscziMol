@@ -41,13 +41,13 @@ export const Game = ({ G, ctx, moves }: Props): ReactElement => {
             <h1 className="text-4xl">{currentPlayer.name}</h1>
             <p>{currentStage}</p>
             <div className="flex flex-col gap-2">
-              {stageMoves[currentStage].map(v => (
+              {stageMoves[currentStage].map(move => (
                 <button
-                  key={v}
+                  key={move}
                   className="bg-gradient-to-br from-red-600 via-red-400 to-red-700 px-3 py-2 text-lg rounded-lg shadow-md"
-                  onClick={moves[v]}
+                  onClick={() => moves[move]()}
                 >
-                  {v}
+                  {move}
                 </button>
               ))}
             </div>
