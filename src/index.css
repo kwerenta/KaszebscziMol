@@ -5,8 +5,8 @@
 @layer components {
   .board-shape {
     --size: 80px;
-    grid-template-columns: repeat(13, var(--size));
-    grid-template-rows: repeat(9, var(--size));
+    grid-template-columns: repeat(13, 1fr);
+    grid-template-rows: repeat(9, 1fr);
     grid-template-areas:
       ". . . . . . . . . . . . ."
       ". c c c c c c c c c c c ."
@@ -20,5 +20,10 @@
   }
   .board-center {
     grid-area: c;
+  }
+}
+@layer utilities {
+  .square {
+    aspect-ratio: 1/1;
   }
 }
