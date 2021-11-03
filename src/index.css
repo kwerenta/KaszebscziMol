@@ -2,28 +2,4 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
-  .board-shape {
-    --size: 80px;
-    grid-template-columns: repeat(13, 1fr);
-    grid-template-rows: repeat(9, 1fr);
-    grid-template-areas:
-      ". . . . . . . . . . . . ."
-      ". c c c c c c c c c c c ."
-      ". c c c c c c c c c c c ."
-      ". c c c c c c c c c c c ."
-      ". c c c c c c c c c c c ."
-      ". c c c c c c c c c c c ."
-      ". c c c c c c c c c c c ."
-      ". c c c c c c c c c c c ."
-      ". . . . . . . . . . . . .";
-  }
-  .board-center {
-    grid-area: c;
-  }
-}
-@layer utilities {
-  .square {
-    aspect-ratio: 1/1;
-  }
-}
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700;800&display=swap");
