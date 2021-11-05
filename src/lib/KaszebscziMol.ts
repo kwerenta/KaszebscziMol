@@ -3,6 +3,7 @@ import { Field, fields } from "./configs/fields";
 import {
   acceptCard,
   auction,
+  bankrupt,
   bid,
   buyHouse,
   buyProperty,
@@ -21,7 +22,6 @@ export interface Player {
   position: number;
   properties: number[];
   jail: number;
-  bankrupt: boolean;
 }
 
 export interface GameState {
@@ -36,6 +36,7 @@ export interface GameState {
   };
   doubles: number;
   card: number;
+  bankrupts: number;
 }
 
 export const KaszebscziMol: Game<GameState> = {
@@ -52,7 +53,6 @@ export const KaszebscziMol: Game<GameState> = {
       position: 0,
       properties: [],
       jail: 0,
-      bankrupt: false,
     })),
     auction: {
       price: 0,
@@ -64,11 +64,14 @@ export const KaszebscziMol: Game<GameState> = {
     fields,
     card: -1,
     doubles: 0,
+    bankrupts: 0,
   }),
 
   moves: {
     rollDice,
   },
+
+  endIf: (G, ctx) => ctx.numPlayers - 1 === G.bankrupts,
 
   turn: {
     minMoves: 1,
@@ -90,9 +93,10 @@ export const KaszebscziMol: Game<GameState> = {
         },
       },
       isOwner: { moves: { ...defaultActions, buyHouse, sellHouse } },
-      hasOwner: { moves: { pay } },
+      hasOwner: { moves: { pay, bankrupt } },
       noOwner: { moves: { buyProperty, auction } },
-      cardField: { next: "noAction", moves: { drawCard, acceptCard } },
+      cardField: { moves: { drawCard } },
+      cardAction: { moves: { acceptCard, bankrupt } },
     },
   },
   phases: {

@@ -26,10 +26,11 @@ export const Game = ({ G, ctx, moves }: Props): ReactElement => {
   const stageMoves = {
     rollDice: ["rollDice"],
     noAction: ["endTurn", "bankrupt"],
-    isOwner: ["endTurn", "bankrupt", "buyHouse", "sellHouse"],
-    hasOwner: ["pay"],
+    isOwner: ["endTurn", "buyHouse", "sellHouse", "bankrupt"],
+    hasOwner: ["pay", "bankrupt"],
     noOwner: ["buyProperty", "auction"],
-    cardField: ["drawCard", "acceptCard"],
+    cardField: ["drawCard"],
+    cardAction: ["acceptCard", "bankrupt"],
     auction: ["bid", "pass"],
   };
   return (
@@ -44,7 +45,9 @@ export const Game = ({ G, ctx, moves }: Props): ReactElement => {
             </div>
           </section>
           <section className="flex-1">
-            <h2 className="text-3xl">{currentField.name}</h2>
+            <h2 className="text-3xl">
+              {ctx.gameover ? "Koniec" : currentField.name}
+            </h2>
           </section>
         </div>
       </Board>

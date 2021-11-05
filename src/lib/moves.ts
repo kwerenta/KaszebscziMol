@@ -5,10 +5,10 @@ import { GameState, Player } from "./KaszebscziMol";
 import { groups } from "./configs/fields";
 
 const endTurn: Move<GameState> = (_, ctx) => ctx.events?.endTurn();
-const bankrupt: Move<GameState> = (G, ctx) => {
+export const bankrupt: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
-  currentPlayer.bankrupt = true;
   // TEMP remove properties owned by bankrupted player
+  G.bankrupts += 1;
   currentPlayer.properties = [];
   G.fields = G.fields.map(f => ({
     ...f,
@@ -41,9 +41,9 @@ export const rollDice: Move<GameState> = (G, ctx) => {
       isCardField
         ? ctx.events?.setActivePlayers({
             currentPlayer: "cardField",
-            next: { currentPlayer: "noAction" },
-            minMoves: 2,
-            maxMoves: 2,
+            next: { currentPlayer: "cardAction", minMoves: 1, maxMoves: 1 },
+            minMoves: 1,
+            maxMoves: 1,
           })
         : isGoToJail
         ? goToJail(currentPlayer, ctx)
@@ -56,7 +56,8 @@ export const rollDice: Move<GameState> = (G, ctx) => {
         ? ctx.events?.setStage("isOwner")
         : ctx.events?.setActivePlayers({
             currentPlayer: "hasOwner",
-            moveLimit: 1,
+            minMoves: 1,
+            maxMoves: 1,
             next: { currentPlayer: "noAction" },
           });
     }
@@ -137,15 +138,11 @@ export const sellHouse: Move<GameState> = (G, ctx) => {
 };
 
 export const drawCard: Move<GameState> = (G, ctx) => {
-  // check if card is already drawn
-  if (G.card > -1) return INVALID_MOVE;
-
   const card = ctx.random ? ctx.random?.Die(cards.length) - 1 : -1;
   G.card = card;
 };
 
 export const acceptCard: Move<GameState> = (G, ctx) => {
-  if (G.card < 0 || G.card >= cards.length) return INVALID_MOVE;
   const currentPlayer = getPlayer(G, ctx);
 
   const currentCard = cards[G.card];
@@ -164,12 +161,8 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
       const amount = ctx.playOrder.length * currentCard.amount;
       if (currentPlayer.money < amount) return INVALID_MOVE;
       ctx.playOrder.forEach(id => {
-        if (id === ctx.currentPlayer) {
-          currentPlayer.money -= amount;
-        } else {
-          const player = G.players[parseInt(id)];
-          player.money += currentCard.amount;
-        }
+        if (id === ctx.currentPlayer) currentPlayer.money -= amount;
+        else G.players[parseInt(id)].money += currentCard.amount;
       });
       break;
     case "getAll":
