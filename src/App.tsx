@@ -13,7 +13,7 @@ const App = () => {
   });
 
   return (
-    <div className="bg-blue-600 text-white h-screen w-screen flex items-center justify-center">
+    <div className="bg-pattern-blue-light text-white h-screen w-screen flex items-center justify-center">
       <Router>
         <Switch>
           <Route path="/game">
