@@ -1,6 +1,5 @@
 module.exports = {
-  mode: "jit",
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
   darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
@@ -30,9 +29,6 @@ module.exports = {
         "lg-intense": "4px 6px 2px rgba(0, 0, 0, 0.4)",
       },
     },
-  },
-  variants: {
-    extend: {},
   },
   plugins: [],
 };
