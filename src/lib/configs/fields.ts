@@ -58,7 +58,7 @@ export const fields: Field[] = [
     group: 3,
     rent: [12, 60, 180, 500, 700, 900],
   },
-  { name: "PKM Babi Dół", price: 200, group: 0, rent: [25, 50, 100, 200] },
+  { name: "PKM Sławki", price: 200, group: 0, rent: [25, 50, 100, 200] },
   {
     name: "Dino Mściszewice",
     price: 180,

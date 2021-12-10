@@ -21,10 +21,10 @@ export const Home = (): ReactElement => {
           Kaszëbsczi <br />
           Môl
         </h1>
-        <Link to="/game">
-          <div className="ring-4 ring-pattern-red ring-offset-4 ring-offset-pattern-blue-light px-6 py-3 rounded-lg hover:bg-pattern-red transition-colors cursor-pointer text-xl font-bold">
+        <Link to="/setup">
+          <button className="ring-4 ring-pattern-red ring-offset-4 ring-offset-pattern-blue-light px-6 py-3 rounded-lg hover:bg-pattern-red transition-colors cursor-pointer text-xl font-bold">
             Rozpocznij grę
-          </div>
+          </button>
         </Link>
       </header>
       <div className="flex-1 relative hidden md:block">

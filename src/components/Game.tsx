@@ -38,7 +38,7 @@ export const Game = ({ G, ctx, moves }: Props): ReactElement => {
       <Board fields={G.fields}>
         <div className="text-center flex p-4 flex-1 mx-4 my-3">
           <section className="flex-1">
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col gap-12">
               {stageMoves[currentStage].map(move => (
                 <Button fn={moves[move]} name={move} />
               ))}

@@ -18,6 +18,7 @@ import {
 export interface Player {
   id: string;
   name: string;
+  color: string;
   money: number;
   position: number;
   properties: number[];
@@ -39,16 +40,21 @@ export interface GameState {
   bankrupts: number;
 }
 
-export const KaszebscziMol: Game<GameState> = {
+export interface playerData {
+  name: string;
+  color: string;
+}
+export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
   name: "KaszëbscziMôl",
   minPlayers: 2,
   maxPlayers: 6,
   disableUndo: true,
 
   setup: ctx => ({
-    players: ctx.playOrder.map(id => ({
+    players: ctx.playOrder.map((id, index) => ({
       id,
-      name: `Gracz${id}`,
+      name: setupData[index].name,
+      color: setupData[index].color,
       money: 1500,
       position: 0,
       properties: [],
@@ -134,4 +140,4 @@ export const KaszebscziMol: Game<GameState> = {
       },
     },
   },
-};
+});
