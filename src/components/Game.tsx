@@ -1,12 +1,7 @@
 import { BoardProps } from "boardgame.io/dist/types/packages/react";
-import { ReactElement } from "react";
 import { GameState } from "../lib/KaszebscziMol";
 import { Board } from "./board/Board";
 import { Button } from "./Button";
-
-interface Props extends BoardProps {
-  G: GameState;
-}
 
 type Stages =
   | "rollDice"
@@ -17,7 +12,7 @@ type Stages =
   | "cardField"
   | "auction";
 
-export const Game = ({ G, ctx, moves }: Props): ReactElement => {
+export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
   const currentPlayer = G.players[parseInt(ctx.currentPlayer)];
   const currentField = G.fields[currentPlayer.position];
   const currentStage = (ctx.activePlayers?.[ctx.currentPlayer] ||
@@ -39,8 +34,8 @@ export const Game = ({ G, ctx, moves }: Props): ReactElement => {
         <div className="text-center flex p-4 flex-1 mx-4 my-3">
           <section className="flex-1">
             <div className="flex flex-col gap-12">
-              {stageMoves[currentStage].map(move => (
-                <Button fn={moves[move]} name={move} />
+              {stageMoves[currentStage].map((move, i) => (
+                <Button key={i} fn={moves[move]} name={move} />
               ))}
             </div>
           </section>
