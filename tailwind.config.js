@@ -28,6 +28,9 @@ module.exports = {
         "md-intense": "3px 3px 3px rgba(0, 0, 0, 0.55)",
         "lg-intense": "4px 6px 2px rgba(0, 0, 0, 0.4)",
       },
+      boxShadow: {
+        "group-indicator": "inset 0 -5px 0 0",
+      },
     },
   },
   plugins: [],

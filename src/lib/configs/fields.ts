@@ -1,7 +1,6 @@
 export interface Field {
   readonly name: string;
   readonly price?: number;
-  readonly color?: string;
   readonly group: number;
   readonly rent?: number[];
   owner?: string;
@@ -14,21 +13,21 @@ export interface Group {
 }
 
 export const groups: Group[] = [
-  { color: "#000", mortgage: 0 },
-  { color: "#955436", mortgage: 50 },
-  { color: "#AAE0FA", mortgage: 50 },
-  { color: "#D93A96", mortgage: 100 },
-  { color: "#F7941D", mortgage: 100 },
-  { color: "#ED1B24", mortgage: 150 },
-  { color: "#FEF200", mortgage: 150 },
-  { color: "#1FB25A", mortgage: 200 },
-  { color: "#0072BB", mortgage: 200 },
-  { color: "#303030", mortgage: 0 },
+  { color: "shadow-zinc-300", mortgage: 0 },
+  { color: "shadow-amber-900", mortgage: 50 },
+  { color: "shadow-blue-500", mortgage: 50 },
+  { color: "shadow-fuchsia-600", mortgage: 100 },
+  { color: "shadow-orange-400", mortgage: 100 },
+  { color: "shadow-red-500", mortgage: 150 },
+  { color: "shadow-yellow-400", mortgage: 150 },
+  { color: "shadow-green-600", mortgage: 200 },
+  { color: "shadow-sky-800", mortgage: 200 },
+  { color: "shadow-stone-500", mortgage: 0 },
   { color: "#ccc", mortgage: 0 },
 ];
 
 export const fields: Field[] = [
-  { name: "START", color: "#ee1919", group: 12 },
+  { name: "START", group: 12 },
   { name: "Wejherowo", price: 60, group: 1, rent: [2, 10, 30, 90, 160, 250] },
   { name: "Kasa społeczna?", group: 10 },
   { name: "Wejherowo", price: 60, group: 1, rent: [4, 20, 60, 180, 320, 450] },
@@ -78,7 +77,7 @@ export const fields: Field[] = [
     group: 4,
     rent: [16, 80, 220, 600, 800, 1000],
   },
-  { name: "Najpiękniejsza wieś pomorska 2014", color: "#303030", group: 12 },
+  { name: "Najpiękniejsza wieś pomorska 2014", group: 12 },
   {
     name: "Dino Mściszewice",
     price: 220,
@@ -118,7 +117,7 @@ export const fields: Field[] = [
     group: 6,
     rent: [24, 120, 360, 850, 1025, 1200],
   },
-  { name: "Idź do Żukowa", color: "#303030", group: 13 },
+  { name: "Idź do Żukowa", group: 13 },
   {
     name: "Amfiteatr Szerokowidze Sierakowice",
     price: 300,
