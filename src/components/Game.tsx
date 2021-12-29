@@ -16,7 +16,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
       <Board fields={G.fields} players={G.players}>
         <div className="text-center flex p-4 flex-1 mx-4 my-3">
           <section className="flex-1">
-            <div className="flex flex-col gap-12">
+            <div className="flex flex-col gap-8">
               {stageMoves[currentStage].map((move, i) => (
                 <Button key={i} fn={moves[move]} name={move} />
               ))}

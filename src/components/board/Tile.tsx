@@ -12,7 +12,7 @@ export const Tile = ({ field, index, players }: TileProps) => {
   const isBought = !!field.owner;
   return (
     <div
-      className={`h-tile w-tile min-h-[60px] min-w-[60px] text-black bg-white rounded-2xl flex flex-col justify-between relative pb-2 ${
+      className={`h-tile w-tile min-h-[60px] min-w-[60px] text-black bg-white rounded-lg md:rounded-xl lg:rounded-2xl flex flex-col justify-between relative pb-2 ${
         isBuyable ? `shadow-group-indicator ${groups[field.group].color}` : ""
       }`}
     >
@@ -21,7 +21,7 @@ export const Tile = ({ field, index, players }: TileProps) => {
           {isBuyable && `$ ${field.price}`}
         </span>
         <div
-          className={`w-5 h-5 rounded-tr-2xl ${
+          className={`w-4 h-4 lg:w-5 lg:h-5 rounded-tr-lg md:rounded-tr-xl lg:rounded-tr-2xl ${
             isBuyable
               ? isBought
                 ? players[parseInt(field.owner!)].color

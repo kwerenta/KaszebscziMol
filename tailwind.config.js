@@ -29,7 +29,9 @@ module.exports = {
         "lg-intense": "4px 6px 2px rgba(0, 0, 0, 0.4)",
       },
       boxShadow: {
-        "group-indicator": "inset 0 -5px 0 0",
+        "group-indicator": "inset 0 -6px 0 0",
+        "bottom-inset": "inset 0 -8px 0 0",
+        bottom: "0 8px 0 0",
       },
     },
   },

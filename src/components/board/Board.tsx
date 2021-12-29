@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const Board = ({ children, fields, players }: Props): JSX.Element => (
-  <div className="flex flex-col space-y-1">
+  <div className="flex flex-col space-y-1 lg:space-y-2">
     <TilesSlice fields={fields} position="top" players={players} />
     <div className="flex">
       <TilesSlice fields={fields} position="left" players={players} />
