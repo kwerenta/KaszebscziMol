@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { playerData } from "../lib/KaszebscziMol";
+import type { playerData } from "../lib/KaszebscziMol";
 
 export const Setup = () => {
   const [players, setPlayers] = useState<playerData[]>([]);

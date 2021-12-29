@@ -1,4 +1,3 @@
-import { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import { Butterfly } from "../asstets/pattern/Butterfly";
 import { Flower1 } from "../asstets/pattern/Flower1";
@@ -6,7 +5,7 @@ import { Flower2 } from "../asstets/pattern/Flower2";
 import { Flower3 } from "../asstets/pattern/Flower3";
 import { MainFlower } from "../asstets/pattern/MainFlower";
 
-export const Home = (): ReactElement => {
+export const Home = (): JSX.Element => {
   return (
     <div className="text-center w-full h-full flex">
       <div className="flex-1 relative hidden md:block">

@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from "react";
+import { ReactNode } from "react";
 import { Field } from "../../lib/configs/fields";
 import { TilesSlice } from "./TilesSlice";
 
@@ -7,7 +7,7 @@ interface Props {
   fields: Field[];
 }
 
-export const Board = ({ children, fields }: Props): ReactElement => (
+export const Board = ({ children, fields }: Props): JSX.Element => (
   <div className="flex flex-col space-y-1">
     <TilesSlice fields={fields} position="top" />
     <div className="flex">

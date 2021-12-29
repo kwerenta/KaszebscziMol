@@ -1,12 +1,10 @@
-import { ReactElement } from "react";
-
 interface Props {
   name: string;
   fn: (payload?: number) => void;
   payload?: number;
 }
 
-export const Button = ({ name, fn, payload }: Props): ReactElement => (
+export const Button = ({ name, fn, payload }: Props): JSX.Element => (
   <div className="relative" key={name}>
     <div className="absolute -inset-2 bg-red-500 rounded-3xl"></div>
     <button

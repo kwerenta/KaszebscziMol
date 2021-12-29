@@ -1,5 +1,4 @@
-import { ReactElement } from "react";
-import { Field } from "../../lib/configs/fields";
+import type { Field } from "../../lib/configs/fields";
 import { Tile } from "./Tile";
 
 interface Props {
@@ -7,7 +6,7 @@ interface Props {
   position: "top" | "left" | "right" | "bottom";
 }
 
-export const TilesSlice = ({ fields, position }: Props): ReactElement => {
+export const TilesSlice = ({ fields, position }: Props): JSX.Element => {
   let startIndex = 0;
   let stopIndex: number | undefined = 13;
   let classes = "space-x-1";

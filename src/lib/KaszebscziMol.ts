@@ -1,19 +1,6 @@
 import { Game } from "boardgame.io";
 import { Field, fields } from "./configs/fields";
-import {
-  acceptCard,
-  auction,
-  bankrupt,
-  bid,
-  buyHouse,
-  buyProperty,
-  defaultActions,
-  drawCard,
-  pass,
-  pay,
-  rollDice,
-  sellHouse,
-} from "./moves";
+import Moves from "./moves";
 
 export interface Player {
   id: string;
@@ -73,9 +60,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
     bankrupts: 0,
   }),
 
-  moves: {
-    rollDice,
-  },
+  moves: Moves.rollDice.moves,
 
   endIf: (G, ctx) => ctx.numPlayers - 1 === G.bankrupts,
 
@@ -93,16 +78,12 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
           : ctx.random?.Shuffle(ctx.playOrder) ?? [],
     },
     stages: {
-      noAction: {
-        moves: {
-          ...defaultActions,
-        },
-      },
-      isOwner: { moves: { ...defaultActions, buyHouse, sellHouse } },
-      hasOwner: { moves: { pay, bankrupt } },
-      noOwner: { moves: { buyProperty, auction } },
-      cardField: { moves: { drawCard } },
-      cardAction: { moves: { acceptCard, bankrupt } },
+      noAction: Moves.noAction,
+      isOwner: Moves.isOwner,
+      hasOwner: Moves.hasOwner,
+      noOwner: Moves.noOwner,
+      cardField: Moves.cardField,
+      cardAction: Moves.cardAction,
     },
   },
   phases: {
@@ -134,10 +115,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
           playOrder: (_, ctx) => ctx.playOrder,
         },
       },
-      moves: {
-        bid,
-        pass,
-      },
+      moves: Moves.auction.moves,
     },
   },
 });

@@ -1,16 +1,8 @@
-import { BoardProps } from "boardgame.io/dist/types/packages/react";
-import { GameState } from "../lib/KaszebscziMol";
+import type { BoardProps } from "boardgame.io/react";
+import type { GameState } from "../lib/KaszebscziMol";
+import { stageMoves, Stages } from "../lib/moves";
 import { Board } from "./board/Board";
 import { Button } from "./Button";
-
-type Stages =
-  | "rollDice"
-  | "noAction"
-  | "isOwner"
-  | "hasOwner"
-  | "noOwner"
-  | "cardField"
-  | "auction";
 
 export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
   const currentPlayer = G.players[parseInt(ctx.currentPlayer)];
@@ -18,16 +10,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
   const currentStage = (ctx.activePlayers?.[ctx.currentPlayer] ||
     ctx.phase ||
     "rollDice") as Stages;
-  const stageMoves = {
-    rollDice: ["rollDice"],
-    noAction: ["endTurn", "bankrupt"],
-    isOwner: ["endTurn", "buyHouse", "sellHouse", "bankrupt"],
-    hasOwner: ["pay", "bankrupt"],
-    noOwner: ["buyProperty", "auction"],
-    cardField: ["drawCard"],
-    cardAction: ["acceptCard", "bankrupt"],
-    auction: ["bid", "pass"],
-  };
+
   return (
     <main className="flex justify-center items-center h-screen w-screen">
       <Board fields={G.fields}>
