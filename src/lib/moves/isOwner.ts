@@ -7,7 +7,7 @@ import { getPlayer } from "./general";
 export const buyHouse: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
   const field = G.fields[currentPlayer.position];
-  const price = groups[field.group || 0].mortgage;
+  const price = groups[field.group].housePrice;
 
   if (currentPlayer.money < price || (field.houses && field.houses > 4))
     return INVALID_MOVE;
@@ -20,11 +20,11 @@ export const buyHouse: Move<GameState> = (G, ctx) => {
 export const sellHouse: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
   const field = G.fields[currentPlayer.position];
-  const price = groups[field.group || 0].mortgage / 2;
+  const price = groups[field.group].housePrice / 2;
 
   if (field.houses && field.houses < 1) return INVALID_MOVE;
 
   field.houses ? field.houses-- : (field.houses = 0);
   currentPlayer.money += price;
-  ctx.events?.setStage?.("noAction");
+  ctx.events?.setStage("noAction");
 };

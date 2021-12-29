@@ -10,8 +10,8 @@ export const GameClient = (): JSX.Element => {
     state.players.length >= 2
       ? state.players
       : [
-          { name: "Kamil", color: "bg-fuschia-500" },
-          { name: "Rafał", color: "bg-black" },
+          { name: "Kamil", color: "bg-fuchsia-500" },
+          { name: "Rafał", color: "bg-green-800" },
           { name: "Dawid", color: "bg-pink-700" },
           { name: "Piotr", color: "bg-sky-500" },
         ];

@@ -9,21 +9,21 @@ export interface Field {
 
 export interface Group {
   readonly color: string;
-  readonly mortgage: number;
+  readonly housePrice: number;
 }
 
 export const groups: Group[] = [
-  { color: "shadow-zinc-300", mortgage: 0 },
-  { color: "shadow-amber-900", mortgage: 50 },
-  { color: "shadow-blue-500", mortgage: 50 },
-  { color: "shadow-fuchsia-600", mortgage: 100 },
-  { color: "shadow-orange-400", mortgage: 100 },
-  { color: "shadow-red-500", mortgage: 150 },
-  { color: "shadow-yellow-400", mortgage: 150 },
-  { color: "shadow-green-600", mortgage: 200 },
-  { color: "shadow-sky-800", mortgage: 200 },
-  { color: "shadow-stone-500", mortgage: 0 },
-  { color: "#ccc", mortgage: 0 },
+  { color: "shadow-zinc-300", housePrice: 0 },
+  { color: "shadow-amber-900", housePrice: 50 },
+  { color: "shadow-blue-500", housePrice: 50 },
+  { color: "shadow-fuchsia-600", housePrice: 100 },
+  { color: "shadow-orange-400", housePrice: 100 },
+  { color: "shadow-red-500", housePrice: 150 },
+  { color: "shadow-yellow-400", housePrice: 150 },
+  { color: "shadow-green-600", housePrice: 200 },
+  { color: "shadow-sky-800", housePrice: 200 },
+  { color: "shadow-stone-500", housePrice: 0 },
+  { color: "#ccc", housePrice: 0 },
 ];
 
 export const fields: Field[] = [
