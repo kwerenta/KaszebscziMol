@@ -5,7 +5,7 @@ import { Setup } from "./components/Setup";
 
 const App = () => {
   return (
-    <div className="bg-pattern-blue-light text-white h-screen w-screen flex items-center justify-center">
+    <div className="bg-white dark:bg-blue-gray-dark text-black dark:text-white h-screen w-screen flex items-center justify-center">
       <Router>
         <Routes>
           <Route path="/game" element={<GameClient />} />

@@ -18,7 +18,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
           <section className="flex-1">
             <div className="flex flex-col gap-8">
               {stageMoves[currentStage].map((move, i) => (
-                <Button key={i} fn={moves[move]} name={move} />
+                <Button key={i} fn={moves[move]} text={move} />
               ))}
             </div>
           </section>
@@ -29,7 +29,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
           </section>
         </div>
       </Board>
-      <div className="absolute right-0 h-full flex flex-col justify-center items-center gap-2">
+      <div className="absolute right-0 h-full flex flex-col justify-center items-center gap-2 z-20">
         {ctx.playOrder.map(playerIndex => {
           const player = G.players[parseInt(playerIndex)];
           return (

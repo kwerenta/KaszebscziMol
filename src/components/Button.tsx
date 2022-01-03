@@ -1,17 +1,17 @@
 interface Props {
-  name: string;
+  text: string;
   fn: (payload?: number) => void;
   payload?: number;
 }
 
-export const Button = ({ name, fn, payload }: Props): JSX.Element => (
-  <div className="relative" key={name}>
-    <div className="absolute inset-0 bg-red-800 rounded-3xl" aria-hidden></div>
+export const Button = ({ text, fn, payload }: Props): JSX.Element => (
+  <div className="relative" key={text}>
+    <div className="absolute inset-0 bg-red-dark rounded-3xl" aria-hidden />
     <button
-      className="relative bg-red-500 px-3 py-8 text-xl rounded-3xl shadow-lg w-full z-50 transition-transform -translate-y-1 hover:-translate-y-2 active:translate-y-0"
+      className="text-black relative bg-red-light px-3 py-8 text-xl rounded-3xl shadow-lg w-full z-50 transition-transform -translate-y-2 hover:-translate-y-3 active:translate-y-0"
       onClick={() => fn(payload)}
     >
-      {name}
+      {text}
     </button>
   </div>
 );

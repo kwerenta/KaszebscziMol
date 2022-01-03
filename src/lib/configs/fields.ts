@@ -14,15 +14,15 @@ export interface Group {
 
 export const groups: Group[] = [
   { color: "shadow-zinc-300", housePrice: 0 },
-  { color: "shadow-amber-900", housePrice: 50 },
-  { color: "shadow-blue-500", housePrice: 50 },
-  { color: "shadow-fuchsia-600", housePrice: 100 },
+  { color: "shadow-amber-800", housePrice: 50 },
+  { color: "shadow-cyan-500", housePrice: 50 },
+  { color: "shadow-purple-800", housePrice: 100 },
   { color: "shadow-orange-400", housePrice: 100 },
-  { color: "shadow-red-500", housePrice: 150 },
+  { color: "shadow-red-600", housePrice: 150 },
   { color: "shadow-yellow-400", housePrice: 150 },
-  { color: "shadow-green-600", housePrice: 200 },
-  { color: "shadow-sky-800", housePrice: 200 },
-  { color: "shadow-stone-500", housePrice: 0 },
+  { color: "shadow-emerald-800", housePrice: 200 },
+  { color: "shadow-sky-900", housePrice: 200 },
+  { color: "shadow-stone-700", housePrice: 0 },
   { color: "#ccc", housePrice: 0 },
 ];
 

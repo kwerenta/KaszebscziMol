@@ -1,6 +1,6 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: "media",
   theme: {
     extend: {
       fontFamily: {
@@ -22,6 +22,34 @@ module.exports = {
           green: "#64A100",
           red: "#EE1919",
         },
+        red: {
+          light: "#fc5c65",
+          dark: "#eb3b5a",
+        },
+        orange: {
+          light: "#fd9644",
+          dark: "#fa8231",
+        },
+        yellow: {
+          light: "#fed330",
+          dark: "#f7b731",
+        },
+        green: {
+          light: "#26de81",
+          dark: "#20bf6b",
+        },
+        gray: {
+          light: "#d1d8e0",
+          dark: "#a5b1c2",
+        },
+        "blue-gray": {
+          light: "#778ca3",
+          dark: "#4b6584",
+        },
+        blue: {
+          light: "#45aaf2",
+          dark: "#2d98da",
+        },
       },
       dropShadow: {
         "sm-intense": "0 0 4px rgba(0, 0, 0, 0.5)",
@@ -30,8 +58,6 @@ module.exports = {
       },
       boxShadow: {
         "group-indicator": "inset 0 -6px 0 0",
-        "bottom-inset": "inset 0 -8px 0 0",
-        bottom: "0 8px 0 0",
       },
     },
   },
