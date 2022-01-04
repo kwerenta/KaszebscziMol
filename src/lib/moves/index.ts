@@ -40,5 +40,4 @@ const mapValues = <T extends object, V>(
   ) as { [K in keyof T]: V };
 
 export const stageMoves = mapValues(moves, k => Object.keys(k.moves));
-
 export default moves;

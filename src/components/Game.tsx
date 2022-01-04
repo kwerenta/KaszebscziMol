@@ -18,7 +18,13 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
           <section className="flex-1">
             <div className="flex flex-col gap-8">
               {stageMoves[currentStage].map((move, i) => (
-                <Button key={i} fn={moves[move]} text={move} />
+                <Button
+                  color="orange"
+                  type="move"
+                  key={i}
+                  onClick={moves[move]}
+                  text={move}
+                />
               ))}
             </div>
           </section>
@@ -35,7 +41,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
           return (
             <div
               key={playerIndex}
-              className={`w-full bg-white text-black px-3 py-2 rounded-l-lg ${
+              className={`w-full bg-gray-dark dark:bg-gray-light text-gray-800 px-3 py-2 rounded-l-lg ${
                 player.name === currentPlayer.name ? "font-extrabold" : ""
               }`}
             >

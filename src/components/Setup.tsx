@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { playerData } from "../lib/KaszebscziMol";
+import { Button } from "./Button";
 
 export const Setup = () => {
   const [players, setPlayers] = useState<playerData[]>([]);
@@ -14,7 +15,7 @@ export const Setup = () => {
   return (
     <div className="text-center w-full h-full flex items-center justify-center flex-col">
       <h2 className="text-3xl font-bold mb-8">Ustawienia rozgrywki</h2>
-      <ol>
+      <ol className="mb-8">
         {players.map((player, index) => (
           <li
             key={index}
@@ -36,9 +37,7 @@ export const Setup = () => {
         </li>
       </ol>
       <Link to="/game" state={{ players }}>
-        <button className="mt-8 ring-4 ring-pattern-red ring-offset-4 ring-offset-pattern-blue-light px-6 py-3 rounded-lg hover:bg-pattern-red transition-colors cursor-pointer text-xl font-bold">
-          Rozpocznij grę
-        </button>
+        <Button color="green" text="Rozpocznij grę" type="CTA" />
       </Link>
     </div>
   );
