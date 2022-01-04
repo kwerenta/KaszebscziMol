@@ -16,8 +16,8 @@ export const Home = ({ dark, setDark }: Props): JSX.Element => {
         checked={dark}
         onChange={e => setDark(e.currentTarget.checked)}
       />
-      <MainFlower className="w-full max-w-sm drop-shadow-sm-intense" />
-      <h1 className="text-7xl font-logo font-bold drop-shadow-lg-intense text-center">
+      <MainFlower className="w-full max-w-sm drop-shadow-lg" />
+      <h1 className="text-7xl font-logo font- text-center">
         Kaszëbsczi <br />
         Môl
       </h1>

@@ -51,11 +51,6 @@ module.exports = {
           dark: "#2d98da",
         },
       },
-      dropShadow: {
-        "sm-intense": "0 0 4px rgba(0, 0, 0, 0.5)",
-        "md-intense": "3px 3px 3px rgba(0, 0, 0, 0.55)",
-        "lg-intense": "4px 6px 2px rgba(0, 0, 0, 0.4)",
-      },
       boxShadow: {
         "group-indicator": "inset 0 -6px 0 0",
       },

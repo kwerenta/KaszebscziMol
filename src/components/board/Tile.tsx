@@ -1,5 +1,6 @@
 import { Field, groups } from "../../lib/configs/fields";
 import { Player } from "../../lib/KaszebscziMol";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface TileProps {
   players: Player[];
@@ -31,7 +32,7 @@ export const Tile = ({ field, index, players }: TileProps) => {
         />
       </div>
       <span className="z-10 text-center text-3xl text-gray-800 flex-1 flex justify-center items-center">
-        {index}
+        <FontAwesomeIcon icon={field.icon} />
       </span>
     </div>
   );
