@@ -37,7 +37,7 @@ export const Button = ({
         className={`${
           colors[color].light
         } text-gray-800 relative text-xl rounded-3xl shadow-lg w-full z-50 transition-transform -translate-y-2 hover:-translate-y-3 active:translate-y-0 ${
-          type === "move" ? "px-4 py-8" : "px-6 py-4 font-bold"
+          type === "move" ? "px-4 py-8" : "px-8 py-4 font-bold"
         }`}
         onClick={() => onClick(payload)}
       >

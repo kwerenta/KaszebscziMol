@@ -1,6 +1,6 @@
 import type { BoardProps } from "boardgame.io/react";
 import type { GameState } from "../lib/KaszebscziMol";
-import { stageMoves, Stages } from "../lib/moves";
+import { movesData, stageMoves, Stages } from "../lib/moves";
 import { Board } from "./board/Board";
 import { Button } from "./Button";
 
@@ -19,11 +19,11 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
             <div className="flex flex-col gap-8">
               {stageMoves[currentStage].map((move, i) => (
                 <Button
-                  color="orange"
+                  color={movesData[move].color}
                   type="move"
                   key={i}
                   onClick={moves[move]}
-                  text={move}
+                  text={movesData[move].text}
                 />
               ))}
             </div>

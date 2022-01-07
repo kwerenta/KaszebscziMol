@@ -7,6 +7,65 @@ import { drawCard } from "./cardField";
 import { auction, buyProperty } from "./noOwner";
 
 export type Stages = keyof typeof moves;
+
+// TEMP: very repetitive, but works
+
+interface MovesData {
+  [k: string]: {
+    text: string;
+    color: "green" | "red" | "orange";
+  };
+}
+export const movesData: MovesData = {
+  rollDice: {
+    text: "Rzuć kostką",
+    color: "green",
+  },
+  bankrupt: {
+    text: "Ogłoś bankructwo",
+    color: "red",
+  },
+  endTurn: {
+    text: "Zakończ turę",
+    color: "orange",
+  },
+  buyHouse: {
+    text: "Kup dom",
+    color: "green",
+  },
+  sellHouse: {
+    text: "Sprzedaj dom",
+    color: "red",
+  },
+  pay: {
+    text: "Zapłać czynsz",
+    color: "orange",
+  },
+  buyProperty: {
+    text: "Kup nieruchomość",
+    color: "green",
+  },
+  auction: {
+    text: "Wystaw na licytację",
+    color: "orange",
+  },
+  drawCard: {
+    text: "Weź kartę",
+    color: "green",
+  },
+  acceptCard: {
+    text: "Akceptuj",
+    color: "green",
+  },
+  bid: {
+    text: "Licytuj",
+    color: "orange",
+  },
+  pass: {
+    text: "Spasuj",
+    color: "red",
+  },
+};
 const moves = {
   rollDice: {
     moves: {

@@ -6,7 +6,7 @@ interface Props {
 export const Layout = ({ children }: Props): JSX.Element => (
   <>
     <Head>
-      <title>Layouts Example</title>
+      <title>Kaszëbsczi Môl</title>
     </Head>
     <main className="bg-gray-100 dark:bg-blue-gray-dark text-gray-800 dark:text-white h-screen w-screen flex items-center justify-center">
       {children}

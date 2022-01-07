@@ -7,12 +7,13 @@ import { useRouter } from "next/router";
 export default function GameClient(): JSX.Element {
   const router = useRouter();
 
-  const playersQuery = JSON.parse(
-    Array.isArray(router.query.players) ? "" : router.query.players
-  );
+  const playersData =
+    !Array.isArray(router.query.players) && router.query.players
+      ? JSON.parse(router.query.players)
+      : {};
   const players: playerData[] =
-    playersQuery && playersQuery.length >= 2
-      ? [...playersQuery]
+    playersData && playersData.length >= 2
+      ? playersData
       : [
           { name: "Kamil", color: "bg-fuchsia-500" },
           { name: "Rafał", color: "bg-green-800" },

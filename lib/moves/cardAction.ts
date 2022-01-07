@@ -49,4 +49,6 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
 
   // set current card to none
   G.card = -1;
+
+  ctx.events.setStage("noAction");
 };
