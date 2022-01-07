@@ -1,14 +1,18 @@
 import { Client } from "boardgame.io/react";
-import { useLocation } from "react-router-dom";
 import { KaszebscziMol, playerData } from "../lib/KaszebscziMol";
-import { Game } from "./Game";
+import { Game } from "../components/Game";
+import { Layout } from "../components/Layout";
+import { useRouter } from "next/router";
 
-export const GameClient = (): JSX.Element => {
-  const location = useLocation();
-  const { state } = location;
+export default function GameClient(): JSX.Element {
+  const router = useRouter();
+
+  const playersQuery = JSON.parse(
+    Array.isArray(router.query.players) ? "" : router.query.players
+  );
   const players: playerData[] =
-    state.players.length >= 2
-      ? state.players
+    playersQuery && playersQuery.length >= 2
+      ? [...playersQuery]
       : [
           { name: "Kamil", color: "bg-fuchsia-500" },
           { name: "Rafał", color: "bg-green-800" },
@@ -24,8 +28,8 @@ export const GameClient = (): JSX.Element => {
   });
 
   return (
-    <>
+    <Layout>
       <Component />
-    </>
+    </Layout>
   );
-};
+}

@@ -1,5 +1,8 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  content: [
+    "./components/**/*.{js,jsx,ts,tsx}",
+    "./pages/**/*.{js,jsx,ts,tsx}",
+  ],
   darkMode: "class",
   theme: {
     extend: {
@@ -8,10 +11,10 @@ module.exports = {
         logo: ["Kalam", "sans-serif"],
       },
       width: {
-        tile: "min(calc(100vh/10.5),calc(calc(100vw/15)))",
+        tile: "min(calc(100vh/10.5),calc(100vw/15))",
       },
       height: {
-        tile: "min(calc(100vh/10.5),calc(calc(100vw/15)))",
+        tile: "min(calc(100vh/10.5),calc(100vw/15))",
       },
       colors: {
         pattern: {

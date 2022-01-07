@@ -14,7 +14,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
   return (
     <main className="flex justify-center items-center h-screen w-screen">
       <Board fields={G.fields} players={G.players}>
-        <div className="text-center flex p-4 flex-1 mx-4 my-3">
+        <div className="text-center flex p-8 flex-1 gap-8">
           <section className="flex-1">
             <div className="flex flex-col gap-8">
               {stageMoves[currentStage].map((move, i) => (
