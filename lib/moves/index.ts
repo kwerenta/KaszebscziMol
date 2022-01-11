@@ -7,9 +7,7 @@ import { drawCard } from "./cardField";
 import { auction, buyProperty } from "./noOwner";
 
 export type Stages = keyof typeof moves;
-
 // TEMP: very repetitive, but works
-
 interface MovesData {
   [k: string]: {
     text: string;

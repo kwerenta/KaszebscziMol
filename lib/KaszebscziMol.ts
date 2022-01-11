@@ -54,7 +54,12 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       playOrder: [],
       playOrderPos: -1,
     },
-    fields,
+    fields: fields.map<Field>(field => ({
+      ...field,
+      mortgage: false,
+      houses: 0,
+      owner: "",
+    })),
     card: -1,
     doubles: 0,
     bankrupts: 0,

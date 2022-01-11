@@ -28,15 +28,26 @@ import {
   faWineBottle,
 } from "@fortawesome/free-solid-svg-icons";
 
-export interface Field {
+interface BasicField {
   readonly name: string;
   readonly icon: IconDefinition;
-  readonly price?: number;
   readonly group: number;
-  readonly rent?: number[];
-  owner?: string;
-  houses?: number;
 }
+interface NonBuyableField extends BasicField {
+  readonly price?: never;
+  readonly rent?: never;
+}
+interface BuyableField extends BasicField {
+  readonly price: number;
+  readonly rent: number[];
+}
+
+type FieldData = NonBuyableField | BuyableField;
+export type Field = FieldData & {
+  owner: string;
+  houses: number;
+  mortgage: boolean;
+};
 
 export interface Group {
   readonly color: string;
@@ -57,7 +68,7 @@ export const groups: Group[] = [
   { color: "#ccc", housePrice: 0 },
 ];
 
-export const fields: Field[] = [
+export const fields: FieldData[] = [
   { name: "START", group: 12, icon: faArrowRight },
   {
     name: "Plaża Ostrzyce",
@@ -213,7 +224,7 @@ export const fields: Field[] = [
     rent: [24, 120, 360, 850, 1025, 1200],
     icon: faCity,
   },
-  { name: "Wodociągi?", price: 150, group: 9, icon: faFaucet },
+  { name: "Wodociągi?", price: 150, group: 9, icon: faFaucet, rent: [80] },
   { name: "Kasa społeczna?", group: 10, icon: faToolbox },
   {
     name: "Amfiteatr Szerokowidze Sierakowice",
