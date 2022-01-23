@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 interface Props {
   text: string;
   type: "move" | "CTA";
@@ -27,22 +29,30 @@ export const Button = ({
       dark: "bg-orange-dark",
     },
   };
+  const [isClicked, setIsClicked] = useState(false);
   return (
-    <div className="relative" key={text}>
+    <button
+      className="relative"
+      key={text}
+      onClick={() => setIsClicked(true)}
+      onAnimationEnd={() => {
+        setIsClicked(false);
+        onClick(payload);
+      }}
+    >
       <div
-        className={`absolute inset-0 rounded-3xl ${colors[color].dark}`}
+        className={`peer absolute inset-0 rounded-3xl ${colors[color].dark}`}
         aria-hidden
       />
-      <button
+      <div
         className={`${
           colors[color].light
-        } text-gray-800 relative text-xl rounded-3xl shadow-lg w-full z-50 transition-transform -translate-y-2 hover:-translate-y-3 active:translate-y-0 ${
+        } text-gray-800 text-xl rounded-3xl shadow-lg w-full z-50 transition-transform -translate-y-2 hover:-translate-y-3 focus:-translate-y-3 peer-hover:-translate-y-3 ${
           type === "move" ? "px-4 py-8" : "px-8 py-4 font-bold"
-        }`}
-        onClick={() => onClick(payload)}
+        } ${isClicked && "animate-press"}`}
       >
         {text}
-      </button>
-    </div>
+      </div>
+    </button>
   );
 };

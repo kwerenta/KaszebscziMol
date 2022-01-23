@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
   content: [
     "./components/**/*.{js,jsx,ts,tsx}",
@@ -8,7 +10,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Poppins", "sans-serif"],
+        sans: ["Poppins", ...defaultTheme.fontFamily.sans],
         logo: ["Kalam", "sans-serif"],
       },
       width: {
@@ -57,6 +59,15 @@ module.exports = {
       },
       boxShadow: {
         "group-indicator": "inset 0 -6px 0 0",
+      },
+      keyframes: {
+        press: {
+          from: { transform: "translateY(-0.75rem)" },
+          to: { transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        press: "press 150ms cubic-bezier(0.4, 0, 0.2, 1)",
       },
     },
   },
