@@ -2,18 +2,18 @@ import Link from "next/link";
 import { MainFlower } from "../asstets/pattern/MainFlower";
 import { Button } from "../components/Button";
 import { Layout } from "../components/Layout";
-import { useDarkMode } from "../hooks/useDarkMode";
+import { useDarkMode } from "../contexts/useDarkModeContext";
 
 export default function Home(): JSX.Element {
-  const [dark, setDark] = useDarkMode();
+  const { isDark, setIsDark } = useDarkMode();
   return (
     <Layout>
       <header className="w-full h-full flex flex-col items-center justify-center space-y-10 flex-1 md:flex-initial">
         <input
           type="checkbox"
           className="absolute top-2 left-2 w-12 h-12"
-          checked={dark}
-          onChange={e => setDark(e.currentTarget.checked)}
+          checked={isDark}
+          onChange={e => setIsDark(e.currentTarget.checked)}
         />
         <MainFlower className="w-full max-w-sm drop-shadow-lg" />
         <h1 className="text-7xl font-logo font- text-center">
