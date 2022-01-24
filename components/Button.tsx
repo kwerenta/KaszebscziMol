@@ -47,7 +47,7 @@ export const Button = ({
       <div
         className={`${
           colors[color].light
-        } text-gray-800 text-xl rounded-3xl shadow-lg w-full z-50 transition-transform -translate-y-2 hover:-translate-y-3 focus:-translate-y-3 peer-hover:-translate-y-3 ${
+        } text-gray-800 text-xl rounded-3xl shadow-lg w-full z-50 mt-2 transition-transform -translate-y-2 hover:-translate-y-3 focus:-translate-y-3 peer-hover:-translate-y-3 ${
           type === "move" ? "px-4 py-8" : "px-8 py-4 font-bold"
         } ${isClicked && "animate-press"}`}
       >

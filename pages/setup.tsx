@@ -33,7 +33,7 @@ export default function Setup() {
   return (
     <Layout>
       <div className="text-center w-full h-full flex items-center justify-center flex-col">
-        <h2 className="text-3xl font-bold mb-8">Ustawienia rozgrywki</h2>
+        <h2 className="text-3xl font-bold mb-4">Ustawienia rozgrywki</h2>
         <CardsContainer>
           {players.map(player => (
             <Card
