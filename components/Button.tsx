@@ -50,7 +50,7 @@ export const Button = ({
       <div
         className={`${
           colors[color].light
-        } group-disabled:bg-gray-light group-disabled:hover:-translate-y-2  text-gray-800 text-xl rounded-3xl shadow-lg w-full z-50 mt-2 transition-transform -translate-y-2 hover:-translate-y-3 focus:-translate-y-3 group-disabled:peer-hover:-translate-y-2 peer-hover:-translate-y-3 ${
+        } group-disabled:bg-gray-light group-disabled:hover:-translate-y-2 text-gray-800 group-disabled:text-gray-600 text-xl rounded-3xl shadow-lg w-full z-50 mt-2 transition-transform -translate-y-2 hover:-translate-y-3 focus:-translate-y-3 group-disabled:peer-hover:-translate-y-2 peer-hover:-translate-y-3 ${
           type === "move" ? "px-4 py-8" : "px-8 py-4 font-bold"
         } ${isClicked && "animate-press"}`}
       >

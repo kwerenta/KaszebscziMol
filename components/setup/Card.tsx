@@ -33,12 +33,12 @@ export const Card = ({
   colors,
 }: CardProps) => {
   return (
-    <div className="rounded-2xl shadow-md flex flex-col bg-blue-gray-dark dark:bg-blue-gray-light items-center gap-4 p-4 w-64">
+    <div className="group rounded-2xl shadow-md flex flex-col text-white dark:text-black bg-blue-gray-dark dark:bg-blue-gray-light items-center gap-4 p-4 w-64 h-[22rem]">
       <div
-        className={`cursor-pointer rounded-full w-10 h-10 flex items-center justify-center transition-colors group ${
+        className={`cursor-pointer rounded-full w-10 h-10 flex items-center justify-center transition-all group ${
           addPlayerCard
             ? "mr-auto hover:bg-green-dark/40"
-            : "ml-auto hover:bg-red-light/40"
+            : "ml-auto hover:bg-red-light/40 opacity-0 group-hover:opacity-100"
         }`}
         onClick={
           addPlayerCard ? addPlayer : () => removePlayer(playerData.name)
@@ -51,7 +51,6 @@ export const Card = ({
           }`}
         />
       </div>
-
       <Image
         className={`rounded-2xl ${playerData.color}`}
         src={`https://avatars.dicebear.com/4.9/api/avataaars/${playerData.name}.svg`}

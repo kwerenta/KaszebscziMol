@@ -74,7 +74,7 @@ export default function Setup() {
           as={"/game"}
           passHref
         >
-          <a>
+          <a className={players.length < 2 ? "pointer-events-none" : undefined}>
             <Button
               color="green"
               text="Rozpocznij grę"
