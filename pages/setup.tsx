@@ -7,8 +7,18 @@ import { CardsContainer } from "../components/setup/CardsContainer";
 import type { playerData } from "../lib/KaszebscziMol";
 
 export default function Setup() {
-  const [players, setPlayers] = useState<playerData[]>([]);
   const EMPTY_PLAYER: playerData = { name: "", color: "" };
+  const PLAYER_COLORS = [
+    "bg-pattern-red",
+    "bg-pattern-blue-dark",
+    "bg-pattern-blue",
+    "bg-pattern-blue-light",
+    "bg-pattern-green",
+    "bg-pattern-yellow",
+  ];
+
+  const [colors, setColors] = useState(PLAYER_COLORS.sort());
+  const [players, setPlayers] = useState<playerData[]>([]);
   const [playerData, setPlayerData] = useState<playerData>(EMPTY_PLAYER);
 
   const addPlayer = () => {
@@ -22,9 +32,13 @@ export default function Setup() {
       ...players,
       { name: playerData.name, color: playerData.color },
     ]);
+    setColors(colors.filter(color => playerData.color !== color));
     setPlayerData(EMPTY_PLAYER);
   };
   const removePlayer = (name: string) => {
+    setColors(
+      [...colors, players.find(player => player.name === name).color].sort()
+    );
     setPlayers(prevPlayers =>
       prevPlayers.filter(player => player.name !== name)
     );
@@ -42,12 +56,15 @@ export default function Setup() {
               removePlayer={removePlayer}
             />
           ))}
-          <Card
-            playerData={playerData}
-            setPlayerData={setPlayerData}
-            addPlayer={addPlayer}
-            addPlayerCard
-          />
+          {players.length < 6 && (
+            <Card
+              playerData={playerData}
+              colors={colors}
+              setPlayerData={setPlayerData}
+              addPlayer={addPlayer}
+              addPlayerCard
+            />
+          )}
         </CardsContainer>
         <Link
           href={{
@@ -58,7 +75,12 @@ export default function Setup() {
           passHref
         >
           <a>
-            <Button color="green" text="Rozpocznij grę" type="CTA" />
+            <Button
+              color="green"
+              text="Rozpocznij grę"
+              type="CTA"
+              disabled={players.length < 2}
+            />
           </a>
         </Link>
       </div>

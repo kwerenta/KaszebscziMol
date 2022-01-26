@@ -1,4 +1,4 @@
-import { faSave, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
@@ -6,6 +6,7 @@ import type { playerData } from "../../lib/KaszebscziMol";
 
 interface PlayerCardProps {
   removePlayer: (name: string) => void;
+  colors?: never;
   addPlayerCard?: never;
   setPlayerData?: never;
   addPlayer?: never;
@@ -13,6 +14,7 @@ interface PlayerCardProps {
 
 interface AddPlayerCardProps {
   removePlayer?: never;
+  colors: string[];
   addPlayerCard: true;
   setPlayerData: Dispatch<SetStateAction<playerData>>;
   addPlayer: () => void;
@@ -28,9 +30,10 @@ export const Card = ({
   addPlayer,
   addPlayerCard,
   removePlayer,
+  colors,
 }: CardProps) => {
   return (
-    <div className="rounded-2xl shadow-md flex flex-col text-white dark:text-black bg-blue-gray-dark dark:bg-blue-gray-light items-center gap-4 p-4 w-64">
+    <div className="rounded-2xl shadow-md flex flex-col bg-blue-gray-dark dark:bg-blue-gray-light items-center gap-4 p-4 w-64">
       <div
         className={`cursor-pointer rounded-full w-10 h-10 flex items-center justify-center transition-colors group ${
           addPlayerCard
@@ -42,7 +45,7 @@ export const Card = ({
         }
       >
         <FontAwesomeIcon
-          icon={addPlayerCard ? faSave : faTrash}
+          icon={addPlayerCard ? faPlusCircle : faTrash}
           className={`opacity-70 group-hover:opacity-100 transition-opacity ${
             addPlayerCard ? "text-green-light" : "text-red-light"
           }`}
@@ -50,6 +53,7 @@ export const Card = ({
       </div>
 
       <Image
+        className={`rounded-2xl ${playerData.color}`}
         src={`https://avatars.dicebear.com/4.9/api/avataaars/${playerData.name}.svg`}
         alt="Awatar gracza"
         width={128}
@@ -59,13 +63,8 @@ export const Card = ({
         <>
           <div>
             <label>Kolor</label>
-            <div className="flex overflow-hidden w-full gap-3">
-              {[
-                "bg-fuchsia-500",
-                "bg-green-800",
-                "bg-pink-700",
-                "bg-sky-500",
-              ].map(color => (
+            <div className="flex overflow-hidden w-full gap-2">
+              {colors.map(color => (
                 <input
                   type="radio"
                   name="color"
@@ -87,7 +86,9 @@ export const Card = ({
             <label htmlFor="name">Nazwa</label>
             <input
               type="text"
-              className="rounded-md p-2 text-black bg-gray-light"
+              minLength={2}
+              maxLength={16}
+              className="rounded-md p-2 text-black bg-gray-light w-full"
               id="name"
               value={playerData.name}
               onChange={e =>

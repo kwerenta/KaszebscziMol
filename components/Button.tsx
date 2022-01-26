@@ -6,6 +6,7 @@ interface Props {
   color: "green" | "red" | "orange";
   onClick?: (payload?: number) => void;
   payload?: number;
+  disabled?: boolean;
 }
 
 export const Button = ({
@@ -14,6 +15,7 @@ export const Button = ({
   payload,
   type,
   color,
+  disabled,
 }: Props): JSX.Element => {
   const colors: Record<typeof color, { light: string; dark: string }> = {
     green: {
@@ -32,7 +34,8 @@ export const Button = ({
   const [isClicked, setIsClicked] = useState(false);
   return (
     <button
-      className="relative"
+      disabled={disabled}
+      className="relative group"
       key={text}
       onClick={() => setIsClicked(true)}
       onAnimationEnd={() => {
@@ -41,13 +44,13 @@ export const Button = ({
       }}
     >
       <div
-        className={`peer absolute inset-0 rounded-3xl ${colors[color].dark}`}
+        className={`peer absolute inset-0 rounded-3xl group-disabled:bg-gray-dark group-disabled:peer-hover:bg-gray-dark ${colors[color].dark}`}
         aria-hidden
       />
       <div
         className={`${
           colors[color].light
-        } text-gray-800 text-xl rounded-3xl shadow-lg w-full z-50 mt-2 transition-transform -translate-y-2 hover:-translate-y-3 focus:-translate-y-3 peer-hover:-translate-y-3 ${
+        } group-disabled:bg-gray-light group-disabled:hover:-translate-y-2  text-gray-800 text-xl rounded-3xl shadow-lg w-full z-50 mt-2 transition-transform -translate-y-2 hover:-translate-y-3 focus:-translate-y-3 group-disabled:peer-hover:-translate-y-2 peer-hover:-translate-y-3 ${
           type === "move" ? "px-4 py-8" : "px-8 py-4 font-bold"
         } ${isClicked && "animate-press"}`}
       >
