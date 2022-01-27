@@ -1,7 +1,9 @@
+import { createAvatar } from "@dicebear/avatars";
+import * as style from "@dicebear/avatars-avataaars-sprites";
 import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
-import type { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useMemo } from "react";
 import type { playerData } from "../../lib/KaszebscziMol";
 
 interface PlayerCardProps {
@@ -32,8 +34,17 @@ export const Card = ({
   removePlayer,
   colors,
 }: CardProps) => {
+  const avatar = useMemo(
+    () =>
+      createAvatar(style, {
+        seed: playerData.name,
+        dataUri: true,
+      }),
+    [playerData.name]
+  );
+
   return (
-    <div className="group rounded-2xl shadow-md flex flex-col text-white dark:text-black bg-blue-gray-dark dark:bg-blue-gray-light items-center gap-4 p-4 w-64 h-[22rem]">
+    <div className="snap-center group rounded-2xl shadow-md flex flex-col text-white dark:text-black bg-blue-gray-dark dark:bg-blue-gray-light items-center gap-4 p-4 w-64 shrink-0">
       <div
         className={`cursor-pointer rounded-full w-10 h-10 flex items-center justify-center transition-all group ${
           addPlayerCard
@@ -53,7 +64,7 @@ export const Card = ({
       </div>
       <Image
         className={`rounded-2xl ${playerData.color}`}
-        src={`https://avatars.dicebear.com/4.9/api/avataaars/${playerData.name}.svg`}
+        src={avatar}
         alt="Awatar gracza"
         width={128}
         height={128}
