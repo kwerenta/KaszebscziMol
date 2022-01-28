@@ -13,16 +13,16 @@ export const Tile = ({ field, index, players }: TileProps) => {
   const isBought = !!field.owner;
   return (
     <div
-      className={`h-tile w-tile min-h-[60px] min-w-[60px] text-black bg-gray-dark dark:bg-gray-light rounded-lg md:rounded-xl lg:rounded-2xl flex flex-col justify-between relative pb-2 ${
+      className={`h-tile w-tile bg-gray-dark dark:bg-gray-light relative flex min-h-[60px] min-w-[60px] flex-col justify-between rounded-lg pb-2 text-black md:rounded-xl lg:rounded-2xl ${
         isBuyable ? `shadow-group-indicator ${groups[field.group].color}` : ""
       }`}
     >
       <div className={"flex justify-between"}>
-        <span className="text-center text-sm flex-1">
+        <span className="flex-1 text-center text-sm">
           {isBuyable && `$${field.price}`}
         </span>
         <div
-          className={`w-4 h-4 lg:w-5 lg:h-5 rounded-tr-lg md:rounded-tr-xl lg:rounded-tr-2xl ${
+          className={`h-4 w-4 rounded-tr-lg md:rounded-tr-xl lg:h-5 lg:w-5 lg:rounded-tr-2xl ${
             isBuyable
               ? isBought
                 ? players[parseInt(field.owner!)].color
@@ -31,7 +31,7 @@ export const Tile = ({ field, index, players }: TileProps) => {
           } `}
         />
       </div>
-      <span className="z-10 text-center text-3xl text-gray-800 flex-1 flex justify-center items-center">
+      <span className="z-10 flex flex-1 items-center justify-center text-center text-3xl text-gray-800">
         <FontAwesomeIcon icon={field.icon} />
       </span>
     </div>

@@ -44,12 +44,12 @@ export const Card = ({
   );
 
   return (
-    <div className="snap-center group rounded-2xl shadow-md flex flex-col text-white dark:text-black bg-blue-gray-dark dark:bg-blue-gray-light items-center gap-4 p-4 w-64 shrink-0">
+    <div className="group bg-blue-gray-dark dark:bg-blue-gray-light flex w-64 shrink-0 snap-center flex-col items-center gap-4 rounded-2xl p-4 text-white shadow-md dark:text-black">
       <div
-        className={`cursor-pointer rounded-full w-10 h-10 flex items-center justify-center transition-all group ${
+        className={`group flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-all ${
           addPlayerCard
-            ? "mr-auto hover:bg-green-dark/40"
-            : "ml-auto hover:bg-red-light/40 opacity-0 group-hover:opacity-100"
+            ? "hover:bg-green-dark/40 mr-auto"
+            : "hover:bg-red-light/40 ml-auto opacity-0 group-hover:opacity-100"
         }`}
         onClick={
           addPlayerCard ? addPlayer : () => removePlayer(playerData.name)
@@ -57,7 +57,7 @@ export const Card = ({
       >
         <FontAwesomeIcon
           icon={addPlayerCard ? faPlusCircle : faTrash}
-          className={`opacity-70 group-hover:opacity-100 transition-opacity ${
+          className={`opacity-70 transition-opacity group-hover:opacity-100 ${
             addPlayerCard ? "text-green-light" : "text-red-light"
           }`}
         />
@@ -73,7 +73,7 @@ export const Card = ({
         <>
           <div>
             <label>Kolor</label>
-            <div className="flex overflow-hidden w-full gap-2">
+            <div className="flex w-full gap-2 overflow-hidden">
               {colors.map(color => (
                 <input
                   type="radio"
@@ -87,7 +87,7 @@ export const Card = ({
                       color: e.currentTarget.value,
                     })
                   }
-                  className={`cursor-pointer w-8 h-8 ${color} opacity-70 hover:opacity-100 checked:opacity-100 appearance-none rounded-md checked:border-2 checked:border-gray-light`}
+                  className={`h-8 w-8 cursor-pointer ${color} checked:border-gray-light appearance-none rounded-md opacity-70 checked:border-2 checked:opacity-100 hover:opacity-100`}
                 />
               ))}
             </div>
@@ -98,7 +98,7 @@ export const Card = ({
               type="text"
               minLength={2}
               maxLength={16}
-              className="rounded-md p-2 text-black bg-gray-light w-full"
+              className="bg-gray-light w-full rounded-md p-2 text-black"
               id="name"
               value={playerData.name}
               onChange={e =>

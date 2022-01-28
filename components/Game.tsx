@@ -12,9 +12,9 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
     "rollDice") as Stages;
 
   return (
-    <main className="flex justify-center items-center h-screen w-screen">
+    <main className="flex h-screen w-screen items-center justify-center">
       <Board fields={G.fields} players={G.players}>
-        <div className="text-center flex px-8 py-6 flex-1 gap-8">
+        <div className="flex flex-1 gap-8 px-8 py-6 text-center">
           <section className="flex-1">
             <div className="flex flex-col gap-8">
               {stageMoves[currentStage].map((move, i) => (
@@ -35,13 +35,13 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
           </section>
         </div>
       </Board>
-      <div className="absolute right-0 h-full flex flex-col justify-center items-center gap-2 z-20">
+      <div className="absolute right-0 z-20 flex h-full flex-col items-center justify-center gap-2">
         {ctx.playOrder.map(playerIndex => {
           const player = G.players[parseInt(playerIndex)];
           return (
             <div
               key={playerIndex}
-              className={`w-full bg-gray-dark dark:bg-gray-light text-gray-800 px-3 py-2 rounded-l-lg ${
+              className={`bg-gray-dark dark:bg-gray-light w-full rounded-l-lg px-3 py-2 text-gray-800 ${
                 player.name === currentPlayer.name ? "font-extrabold" : ""
               }`}
             >

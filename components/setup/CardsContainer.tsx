@@ -3,7 +3,7 @@ interface Props {
 }
 
 export const CardsContainer = ({ children }: Props) => (
-  <section className="container w-full overflow-x-auto snap-x flex gap-4 mb-4 pb-4 px-8">
+  <section className="container mb-4 flex w-full snap-x gap-4 overflow-x-auto px-8 pb-4">
     {children}
   </section>
 );
