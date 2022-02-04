@@ -3,6 +3,7 @@ import type { GameState } from "../lib/KaszebscziMol";
 import { movesData, stageMoves, Stages } from "../lib/moves";
 import { Board } from "./board/Board";
 import { Button } from "./Button";
+import { AuctionModal } from "./modal/AuctionModal";
 
 export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
   const currentPlayer = G.players[parseInt(ctx.currentPlayer)];
@@ -32,6 +33,16 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
             <h2 className="text-3xl">
               {ctx.gameover ? "Koniec" : currentField.name}
             </h2>
+            {currentStage === "auction" && (
+              <AuctionModal
+                propertyName={G.fields[G.auction.property].name}
+                handleBid={moves["bid"]}
+                handlePass={moves["pass"]}
+                value={G.auction.price}
+                winningPlayerName={G.players[parseInt(G.auction.player)].name}
+                currentPlayer={currentPlayer}
+              />
+            )}
           </section>
         </div>
       </Board>
