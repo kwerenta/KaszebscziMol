@@ -1,7 +1,6 @@
-import Link from "next/link";
 import { MainFlower } from "../asstets/pattern/MainFlower";
-import { Button } from "../components/Button";
 import { Layout } from "../components/Layout";
+import { LinkButton } from "../components/LinkButton";
 import { useDarkMode } from "../contexts/useDarkModeContext";
 
 export default function Home(): JSX.Element {
@@ -20,11 +19,7 @@ export default function Home(): JSX.Element {
           Kaszëbsczi <br />
           Môl
         </h1>
-        <Link href="/setup" passHref>
-          <a>
-            <Button color="green" text="Zagraj" type="CTA" />
-          </a>
-        </Link>
+        <LinkButton href="/setup" text="Zagraj" />
       </header>
     </Layout>
   );

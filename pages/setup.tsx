@@ -1,22 +1,21 @@
-import Link from "next/link";
 import { useState } from "react";
-import { Button } from "../components/Button";
 import { Layout } from "../components/Layout";
+import { LinkButton } from "../components/LinkButton";
 import { Card } from "../components/setup/Card";
 import { CardsContainer } from "../components/setup/CardsContainer";
 import type { playerData } from "../lib/KaszebscziMol";
 
-export default function Setup() {
-  const EMPTY_PLAYER: playerData = { name: "", color: "" };
-  const PLAYER_COLORS = [
-    "bg-pattern-red",
-    "bg-pattern-blue-dark",
-    "bg-pattern-blue",
-    "bg-pattern-blue-light",
-    "bg-pattern-green",
-    "bg-pattern-yellow",
-  ];
+const EMPTY_PLAYER: playerData = { name: "", color: "" };
+const PLAYER_COLORS = [
+  "bg-pattern-red",
+  "bg-pattern-blue-dark",
+  "bg-pattern-blue",
+  "bg-pattern-blue-light",
+  "bg-pattern-green",
+  "bg-pattern-yellow",
+];
 
+export default function Setup() {
   const [colors, setColors] = useState(PLAYER_COLORS.sort());
   const [players, setPlayers] = useState<playerData[]>([]);
   const [playerData, setPlayerData] = useState<playerData>(EMPTY_PLAYER);
@@ -35,6 +34,7 @@ export default function Setup() {
     setColors(colors.filter(color => playerData.color !== color));
     setPlayerData(EMPTY_PLAYER);
   };
+
   const removePlayer = (name: string) => {
     setColors(
       [...colors, players.find(player => player.name === name).color].sort()
@@ -66,23 +66,15 @@ export default function Setup() {
             />
           )}
         </CardsContainer>
-        <Link
+        <LinkButton
+          text={"Rozpocznij grę"}
           href={{
             pathname: "/game",
             query: { players: JSON.stringify(players) },
           }}
           as={"/game"}
-          passHref
-        >
-          <a className={players.length < 2 ? "pointer-events-none" : undefined}>
-            <Button
-              color="green"
-              text="Rozpocznij grę"
-              type="CTA"
-              disabled={players.length < 2}
-            />
-          </a>
-        </Link>
+          disabled={players.length < 2}
+        />
       </div>
     </Layout>
   );

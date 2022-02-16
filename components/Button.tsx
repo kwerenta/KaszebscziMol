@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-interface Props {
+export interface ButtonProps {
   text: string;
   type: "move" | "CTA";
   color: "green" | "red" | "orange";
@@ -16,7 +16,7 @@ export const Button = ({
   type,
   color,
   disabled,
-}: Props): JSX.Element => {
+}: ButtonProps): JSX.Element => {
   const colors: Record<typeof color, { light: string; dark: string }> = {
     green: {
       light: "bg-green-light",
