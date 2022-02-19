@@ -2,7 +2,7 @@ import { Move } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
 import { groups } from "../configs/fields";
 import { GameState } from "../KaszebscziMol";
-import { getPlayer } from "./general";
+import { getPlayer } from "./base";
 
 export const buyHouse: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);

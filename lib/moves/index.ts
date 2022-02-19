@@ -1,20 +1,20 @@
-import { rollDice, bankrupt, defaultActions } from "./general";
+import { rollDice, bankrupt, endTurn } from "./base";
 import { buyHouse, sellHouse } from "./isOwner";
 import { pay } from "./hasOwner";
 import { bid, pass } from "./auction";
 import { acceptCard } from "./cardAction";
 import { drawCard } from "./cardField";
 import { auction, buyProperty } from "./noOwner";
+import type { GameState } from "../KaszebscziMol";
+import type { Ctx, Move } from "boardgame.io";
 
-export type Stages = keyof typeof moves;
-// TEMP: very repetitive, but works
-interface MovesData {
-  [k: string]: {
-    text: string;
-    color: "green" | "red" | "orange";
-  };
+interface moveData {
+  text: string;
+  color: "green" | "red" | "orange";
 }
-export const movesData: MovesData = {
+const createMovesDataMap = <T extends { [name: string]: moveData }>(map: T) =>
+  map;
+export const movesData = createMovesDataMap({
   rollDice: {
     text: "Rzuć kostką",
     color: "green",
@@ -63,32 +63,27 @@ export const movesData: MovesData = {
     text: "Spasuj",
     color: "red",
   },
-};
-const moves = {
-  rollDice: {
-    moves: {
-      rollDice,
-    },
-  },
-  noAction: {
-    moves: {
-      ...defaultActions,
-    },
-  },
-  isOwner: { moves: { ...defaultActions, buyHouse, sellHouse } },
-  hasOwner: { moves: { pay, bankrupt } },
-  noOwner: { moves: { buyProperty, auction } },
-  cardField: { moves: { drawCard } },
-  cardAction: { moves: { acceptCard, bankrupt } },
-  auction: {
-    moves: {
-      bid,
-      pass,
-    },
-  },
-} as const;
+});
+export type movesMap = keyof typeof movesData;
 
-const mapValues = <T extends object, V>(
+const createMovesMap = <
+  T extends { [name: string]: Partial<Record<movesMap, Move<GameState, Ctx>>> }
+>(
+  map: T
+) => map;
+const Moves = createMovesMap({
+  rollDice: { rollDice },
+  noAction: { endTurn, bankrupt },
+  isOwner: { endTurn, bankrupt, buyHouse, sellHouse },
+  hasOwner: { pay, bankrupt },
+  noOwner: { buyProperty, auction },
+  cardField: { drawCard },
+  cardAction: { acceptCard, bankrupt },
+  auction: { bid, pass },
+});
+export type Stages = keyof typeof Moves;
+
+const createStagesMovesMap = <T extends object, V>(
   obj: T,
   valueMapper: (k: T[keyof T]) => V
 ) =>
@@ -96,5 +91,5 @@ const mapValues = <T extends object, V>(
     Object.entries(obj).map(([k, v]) => [k, valueMapper(v)])
   ) as { [K in keyof T]: V };
 
-export const stageMoves = mapValues(moves, k => Object.keys(k.moves));
-export default moves;
+export const stageMoves = createStagesMovesMap(Moves, k => Object.keys(k));
+export default Moves;

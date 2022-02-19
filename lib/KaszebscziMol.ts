@@ -65,7 +65,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
     bankrupts: 0,
   }),
 
-  moves: Moves.rollDice.moves,
+  moves: Moves.rollDice,
 
   endIf: (G, ctx) => ctx.numPlayers - 1 === G.bankrupts,
 
@@ -86,12 +86,12 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
           : ctx.random?.Shuffle(ctx.playOrder) ?? [],
     },
     stages: {
-      noAction: Moves.noAction,
-      isOwner: Moves.isOwner,
-      hasOwner: Moves.hasOwner,
-      noOwner: Moves.noOwner,
-      cardField: Moves.cardField,
-      cardAction: Moves.cardAction,
+      noAction: { moves: Moves.noAction },
+      isOwner: { moves: Moves.isOwner },
+      hasOwner: { moves: Moves.hasOwner },
+      noOwner: { moves: Moves.noOwner },
+      cardField: { moves: Moves.cardField },
+      cardAction: { moves: Moves.cardAction },
     },
   },
   phases: {
@@ -123,7 +123,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
           playOrder: (_, ctx) => ctx.playOrder,
         },
       },
-      moves: Moves.auction.moves,
+      moves: Moves.auction,
     },
   },
 });

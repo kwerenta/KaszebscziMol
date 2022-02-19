@@ -2,7 +2,7 @@ import { Move } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
 import { cards } from "../configs/cards";
 import { GameState } from "../KaszebscziMol";
-import { getPlayer, goToJail } from "./general";
+import { getPlayer, goToJail } from "./base";
 
 export const acceptCard: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);

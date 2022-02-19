@@ -59,7 +59,7 @@ export const rollDice: Move<GameState> = (G, ctx) => {
   }
 };
 
-const endTurn: Move<GameState> = (_, ctx) => ctx.events.endTurn();
+export const endTurn: Move<GameState> = (_, ctx) => ctx.events.endTurn();
 
 export const bankrupt: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
@@ -71,9 +71,4 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
     owner: f.owner === currentPlayer.id ? undefined : f.owner,
   }));
   ctx.events.pass({ remove: true });
-};
-
-export const defaultActions = {
-  endTurn,
-  bankrupt,
 };

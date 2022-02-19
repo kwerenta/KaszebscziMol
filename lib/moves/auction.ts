@@ -1,7 +1,7 @@
 import { Move } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
 import { GameState } from "../KaszebscziMol";
-import { getPlayer } from "./general";
+import { getPlayer } from "./base";
 
 export const bid: Move<GameState> = (G, ctx, amount: number) => {
   const currentPlayer = getPlayer(G, ctx);
