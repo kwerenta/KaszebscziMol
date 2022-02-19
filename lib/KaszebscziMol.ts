@@ -37,11 +37,11 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
   maxPlayers: 6,
   disableUndo: true,
 
-  setup: ctx => ({
-    players: ctx.playOrder.map((id, index) => ({
-      id,
-      name: setupData[index].name,
-      color: setupData[index].color,
+  setup: () => ({
+    players: setupData.map((playerData, index) => ({
+      id: String(index),
+      name: playerData.name,
+      color: playerData.color,
       money: 1500,
       position: 0,
       properties: [],
@@ -76,7 +76,10 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
         G.auction.playOrderPos === -1
           ? 0
           : (G.auction.playOrderPos + 1) % G.auction.playOrder.length,
-      next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
+      next: (G, ctx) =>
+        G.doubles > 0
+          ? ctx.playOrderPos
+          : (ctx.playOrderPos + 1) % ctx.playOrder.length,
       playOrder: (G, ctx) =>
         G.auction.playOrder.length
           ? G.auction.playOrder
