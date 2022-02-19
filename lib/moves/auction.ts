@@ -9,9 +9,9 @@ export const bid: Move<GameState> = (G, ctx, amount: number) => {
     return INVALID_MOVE;
   G.auction.player = currentPlayer.id;
   G.auction.price += amount;
-  ctx.events?.endTurn();
+  ctx.events.endTurn();
 };
 
-export const pass: Move<GameState> = (G, ctx) => {
-  ctx.events?.pass({ remove: true });
+export const pass: Move<GameState> = (_, ctx) => {
+  ctx.events.pass({ remove: true });
 };

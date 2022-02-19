@@ -7,8 +7,8 @@ export const auction: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
   G.auction.player = currentPlayer.id;
   G.auction.property = currentPlayer.position;
-  ctx.events?.setPhase("auction");
-  ctx.events?.endTurn();
+  ctx.events.setPhase("auction");
+  ctx.events.endTurn();
 };
 
 export const buyProperty: Move<GameState> = (G, ctx) => {
@@ -20,5 +20,5 @@ export const buyProperty: Move<GameState> = (G, ctx) => {
   field.owner = ctx.currentPlayer;
   currentPlayer.properties.push(currentPlayer.position);
   currentPlayer.money -= price;
-  ctx.events?.endStage();
+  ctx.events.endStage();
 };

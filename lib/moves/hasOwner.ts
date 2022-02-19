@@ -5,8 +5,7 @@ import { getPlayer } from "./general";
 
 export const pay: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
-  const ownerPlayer =
-    G.players[parseInt(G.fields[currentPlayer.position].owner || "-1")];
+  const ownerPlayer = G.players[G.fields[currentPlayer.position].owner];
 
   const field = G.fields[currentPlayer.position];
   const currentRent = field.rent?.[field.houses ? field.houses : 0] || 0;

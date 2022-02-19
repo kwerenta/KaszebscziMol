@@ -24,7 +24,7 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
       if (currentPlayer.money < amount) return INVALID_MOVE;
       ctx.playOrder.forEach(id => {
         if (id === ctx.currentPlayer) currentPlayer.money -= amount;
-        else G.players[parseInt(id)].money += currentCard.amount;
+        else G.players[id].money += currentCard.amount;
       });
       break;
     case "getAll":
@@ -32,7 +32,7 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
         if (id === ctx.currentPlayer) {
           currentPlayer.money += ctx.playOrder.length * currentCard.amount;
         } else {
-          const player = G.players[parseInt(id)];
+          const player = G.players[id];
 
           if (player.money < currentCard.amount) {
             console.log(`Error! Player ${id} has not enough money`);

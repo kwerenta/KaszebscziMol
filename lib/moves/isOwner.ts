@@ -14,7 +14,7 @@ export const buyHouse: Move<GameState> = (G, ctx) => {
 
   field.houses ? field.houses++ : (field.houses = 1);
   currentPlayer.money -= price;
-  ctx.events?.setStage("noAction");
+  ctx.events.setStage("noAction");
 };
 
 export const sellHouse: Move<GameState> = (G, ctx) => {
@@ -26,5 +26,5 @@ export const sellHouse: Move<GameState> = (G, ctx) => {
 
   field.houses ? field.houses-- : (field.houses = 0);
   currentPlayer.money += price;
-  ctx.events?.setStage("noAction");
+  ctx.events.setStage("noAction");
 };
