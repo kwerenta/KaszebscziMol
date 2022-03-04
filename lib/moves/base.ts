@@ -1,7 +1,7 @@
 import { Ctx, Move } from "boardgame.io";
 import { GameState, Player } from "../KaszebscziMol";
 
-export const getPlayer = (G: GameState, ctx: Ctx) =>
+export const getPlayer = (G: GameState, ctx: Ctx): Player =>
   G.players[ctx.currentPlayer];
 
 export const goToJail = (currentPlayer: Player, ctx: Ctx) => {
@@ -11,11 +11,11 @@ export const goToJail = (currentPlayer: Player, ctx: Ctx) => {
 };
 
 export const rollDice: Move<GameState> = (G, ctx) => {
-  const dice = ctx.random.D6(2);
+  G.dice = ctx.random.D6(2) as [number, number];
   const currentPlayer = getPlayer(G, ctx);
-  let newPosition = currentPlayer.position + dice[0] + dice[1];
+  let newPosition = currentPlayer.position + G.dice[0] + G.dice[1];
 
-  dice[0] === dice[1] ? (G.doubles += 1) : (G.doubles = 0);
+  G.dice[0] === G.dice[1] ? (G.doubles += 1) : (G.doubles = 0);
   if (G.doubles >= 3) {
     return goToJail(currentPlayer, ctx);
   }

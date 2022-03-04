@@ -31,7 +31,17 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
           </section>
           <section className="flex-1">
             <h2 className="text-3xl">
-              {ctx.gameover ? "Koniec" : currentField.name}
+              {ctx.gameover ? (
+                "Koniec"
+              ) : (
+                <span>
+                  {currentField.name}
+                  {/* TEMP */}
+                  <div>
+                    Kostki: {G.dice[0]} i {G.dice[1]}
+                  </div>
+                </span>
+              )}
             </h2>
             {currentStage === "auction" && (
               <AuctionModal

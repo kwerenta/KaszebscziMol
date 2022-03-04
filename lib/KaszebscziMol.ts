@@ -25,6 +25,7 @@ export interface GameState {
   doubles: number;
   card: number;
   bankrupts: number;
+  dice: [number, number];
 }
 
 export interface playerData {
@@ -63,6 +64,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
     card: -1,
     doubles: 0,
     bankrupts: 0,
+    dice: [0, 0],
   }),
 
   moves: Moves.rollDice,
