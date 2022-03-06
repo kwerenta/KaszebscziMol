@@ -1,4 +1,5 @@
 import { Ctx, Move } from "boardgame.io";
+import { OtherGroups } from "../configs/fields";
 import { GameState, Player } from "../KaszebscziMol";
 
 export const getPlayer = (G: GameState, ctx: Ctx): Player =>
@@ -29,8 +30,8 @@ export const rollDice: Move<GameState> = (G, ctx) => {
 
   if (field.group) {
     if (!field.owner) {
-      const isCardField = field.group === 10;
-      const isGoToJail = field.group === 13;
+      const isCardField = field.group === OtherGroups.Card;
+      const isGoToJail = field.group === OtherGroups.GoToJail;
       isCardField
         ? ctx.events.setActivePlayers({
             currentPlayer: "cardField",
