@@ -76,7 +76,7 @@ export const enum OtherGroups {
   GoToJail = "GOTOJAIL",
   Tax = "TAX",
 }
-type Groups = OtherGroups | ColorGroups;
+export type Groups = OtherGroups | ColorGroups;
 
 interface BasicField {
   readonly name: string;
