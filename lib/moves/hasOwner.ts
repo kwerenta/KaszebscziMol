@@ -13,4 +13,5 @@ export const pay: Move<GameState> = (G, ctx) => {
 
   currentPlayer.money -= currentRent;
   ownerPlayer.money += currentRent;
+  ctx.events.endTurn();
 };

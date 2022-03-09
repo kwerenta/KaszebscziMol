@@ -28,36 +28,52 @@ export const rollDice: Move<GameState> = (G, ctx) => {
   currentPlayer.position = newPosition;
   const field = G.fields[newPosition];
 
-  if (field.group) {
-    if (!field.owner) {
-      const isCardField = field.group === OtherGroups.Card;
-      const isGoToJail = field.group === OtherGroups.GoToJail;
-      isCardField
-        ? ctx.events.setActivePlayers({
-            currentPlayer: "cardField",
-            next: { currentPlayer: "cardAction", minMoves: 1, maxMoves: 1 },
-            minMoves: 1,
-            maxMoves: 1,
-          })
-        : isGoToJail
-        ? goToJail(currentPlayer, ctx)
-        : ctx.events.setActivePlayers({
-            currentPlayer: "noOwner",
-            next: { currentPlayer: "noAction" },
-          });
-    } else {
-      field.owner === ctx.currentPlayer
-        ? ctx.events.setStage("isOwner")
-        : ctx.events.setActivePlayers({
-            currentPlayer: "hasOwner",
-            minMoves: 1,
-            maxMoves: 1,
-            next: { currentPlayer: "noAction" },
-          });
+  if (!field.owner) {
+    switch (field.group) {
+      case OtherGroups.Card:
+        ctx.events.setActivePlayers({
+          currentPlayer: "cardField",
+          maxMoves: 1,
+          next: { currentPlayer: "cardAction" },
+        });
+        return;
+
+      case OtherGroups.GoToJail:
+        goToJail(currentPlayer, ctx);
+        return;
+
+      case OtherGroups.Start:
+      case OtherGroups.CarPark:
+        ctx.events.setStage("noAction");
+        return;
+
+      case OtherGroups.Jail:
+        ctx.events.setStage("noAction");
+        return;
+
+      case OtherGroups.Tax:
+        // TEMP
+        currentPlayer.money -= 200;
+        ctx.events.setStage("noAction");
+        return;
     }
-  } else {
-    ctx.events.setStage("noAction");
+
+    ctx.events.setActivePlayers({
+      currentPlayer: "noOwner",
+      next: { currentPlayer: "noAction" },
+    });
+    return;
   }
+
+  if (field.owner === ctx.currentPlayer) {
+    ctx.events.setStage("isOwner");
+    return;
+  }
+
+  ctx.events.setActivePlayers({
+    currentPlayer: "hasOwner",
+    next: { currentPlayer: "noAction" },
+  });
 };
 
 export const endTurn: Move<GameState> = (_, ctx) => ctx.events.endTurn();

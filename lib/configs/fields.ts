@@ -72,8 +72,8 @@ export const enum OtherGroups {
   Card = "CARD",
   Jail = "JAIL",
   Start = "START",
-  Parking = "PARKING",
-  GoToJail = "GOTOJAIL",
+  CarPark = "CAR PARK",
+  GoToJail = "GO TO JAIL",
   Tax = "TAX",
 }
 export type Groups = OtherGroups | ColorGroups;
@@ -224,7 +224,7 @@ export const fields: FieldData[] = [
   },
   {
     name: "Najpiękniejsza wieś pomorska 2014",
-    group: OtherGroups.Parking,
+    group: OtherGroups.CarPark,
     icon: "parking",
   },
   {
