@@ -5,10 +5,13 @@ import { getPlayer } from "./base";
 
 export const pay: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
-  const ownerPlayer = G.players[G.fields[currentPlayer.position].owner];
+  const space = G.spaces[currentPlayer.position];
 
-  const field = G.fields[currentPlayer.position];
-  const currentRent = field.rent?.[field.houses ? field.houses : 0] || 0;
+  if (!space.price) return INVALID_MOVE;
+
+  const ownerPlayer = G.players[space.owner];
+  const currentRent = space.rent[space.houses];
+
   if (currentPlayer.money < currentRent) return INVALID_MOVE;
 
   currentPlayer.money -= currentRent;

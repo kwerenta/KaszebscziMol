@@ -1,15 +1,15 @@
-import type { Field } from "../../lib/configs/fields";
+import type { Space } from "../../lib/configs/spaces";
 import { Player } from "../../lib/KaszebscziMol";
 import { Tile } from "./Tile";
 
 interface Props {
   players: Record<string, Player>;
-  fields: Field[];
+  spaces: Space[];
   position: "top" | "left" | "right" | "bottom";
 }
 
 export const TilesSlice = ({
-  fields,
+  spaces,
   position,
   players,
 }: Props): JSX.Element => {
@@ -33,10 +33,10 @@ export const TilesSlice = ({
   }
   return (
     <div className={`flex ${classes}`}>
-      {fields.slice(startIndex, stopIndex).map((field, i) => {
+      {spaces.slice(startIndex, stopIndex).map((space, i) => {
         const index = i + startIndex;
         return (
-          <Tile key={index} field={field} index={index} players={players} />
+          <Tile key={index} space={space} index={index} players={players} />
         );
       })}
     </div>

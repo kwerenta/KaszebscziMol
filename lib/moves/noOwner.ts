@@ -13,11 +13,11 @@ export const auction: Move<GameState> = (G, ctx) => {
 
 export const buyProperty: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
-  const field = G.fields[currentPlayer.position];
-  const price = field.price || 0;
-  if (currentPlayer.money < price) return INVALID_MOVE;
+  const space = G.spaces[currentPlayer.position];
+  const price = space.price;
+  if (!price || currentPlayer.money < price) return INVALID_MOVE;
 
-  field.owner = ctx.currentPlayer;
+  space.owner = ctx.currentPlayer;
   currentPlayer.properties.push(currentPlayer.position);
   currentPlayer.money -= price;
   ctx.events.endStage();

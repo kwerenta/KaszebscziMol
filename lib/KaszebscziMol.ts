@@ -1,5 +1,5 @@
 import { Game } from "boardgame.io";
-import { Field, fields } from "./configs/fields";
+import { Space, spaces } from "./configs/spaces";
 import Moves from "./moves";
 
 export interface Player {
@@ -13,7 +13,7 @@ export interface Player {
 
 export interface GameState {
   players: Record<string, Player>;
-  fields: Field[];
+  spaces: Space[];
   auction: {
     property: number;
     price: number;
@@ -58,12 +58,16 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       playOrder: [],
       playOrderPos: -1,
     },
-    fields: fields.map<Field>(field => ({
-      ...field,
-      mortgage: false,
-      houses: 0,
-      owner: "",
-    })),
+    spaces: spaces.map<Space>(space =>
+      !space.price
+        ? space
+        : {
+            ...space,
+            mortgage: false,
+            houses: 0,
+            owner: "",
+          }
+    ),
     card: -1,
     doubles: 0,
     bankrupts: 0,
@@ -95,7 +99,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       isOwner: { moves: Moves.isOwner },
       hasOwner: { moves: Moves.hasOwner },
       noOwner: { moves: Moves.noOwner },
-      cardField: { moves: Moves.cardField },
+      cardSpace: { moves: Moves.cardSpace },
       cardAction: { moves: Moves.cardAction },
     },
   },
@@ -108,7 +112,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       endIf: (_, ctx) => ctx.playOrder.length === 1,
       onEnd: G => {
         const winner = G.players[G.auction.player];
-        const property = G.fields[G.auction.property];
+        const property = G.spaces[G.auction.property];
 
         property.owner = G.auction.player;
         winner.money -= G.auction.price;

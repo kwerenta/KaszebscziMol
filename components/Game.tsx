@@ -7,14 +7,14 @@ import { AuctionModal } from "./modal/AuctionModal";
 
 export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
   const currentPlayer = G.players[ctx.currentPlayer];
-  const currentField = G.fields[currentPlayer.position];
+  const currentSpace = G.spaces[currentPlayer.position];
   const currentStage = (ctx.activePlayers?.[ctx.currentPlayer] ||
     ctx.phase ||
     "rollDice") as Stages;
 
   return (
     <main className="flex h-screen w-screen items-center justify-center">
-      <Board fields={G.fields} players={G.players}>
+      <Board spaces={G.spaces} players={G.players}>
         <div className="flex flex-1 gap-8 px-8 py-6 text-center">
           <section className="flex-1">
             <div className="flex flex-col gap-8">
@@ -35,7 +35,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
                 "Koniec"
               ) : (
                 <span>
-                  {currentField.name}
+                  {currentSpace.name}
                   {/* TEMP */}
                   <div>
                     Kostki: {G.dice[0]} i {G.dice[1]}
@@ -45,7 +45,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
             </h2>
             {currentStage === "auction" && (
               <AuctionModal
-                propertyName={G.fields[G.auction.property].name}
+                propertyName={G.spaces[G.auction.property].name}
                 handleBid={moves["bid"]}
                 handlePass={moves["pass"]}
                 value={G.auction.price}

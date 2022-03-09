@@ -1,5 +1,5 @@
 import { Ctx, Move } from "boardgame.io";
-import { OtherGroups } from "../configs/fields";
+import { OtherGroups } from "../configs/spaces";
 import { GameState, Player } from "../KaszebscziMol";
 
 export const getPlayer = (G: GameState, ctx: Ctx): Player =>
@@ -26,13 +26,13 @@ export const rollDice: Move<GameState> = (G, ctx) => {
     newPosition -= 40;
   }
   currentPlayer.position = newPosition;
-  const field = G.fields[newPosition];
+  const space = G.spaces[newPosition];
 
-  if (!field.owner) {
-    switch (field.group) {
+  if (!space.owner) {
+    switch (space.group) {
       case OtherGroups.Card:
         ctx.events.setActivePlayers({
-          currentPlayer: "cardField",
+          currentPlayer: "cardSpace",
           maxMoves: 1,
           next: { currentPlayer: "cardAction" },
         });
@@ -65,7 +65,7 @@ export const rollDice: Move<GameState> = (G, ctx) => {
     return;
   }
 
-  if (field.owner === ctx.currentPlayer) {
+  if (space.owner === ctx.currentPlayer) {
     ctx.events.setStage("isOwner");
     return;
   }
@@ -83,9 +83,17 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
   // TEMP remove properties owned by bankrupted player
   G.bankrupts += 1;
   currentPlayer.properties = [];
-  G.fields = G.fields.map(f => ({
-    ...f,
-    owner: f.owner === ctx.currentPlayer ? undefined : f.owner,
-  }));
+  G.spaces = G.spaces.map(s =>
+    !s.price
+      ? s
+      : {
+          ...s,
+          owner: s.owner === ctx.currentPlayer ? "" : s.owner,
+          houses: 0,
+          mortgage: false,
+          rent: s.rent,
+          price: s.price,
+        }
+  );
   ctx.events.pass({ remove: true });
 };

@@ -3,7 +3,7 @@ import { buyHouse, sellHouse } from "./isOwner";
 import { pay } from "./hasOwner";
 import { bid, pass } from "./auction";
 import { acceptCard } from "./cardAction";
-import { drawCard } from "./cardField";
+import { drawCard } from "./cardSpace";
 import { auction, buyProperty } from "./noOwner";
 import type { GameState } from "../KaszebscziMol";
 import type { Ctx, Move } from "boardgame.io";
@@ -77,7 +77,7 @@ const Moves = createMovesMap({
   isOwner: { endTurn, bankrupt, buyHouse, sellHouse },
   hasOwner: { pay, bankrupt },
   noOwner: { buyProperty, auction },
-  cardField: { drawCard },
+  cardSpace: { drawCard },
   cardAction: { acceptCard, bankrupt },
   auction: { bid, pass },
 });

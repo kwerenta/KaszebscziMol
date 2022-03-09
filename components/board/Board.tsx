@@ -1,22 +1,22 @@
 import { ReactNode } from "react";
-import { Field } from "../../lib/configs/fields";
+import { Space } from "../../lib/configs/spaces";
 import { Player } from "../../lib/KaszebscziMol";
 import { TilesSlice } from "./TilesSlice";
 
 interface Props {
   players: Record<string, Player>;
   children: ReactNode;
-  fields: Field[];
+  spaces: Space[];
 }
 
-export const Board = ({ children, fields, players }: Props): JSX.Element => (
+export const Board = ({ children, spaces, players }: Props): JSX.Element => (
   <div className="flex flex-col space-y-1 lg:space-y-2">
-    <TilesSlice fields={fields} position="top" players={players} />
+    <TilesSlice spaces={spaces} position="top" players={players} />
     <div className="flex">
-      <TilesSlice fields={fields} position="left" players={players} />
+      <TilesSlice spaces={spaces} position="left" players={players} />
       {children}
-      <TilesSlice fields={fields} position="right" players={players} />
+      <TilesSlice spaces={spaces} position="right" players={players} />
     </div>
-    <TilesSlice fields={fields} position="bottom" players={players} />
+    <TilesSlice spaces={spaces} position="bottom" players={players} />
   </div>
 );

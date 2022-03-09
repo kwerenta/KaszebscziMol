@@ -1,54 +1,54 @@
 import { Move } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
-import { Groups, Field, groups } from "../configs/fields";
+import { Groups, Space, groups } from "../configs/spaces";
 import { GameState } from "../KaszebscziMol";
 import { getPlayer } from "./base";
 
-const getColorGroupFields = (fields: Field[], group: Groups) =>
-  fields.filter(f => f.group === group);
+const getColorGroupSpaces = (spaces: Space[], group: Groups) =>
+  spaces.filter(space => space.group === group);
 
 const areBuiltEqually = (
-  fields: Field[],
-  { houses }: Field,
+  spaces: Space[],
+  { houses }: Space,
   type: "buy" | "sell"
 ) =>
   // Check if houses will be built equally
-  fields.every(
-    f => Math.abs(f.houses - (houses + (type === "buy" ? 1 : -1))) < 2
+  spaces.every(
+    space => Math.abs(space.houses - (houses + (type === "buy" ? 1 : -1))) < 2
   );
 
 export const buyHouse: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
-  const field = G.fields[currentPlayer.position];
-  const price = groups[field.group].housePrice;
+  const space = G.spaces[currentPlayer.position];
+  const price = groups[space.group].housePrice;
 
-  if (field.mortgage === false) return INVALID_MOVE;
-  if (currentPlayer.money < price || field.houses > 4) return INVALID_MOVE;
+  if (!space.price || space.mortgage === false) return INVALID_MOVE;
+  if (currentPlayer.money < price || space.houses > 4) return INVALID_MOVE;
 
-  const colorGroupFields = getColorGroupFields(G.fields, field.group);
+  const colorGroupSpaces = getColorGroupSpaces(G.spaces, space.group);
 
   // Check if player own all of the properties in a color group
-  if (!colorGroupFields.every(f => f.owner === field.owner))
+  if (!colorGroupSpaces.every(s => s.owner === space.owner))
     return INVALID_MOVE;
 
-  if (!areBuiltEqually(colorGroupFields, field, "buy")) return INVALID_MOVE;
+  if (!areBuiltEqually(colorGroupSpaces, space, "buy")) return INVALID_MOVE;
 
-  field.houses++;
+  space.houses++;
   currentPlayer.money -= price;
   ctx.events.setStage("noAction");
 };
 
 export const sellHouse: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
-  const field = G.fields[currentPlayer.position];
-  const price = groups[field.group].housePrice / 2;
+  const space = G.spaces[currentPlayer.position];
+  const price = groups[space.group].housePrice / 2;
 
-  if (field.houses < 1) return INVALID_MOVE;
+  if (!space.price || space.houses < 1) return INVALID_MOVE;
 
-  const colorGroupFields = getColorGroupFields(G.fields, field.group);
-  if (!areBuiltEqually(colorGroupFields, field, "sell")) return INVALID_MOVE;
+  const colorGroupSpaces = getColorGroupSpaces(G.spaces, space.group);
+  if (!areBuiltEqually(colorGroupSpaces, space, "sell")) return INVALID_MOVE;
 
-  field.houses--;
+  space.houses--;
   currentPlayer.money += price;
   ctx.events.setStage("noAction");
 };

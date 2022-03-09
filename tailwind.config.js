@@ -4,7 +4,7 @@ module.exports = {
   content: [
     "./components/**/*.{js,jsx,ts,tsx}",
     "./pages/**/*.{js,jsx,ts,tsx}",
-    "./lib/configs/fields.ts",
+    "./lib/configs/spaces.ts",
   ],
   darkMode: "class",
   theme: {
