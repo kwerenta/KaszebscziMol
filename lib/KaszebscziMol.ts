@@ -3,7 +3,6 @@ import { Field, fields } from "./configs/fields";
 import Moves from "./moves";
 
 export interface Player {
-  id: string;
   name: string;
   color: string;
   money: number;
@@ -13,7 +12,7 @@ export interface Player {
 }
 
 export interface GameState {
-  players: Player[];
+  players: Record<string, Player>;
   fields: Field[];
   auction: {
     property: number;
@@ -39,15 +38,19 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
   disableUndo: true,
 
   setup: () => ({
-    players: setupData.map((playerData, index) => ({
-      id: String(index),
-      name: playerData.name,
-      color: playerData.color,
-      money: 1500,
-      position: 0,
-      properties: [],
-      jail: 0,
-    })),
+    players: Object.fromEntries(
+      setupData.map((playerData, index) => [
+        index,
+        {
+          name: playerData.name,
+          color: playerData.color,
+          money: 1500,
+          position: 0,
+          properties: [],
+          jail: 0,
+        },
+      ])
+    ),
     auction: {
       price: 0,
       player: "",
@@ -104,10 +107,10 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       },
       endIf: (_, ctx) => ctx.playOrder.length === 1,
       onEnd: G => {
-        const winner = G.players[parseInt(G.auction.player)];
+        const winner = G.players[G.auction.player];
         const property = G.fields[G.auction.property];
 
-        property.owner = winner.id;
+        property.owner = G.auction.player;
         winner.money -= G.auction.price;
         winner.properties.push(G.auction.property);
 

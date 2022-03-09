@@ -7,7 +7,7 @@ export const bid: Move<GameState> = (G, ctx, amount: number) => {
   const currentPlayer = getPlayer(G, ctx);
   if (!amount || G.auction.price + amount > currentPlayer.money)
     return INVALID_MOVE;
-  G.auction.player = currentPlayer.id;
+  G.auction.player = ctx.currentPlayer;
   G.auction.price += amount;
   ctx.events.endTurn();
 };

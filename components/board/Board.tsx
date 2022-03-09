@@ -4,7 +4,7 @@ import { Player } from "../../lib/KaszebscziMol";
 import { TilesSlice } from "./TilesSlice";
 
 interface Props {
-  players: Player[];
+  players: Record<string, Player>;
   children: ReactNode;
   fields: Field[];
 }

@@ -3,12 +3,12 @@ import { Player } from "../../lib/KaszebscziMol";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface TileProps {
-  players: Player[];
+  players: Record<string, Player>;
   field: Field;
   index: number;
 }
 
-export const Tile = ({ field, index, players }: TileProps) => {
+export const Tile = ({ field, players }: TileProps) => {
   const isBuyable = !!field.price;
   const isBought = !!field.owner;
   return (

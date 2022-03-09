@@ -3,7 +3,7 @@ import { Player } from "../../lib/KaszebscziMol";
 import { Tile } from "./Tile";
 
 interface Props {
-  players: Player[];
+  players: Record<string, Player>;
   fields: Field[];
   position: "top" | "left" | "right" | "bottom";
 }

@@ -69,7 +69,7 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
   currentPlayer.properties = [];
   G.fields = G.fields.map(f => ({
     ...f,
-    owner: f.owner === currentPlayer.id ? undefined : f.owner,
+    owner: f.owner === ctx.currentPlayer ? undefined : f.owner,
   }));
   ctx.events.pass({ remove: true });
 };
