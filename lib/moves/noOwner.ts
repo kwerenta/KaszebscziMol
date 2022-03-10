@@ -6,7 +6,7 @@ import { getPlayer } from "./base";
 export const auction: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
   G.auction.player = ctx.currentPlayer;
-  G.auction.property = currentPlayer.position;
+  G.auction.properties = [currentPlayer.position];
   ctx.events.setPhase("auction");
   ctx.events.endTurn();
 };

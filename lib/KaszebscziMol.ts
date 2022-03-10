@@ -15,7 +15,7 @@ export interface GameState {
   players: Record<string, Player>;
   spaces: Space[];
   auction: {
-    property: number;
+    properties: number[];
     price: number;
     player: string;
     playOrder: string[];
@@ -54,7 +54,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
     auction: {
       price: 0,
       player: "",
-      property: -1,
+      properties: [],
       playOrder: [],
       playOrderPos: -1,
     },
@@ -112,17 +112,19 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       endIf: (_, ctx) => ctx.playOrder.length === 1,
       onEnd: G => {
         const winner = G.players[G.auction.player];
-        const property = G.spaces[G.auction.property];
 
-        property.owner = G.auction.player;
+        G.auction.properties.forEach(propertyIndex => {
+          G.spaces[propertyIndex].owner = G.auction.player;
+        });
+
         winner.money -= G.auction.price;
-        winner.properties.push(G.auction.property);
+        winner.properties = winner.properties.concat(G.auction.properties);
 
         G.auction = {
           ...G.auction,
           price: 0,
           player: "",
-          property: -1,
+          properties: [],
         };
       },
       turn: {

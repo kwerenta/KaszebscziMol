@@ -1,4 +1,5 @@
 import { Ctx, Move } from "boardgame.io";
+import { Stages } from ".";
 import { OtherGroups } from "../configs/spaces";
 import { GameState, Player } from "../KaszebscziMol";
 
@@ -80,20 +81,29 @@ export const endTurn: Move<GameState> = (_, ctx) => ctx.events.endTurn();
 
 export const bankrupt: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
-  // TEMP remove properties owned by bankrupted player
-  G.bankrupts += 1;
-  currentPlayer.properties = [];
-  G.spaces = G.spaces.map(s =>
-    !s.price
-      ? s
-      : {
-          ...s,
-          owner: s.owner === ctx.currentPlayer ? "" : s.owner,
-          houses: 0,
-          mortgage: false,
-          rent: s.rent,
-          price: s.price,
-        }
-  );
+  const currentSpace = G.spaces[currentPlayer.position];
+  const stage = (ctx.activePlayers[ctx.currentPlayer] ||
+    ctx.phase ||
+    "rollDice") as Stages;
+
   ctx.events.pass({ remove: true });
+
+  // Check if player owes another player
+  if (stage === "hasOwner") {
+    const newPlayer = currentSpace.owner;
+    currentPlayer.properties.forEach(spaceIndex => {
+      const space = G.spaces[spaceIndex];
+      space.owner = newPlayer;
+      space.houses = 0;
+
+      G.players[newPlayer].properties.push(spaceIndex);
+    });
+  } else {
+    G.auction.player =
+      ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
+    G.auction.properties = [...currentPlayer.properties];
+    ctx.events.setPhase("auction");
+  }
+
+  G.bankrupts += 1;
 };

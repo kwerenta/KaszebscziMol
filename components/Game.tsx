@@ -45,7 +45,9 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
             </h2>
             {currentStage === "auction" && (
               <AuctionModal
-                propertyName={G.spaces[G.auction.property].name}
+                propertyName={G.auction.properties
+                  .map(propertyIndex => G.spaces[propertyIndex].name)
+                  .join(", ")}
                 handleBid={moves["bid"]}
                 handlePass={moves["pass"]}
                 value={G.auction.price}
