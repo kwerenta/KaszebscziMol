@@ -11,6 +11,11 @@ export interface Player {
   jail: number;
 }
 
+export interface Items {
+  properties: number[];
+  money: number;
+}
+
 export interface GameState {
   players: Record<string, Player>;
   spaces: Space[];
@@ -18,9 +23,18 @@ export interface GameState {
     properties: number[];
     price: number;
     player: string;
-    playOrder: string[];
-    playOrderPos: number;
   };
+  trade: {
+    source: {
+      player: string;
+      items: Items;
+    };
+    target: {
+      player: string;
+      items: Items;
+    };
+  };
+  temp: { playOrder: string[]; playOrderPos: number; stage: string };
   doubles: number;
   card: number;
   bankrupts: number;
@@ -55,8 +69,27 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       price: 0,
       player: "",
       properties: [],
+    },
+    temp: {
       playOrder: [],
       playOrderPos: -1,
+      stage: "",
+    },
+    trade: {
+      source: {
+        player: "",
+        items: {
+          properties: [],
+          money: 0,
+        },
+      },
+      target: {
+        player: "",
+        items: {
+          properties: [],
+          money: 0,
+        },
+      },
     },
     spaces: spaces.map<Space>(space =>
       !space.price
@@ -74,25 +107,37 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
     dice: [0, 0],
   }),
 
+  playerView: G => {
+    const state = { ...G };
+    delete state.temp;
+    return state;
+  },
+
   moves: Moves.rollDice,
 
   endIf: (G, ctx) => ctx.numPlayers - 1 === G.bankrupts,
 
   turn: {
+    onBegin: (G, ctx) => {
+      if (G.temp.stage !== "") {
+        ctx.events.setActivePlayers({ currentPlayer: G.temp.stage });
+        G.temp.stage = "";
+      }
+    },
     minMoves: 1,
     order: {
       first: G =>
-        G.auction.playOrderPos === -1
+        G.temp.playOrderPos === -1
           ? 0
-          : (G.auction.playOrderPos + 1) % G.auction.playOrder.length,
+          : G.temp.playOrderPos % G.temp.playOrder.length,
       next: (G, ctx) =>
         G.doubles > 0
           ? ctx.playOrderPos
           : (ctx.playOrderPos + 1) % ctx.playOrder.length,
       playOrder: (G, ctx) =>
-        G.auction.playOrder.length
-          ? G.auction.playOrder
-          : ctx.random?.Shuffle(ctx.playOrder) ?? [],
+        G.temp.playOrderPos === -1
+          ? ctx.random.Shuffle(ctx.playOrder)
+          : G.temp.playOrder,
     },
     stages: {
       noAction: { moves: Moves.noAction },
@@ -101,13 +146,16 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       noOwner: { moves: Moves.noOwner },
       cardSpace: { moves: Moves.cardSpace },
       cardAction: { moves: Moves.cardAction },
+      tradeSetup: { moves: Moves.tradeSetup },
     },
   },
   phases: {
     auction: {
       onBegin: (G, ctx) => {
-        G.auction.playOrder = ctx.playOrder;
-        G.auction.playOrderPos = ctx.playOrderPos;
+        // Save increased playOrderPos by 1
+        // because global playOrderPos is set to the last player
+        G.temp.playOrderPos = ctx.playOrderPos + 1;
+        G.temp.playOrder = ctx.playOrder;
       },
       endIf: (_, ctx) => ctx.playOrder.length === 1,
       onEnd: G => {
@@ -135,6 +183,39 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
         },
       },
       moves: Moves.auction,
+    },
+    trade: {
+      onBegin: (G, ctx) => {
+        G.temp.playOrderPos = ctx.playOrderPos;
+        G.temp.playOrder = ctx.playOrder;
+      },
+      onEnd: (G, _) => {
+        // TEMP very repetitive
+        G.trade = {
+          source: {
+            player: "",
+            items: {
+              properties: [],
+              money: 0,
+            },
+          },
+          target: {
+            player: "",
+            items: {
+              properties: [],
+              money: 0,
+            },
+          },
+        };
+      },
+      turn: {
+        order: {
+          first: () => 1,
+          next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
+          playOrder: G => [G.trade.source.player, G.trade.target.player],
+        },
+      },
+      moves: Moves.trade,
     },
   },
 });

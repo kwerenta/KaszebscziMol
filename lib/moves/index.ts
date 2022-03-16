@@ -1,4 +1,4 @@
-import { rollDice, bankrupt, endTurn } from "./base";
+import { rollDice, bankrupt, endTurn, trade } from "./base";
 import { buyHouse, sellHouse } from "./isOwner";
 import { pay } from "./hasOwner";
 import { bid, pass } from "./auction";
@@ -7,6 +7,7 @@ import { drawCard } from "./cardSpace";
 import { auction, buyProperty } from "./noOwner";
 import type { GameState } from "../KaszebscziMol";
 import type { Ctx, Move } from "boardgame.io";
+import { acceptOffer, offer, rejectOffer } from "./trade";
 
 interface moveData {
   text: string;
@@ -63,6 +64,22 @@ export const movesData = createMovesDataMap({
     text: "Spasuj",
     color: "red",
   },
+  trade: {
+    text: "Wymiana",
+    color: "green",
+  },
+  offer: {
+    text: "Złóż ofertę",
+    color: "green",
+  },
+  acceptOffer: {
+    text: "Akceptuj ofertę",
+    color: "green",
+  },
+  rejectOffer: {
+    text: "Odrzuć ofertę",
+    color: "red",
+  },
 });
 export type movesMap = keyof typeof movesData;
 
@@ -73,13 +90,15 @@ const createMovesMap = <
 ) => map;
 const Moves = createMovesMap({
   rollDice: { rollDice },
-  noAction: { endTurn, bankrupt },
+  noAction: { endTurn, bankrupt, trade },
   isOwner: { endTurn, bankrupt, buyHouse, sellHouse },
   hasOwner: { pay, bankrupt },
   noOwner: { buyProperty, auction },
   cardSpace: { drawCard },
   cardAction: { acceptCard, bankrupt },
   auction: { bid, pass },
+  tradeSetup: { offer },
+  trade: { acceptOffer, rejectOffer },
 });
 export type Stages = keyof typeof Moves;
 

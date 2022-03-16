@@ -1,4 +1,5 @@
 import { Ctx, Move } from "boardgame.io";
+import { Stage } from "boardgame.io/core";
 import { Stages } from ".";
 import { OtherGroups } from "../configs/spaces";
 import { GameState, Player } from "../KaszebscziMol";
@@ -106,4 +107,9 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
   }
 
   G.bankrupts += 1;
+};
+
+export const trade: Move<GameState> = (G, ctx) => {
+  G.temp.stage = ctx.activePlayers?.[ctx.currentPlayer] || Stage.NULL;
+  ctx.events.setStage("tradeSetup");
 };
