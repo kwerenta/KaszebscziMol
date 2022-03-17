@@ -1,6 +1,6 @@
 import { Game } from "boardgame.io";
 import { Space, spaces } from "./configs/spaces";
-import Moves from "./moves";
+import Moves, { Stages } from "./moves";
 
 export interface Player {
   name: string;
@@ -34,7 +34,7 @@ export interface GameState {
       items: Items;
     };
   };
-  temp: { playOrder: string[]; playOrderPos: number; stage: string };
+  temp: { playOrder: string[]; playOrderPos: number; stage: Stages | "" };
   doubles: number;
   card: number;
   bankrupts: number;
@@ -152,10 +152,13 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
   phases: {
     auction: {
       onBegin: (G, ctx) => {
-        // Save increased playOrderPos by 1
-        // because global playOrderPos is set to the last player
-        G.temp.playOrderPos = ctx.playOrderPos + 1;
+        G.temp.playOrderPos = ctx.playOrderPos;
         G.temp.playOrder = ctx.playOrder;
+
+        // Check if this space has been put up for auction
+        // Then set temp stage to let last player end his turn
+        if (G.spaces[G.auction.properties[0]].owner === "")
+          G.temp.stage = "noAction";
       },
       endIf: (_, ctx) => ctx.playOrder.length === 1,
       onEnd: G => {
@@ -177,7 +180,12 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       },
       turn: {
         order: {
-          first: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
+          first: (G, ctx) =>
+            // If auction is due to bankruptcy, set first position
+            // to current position due to change in playOrder
+            G.spaces[G.auction.properties[0]].owner !== ""
+              ? ctx.playOrderPos
+              : (ctx.playOrderPos + 1) % ctx.playOrder.length,
           next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
           playOrder: (_, ctx) => ctx.playOrder,
         },

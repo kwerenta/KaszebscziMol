@@ -89,22 +89,28 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
 
   ctx.events.pass({ remove: true });
 
+  let newPlayer = "";
   // Check if player owes another player
   if (stage === "hasOwner") {
-    const newPlayer = currentSpace.owner;
-    currentPlayer.properties.forEach(spaceIndex => {
-      const space = G.spaces[spaceIndex];
-      space.owner = newPlayer;
-      space.houses = 0;
-
-      G.players[newPlayer].properties.push(spaceIndex);
-    });
-  } else {
+    newPlayer = currentSpace.owner;
+  }
+  // Check if player has any properties to auction
+  else if (currentPlayer.properties.length > 0) {
     G.auction.player =
       ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
     G.auction.properties = [...currentPlayer.properties];
     ctx.events.setPhase("auction");
   }
+
+  currentPlayer.properties.forEach(spaceIndex => {
+    const space = G.spaces[spaceIndex];
+    space.houses = 0;
+
+    if (newPlayer !== "") {
+      space.owner = newPlayer;
+      G.players[newPlayer].properties.push(spaceIndex);
+    }
+  });
 
   G.bankrupts += 1;
 };
