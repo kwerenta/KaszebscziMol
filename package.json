@@ -1,6 +1,6 @@
 {
   "name": "kaszebsczimol",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "private": true,
   "dependencies": {
     "@dicebear/avatars": "^4.10.2",

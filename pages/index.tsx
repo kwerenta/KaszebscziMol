@@ -1,6 +1,6 @@
 import { MainFlower } from "../asstets/pattern/MainFlower";
 import { Layout } from "../components/Layout";
-import { LinkButton } from "../components/LinkButton";
+import { LinkButton } from "../components/Button/LinkButton";
 import { useDarkMode } from "../contexts/useDarkModeContext";
 
 export default function Home(): JSX.Element {

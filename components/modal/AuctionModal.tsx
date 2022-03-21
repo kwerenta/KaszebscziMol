@@ -1,5 +1,5 @@
 import type { Player } from "../../lib/KaszebscziMol";
-import { Button } from "../Button";
+import { MoveButton } from "../Button/MoveButton";
 import { Modal } from "./Modal";
 
 interface Props {
@@ -40,20 +40,14 @@ export const AuctionModal = ({
         </h2>
         <div className="grid grid-cols-2 gap-2">
           {[1, 10, 50, 100].map(amount => (
-            <Button
-              type="move"
+            <MoveButton
               text={`Zalicytuj ${amount}$`}
               color="green"
-              onClick={() => handleBid(amount)}
+              moveFn={() => handleBid(amount)}
               disabled={currentPlayer.money < value + amount}
             />
           ))}
-          <Button
-            type="move"
-            text={`Spasuj`}
-            color="red"
-            onClick={handlePass}
-          />
+          <MoveButton text={`Spasuj`} color="red" moveFn={handlePass} />
         </div>
       </div>
     </Modal>

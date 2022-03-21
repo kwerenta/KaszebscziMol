@@ -3,7 +3,7 @@ import { cards } from "../lib/configs/cards";
 import type { GameState } from "../lib/KaszebscziMol";
 import { movesData, movesMap, stageMoves, Stages } from "../lib/moves";
 import { Board } from "./board/Board";
-import { Button } from "./Button";
+import { MoveButton } from "./Button/MoveButton";
 import { AuctionModal } from "./modal/AuctionModal";
 
 export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
@@ -20,11 +20,10 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
           <section className="flex-1">
             <div className="flex flex-col gap-8">
               {stageMoves[currentStage].map((move: movesMap, i) => (
-                <Button
+                <MoveButton
                   color={movesData[move].color}
-                  type="move"
                   key={i}
-                  onClick={moves[move]}
+                  moveFn={moves[move]}
                   text={movesData[move].text}
                 />
               ))}

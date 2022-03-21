@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { Layout } from "../components/Layout";
-import { LinkButton } from "../components/LinkButton";
+import { LinkButton } from "../components/Button/LinkButton";
 import { Card } from "../components/setup/Card";
 import { CardsContainer } from "../components/setup/CardsContainer";
 import { PlayerCard } from "../components/setup/PlayerCard";

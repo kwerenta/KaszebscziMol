@@ -1,5 +1,5 @@
 import Link, { LinkProps } from "next/link";
-import { Button, ButtonProps } from "./Button";
+import { Button, ButtonProps } from "../Button";
 
 interface Props extends Omit<LinkProps, "passHref"> {
   disabled?: boolean;
@@ -15,7 +15,12 @@ export const LinkButton = ({
 }: Props) => (
   <Link {...linkProps} passHref>
     <a className={disabled ? "pointer-events-none" : undefined}>
-      <Button color={color} text={text} type="CTA" disabled={disabled} />
+      <Button
+        className="px-8 py-4 font-bold"
+        color={color}
+        text={text}
+        disabled={disabled}
+      />
     </a>
   </Link>
 );
