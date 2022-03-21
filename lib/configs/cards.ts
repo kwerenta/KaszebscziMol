@@ -29,7 +29,7 @@ export const cards: Card[] = [
     payload: 250,
   },
   {
-    text: "Otrzmujesz wezwanie na Browargedon. Zaproszenie zostało natychmiast przez Ciebie przyjęte, a tytuł mistrzowski trafia w twoje ręcej. Jako nagrodę dostajesz 300$",
+    text: "Otrzmujesz wezwanie na Browargedon. Zaproszenie zostało natychmiast przez Ciebie przyjęte, a tytuł mistrzowski trafia w twoje ręce. Jako nagrodę dostajesz 300$",
     action: "collect",
     payload: 300,
   },

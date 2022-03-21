@@ -14,10 +14,10 @@ module.exports = {
         logo: ["Kalam", "sans-serif"],
       },
       width: {
-        tile: "min(calc(100vh/10.5),calc(100vw/15))",
+        tile: "min(100vh/10.5,100vw/15)",
       },
       height: {
-        tile: "min(calc(100vh/10.5),calc(100vw/15))",
+        tile: "min(100vh/10.5,100vw/15)",
       },
       colors: {
         pattern: {

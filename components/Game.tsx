@@ -1,4 +1,5 @@
 import type { BoardProps } from "boardgame.io/react";
+import { cards } from "../lib/configs/cards";
 import type { GameState } from "../lib/KaszebscziMol";
 import { movesData, movesMap, stageMoves, Stages } from "../lib/moves";
 import { Board } from "./board/Board";
@@ -43,6 +44,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
                 </span>
               )}
             </h2>
+            {currentStage === "cardAction" && <p>{cards[G.card].text}</p>}
             {currentStage === "auction" && (
               <AuctionModal
                 propertyName={G.auction.properties
