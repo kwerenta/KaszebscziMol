@@ -11,10 +11,23 @@ export interface Player {
   jail: number;
 }
 
-export interface Items {
+export interface TradeItems {
   properties: number[];
   money: number;
 }
+
+export interface Trade {
+  player: string;
+  items: TradeItems;
+}
+
+const EMPTY_TRADE: Trade = {
+  player: "",
+  items: {
+    properties: [],
+    money: 0,
+  },
+};
 
 export interface GameState {
   players: Record<string, Player>;
@@ -24,16 +37,7 @@ export interface GameState {
     price: number;
     player: string;
   };
-  trade: {
-    source: {
-      player: string;
-      items: Items;
-    };
-    target: {
-      player: string;
-      items: Items;
-    };
-  };
+  trade: Record<"offers" | "wants", Trade>;
   temp: { playOrder: string[]; playOrderPos: number; stage: Stages | "" };
   doubles: number;
   card: number;
@@ -76,20 +80,8 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       stage: "",
     },
     trade: {
-      source: {
-        player: "",
-        items: {
-          properties: [],
-          money: 0,
-        },
-      },
-      target: {
-        player: "",
-        items: {
-          properties: [],
-          money: 0,
-        },
-      },
+      offers: EMPTY_TRADE,
+      wants: EMPTY_TRADE,
     },
     spaces: spaces.map<Space>(space =>
       !space.price
@@ -200,14 +192,14 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       onEnd: (G, _) => {
         // TEMP very repetitive
         G.trade = {
-          source: {
+          offers: {
             player: "",
             items: {
               properties: [],
               money: 0,
             },
           },
-          target: {
+          wants: {
             player: "",
             items: {
               properties: [],
@@ -220,7 +212,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
         order: {
           first: () => 1,
           next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
-          playOrder: G => [G.trade.source.player, G.trade.target.player],
+          playOrder: G => [G.trade.offers.player, G.trade.wants.player],
         },
       },
       moves: Moves.trade,
