@@ -1,7 +1,7 @@
 import { Ctx, Move } from "boardgame.io";
 import { Stage } from "boardgame.io/core";
 import { Stages } from ".";
-import { OtherGroups } from "../configs/spaces";
+import { MortgageStatus, OtherGroups } from "../configs/spaces";
 import { GameState, Player } from "../KaszebscziMol";
 
 export const getPlayer = (G: GameState, ctx: Ctx): Player =>
@@ -13,12 +13,10 @@ export const goToJail = (currentPlayer: Player, ctx: Ctx) => {
   ctx.events.setStage("noAction");
 };
 
-export const rollDice: Move<GameState> = (G, ctx, value?) => {
+export const rollDice: Move<GameState> = (G, ctx) => {
   G.dice = ctx.random.D6(2) as [number, number];
   const currentPlayer = getPlayer(G, ctx);
-  let newPosition = value
-    ? currentPlayer.position + value
-    : currentPlayer.position + G.dice[0] + G.dice[1];
+  let newPosition = currentPlayer.position + G.dice[0] + G.dice[1];
 
   G.dice[0] === G.dice[1] ? (G.doubles += 1) : (G.doubles = 0);
   if (G.doubles >= 3) {
@@ -48,9 +46,6 @@ export const rollDice: Move<GameState> = (G, ctx, value?) => {
 
       case OtherGroups.Start:
       case OtherGroups.CarPark:
-        ctx.events.setStage("noAction");
-        return;
-
       case OtherGroups.Jail:
         ctx.events.setStage("noAction");
         return;
@@ -71,6 +66,11 @@ export const rollDice: Move<GameState> = (G, ctx, value?) => {
 
   if (space.owner === ctx.currentPlayer) {
     ctx.events.setStage("isOwner");
+    return;
+  }
+
+  if (space.mortgage !== MortgageStatus.Unmortgaged) {
+    ctx.events.setStage("noAction");
     return;
   }
 
@@ -116,7 +116,10 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
     if (newPlayer !== "") {
       space.owner = newPlayer;
       G.players[newPlayer].properties.push(spaceIndex);
+      return;
     }
+
+    space.mortgage = MortgageStatus.Unmortgaged;
   });
 
   G.bankrupts += 1;

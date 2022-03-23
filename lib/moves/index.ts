@@ -1,5 +1,5 @@
 import { rollDice, bankrupt, endTurn, trade } from "./base";
-import { buyHouse, sellHouse } from "./isOwner";
+import { buyHouse, mortgage, sellHouse } from "./isOwner";
 import { pay } from "./hasOwner";
 import { bid, withdraw } from "./auction";
 import { acceptCard } from "./cardAction";
@@ -35,6 +35,10 @@ export const movesData = createMovesDataMap({
   sellHouse: {
     text: "Sprzedaj dom",
     color: "red",
+  },
+  mortgage: {
+    text: "Oddaj w zastaw",
+    color: "orange",
   },
   pay: {
     text: "Zapłać czynsz",
@@ -91,7 +95,7 @@ const createMovesMap = <
 const Moves = createMovesMap({
   rollDice: { rollDice },
   noAction: { endTurn, bankrupt, trade },
-  isOwner: { endTurn, bankrupt, buyHouse, sellHouse },
+  isOwner: { endTurn, buyHouse, sellHouse, mortgage, bankrupt },
   hasOwner: { pay, bankrupt },
   noOwner: { buyProperty, auction },
   cardSpace: { drawCard },

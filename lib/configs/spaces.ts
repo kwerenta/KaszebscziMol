@@ -89,13 +89,20 @@ interface PropertySpace {
   readonly rent: number[];
 }
 
+export const enum MortgageStatus {
+  Unmortgaged = "UNMORTGAGED",
+  Interest0 = "INTEREST 0%",
+  Interest10 = "INTEREST 10%",
+  Interest20 = "INTEREST 20%",
+}
+
 type AllOrNone<T> = T | { [K in keyof T]?: never };
 type SpaceData = BasicSpace & AllOrNone<PropertySpace>;
 export type Space = SpaceData &
   AllOrNone<{
     owner: string;
     houses: number;
-    mortgage: boolean;
+    mortgage: MortgageStatus;
   }>;
 
 export interface Group {

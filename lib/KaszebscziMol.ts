@@ -1,6 +1,6 @@
 import { Game } from "boardgame.io";
 import { cards } from "./configs/cards";
-import { Space, spaces } from "./configs/spaces";
+import { MortgageStatus, Space, spaces } from "./configs/spaces";
 import Moves, { Stages } from "./moves";
 
 export interface Player {
@@ -96,7 +96,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
         ? space
         : {
             ...space,
-            mortgage: false,
+            mortgage: MortgageStatus.Unmortgaged,
             houses: 0,
             owner: "",
           }
@@ -204,7 +204,15 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
         G.temp.playOrderPos = ctx.playOrderPos;
         G.temp.playOrder = ctx.playOrder;
       },
-      onEnd: (G, _) => {
+      onEnd: G => {
+        // TEMP Change the interest on properties already mortgaged to Interest20
+        G.trade.offers.items.properties
+          .concat(G.trade.wants.items.properties)
+          .forEach(propertyIndex => {
+            const space = G.spaces[propertyIndex];
+            if (space.mortgage === MortgageStatus.Interest10)
+              space.mortgage = MortgageStatus.Interest20;
+          });
         G.trade = {
           offers: EMPTY_TRADE,
           wants: EMPTY_TRADE,
