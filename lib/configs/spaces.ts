@@ -174,7 +174,7 @@ export const spaces: SpaceData[] = [
     name: "Elektrownia?",
     price: 150,
     group: PropertyGroups.Utility,
-    rent: [80],
+    rent: [0],
     icon: "charging-station",
   },
   { name: "Żukowo", group: OtherGroups.Jail, icon: "dungeon" },
@@ -281,7 +281,7 @@ export const spaces: SpaceData[] = [
     price: 150,
     group: PropertyGroups.Utility,
     icon: "faucet",
-    rent: [80],
+    rent: [0],
   },
   { name: "Kasa społeczna?", group: OtherGroups.Card, icon: "toolbox" },
   {
