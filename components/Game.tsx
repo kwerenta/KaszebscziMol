@@ -43,7 +43,9 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
                 </span>
               )}
             </h2>
-            {currentStage === "cardAction" && <p>{cards[G.card].text}</p>}
+            {currentStage === "cardAction" && (
+              <p>{cards[G.card.current].text}</p>
+            )}
             {currentStage === "auction" && (
               <AuctionModal
                 propertyName={G.auction.properties

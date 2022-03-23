@@ -1,4 +1,5 @@
 import { Game } from "boardgame.io";
+import { cards } from "./configs/cards";
 import { Space, spaces } from "./configs/spaces";
 import Moves, { Stages } from "./moves";
 
@@ -40,7 +41,10 @@ export interface GameState {
   trade: Record<"offers" | "wants", Trade>;
   temp: { playOrder: string[]; playOrderPos: number; stage: Stages | "" };
   doubles: number;
-  card: number;
+  card: {
+    current: number;
+    left: number[];
+  };
   bankrupts: number;
   dice: [number, number];
 }
@@ -55,7 +59,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
   maxPlayers: 6,
   disableUndo: true,
 
-  setup: () => ({
+  setup: ctx => ({
     players: Object.fromEntries(
       setupData.map((playerData, index) => [
         index,
@@ -93,7 +97,10 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
             owner: "",
           }
     ),
-    card: -1,
+    card: {
+      current: -1,
+      left: ctx.random.Shuffle(cards.map((_, index) => index)),
+    },
     doubles: 0,
     bankrupts: 0,
     dice: [0, 0],

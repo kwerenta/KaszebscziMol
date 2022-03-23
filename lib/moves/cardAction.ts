@@ -1,5 +1,5 @@
 import { Move } from "boardgame.io";
-import { INVALID_MOVE, Stage } from "boardgame.io/core";
+import { INVALID_MOVE } from "boardgame.io/core";
 import { cards } from "../configs/cards";
 import { GameState } from "../KaszebscziMol";
 import { getPlayer, goToJail } from "./base";
@@ -7,7 +7,7 @@ import { getPlayer, goToJail } from "./base";
 export const acceptCard: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
 
-  const { payload, action } = cards[G.card];
+  const { payload, action } = cards[G.card.current];
 
   let nextStage = "noAction";
 
@@ -80,7 +80,7 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
   }
 
   // set current card to none
-  G.card = -1;
+  G.card.current = -1;
 
   ctx.events.setStage(nextStage);
 };
