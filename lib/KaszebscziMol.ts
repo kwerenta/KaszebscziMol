@@ -45,6 +45,10 @@ export interface GameState {
     current: number;
     left: number[];
   };
+  buildings: {
+    houses: number;
+    hotels: number;
+  };
   bankrupts: number;
   dice: [number, number];
 }
@@ -100,6 +104,10 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
     card: {
       current: -1,
       left: ctx.random.Shuffle(cards.map((_, index) => index)),
+    },
+    buildings: {
+      hotels: 12,
+      houses: 32,
     },
     doubles: 0,
     bankrupts: 0,
@@ -197,22 +205,9 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
         G.temp.playOrder = ctx.playOrder;
       },
       onEnd: (G, _) => {
-        // TEMP very repetitive
         G.trade = {
-          offers: {
-            player: "",
-            items: {
-              properties: [],
-              money: 0,
-            },
-          },
-          wants: {
-            player: "",
-            items: {
-              properties: [],
-              money: 0,
-            },
-          },
+          offers: EMPTY_TRADE,
+          wants: EMPTY_TRADE,
         };
       },
       turn: {

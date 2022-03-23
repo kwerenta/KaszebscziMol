@@ -13,10 +13,12 @@ export const goToJail = (currentPlayer: Player, ctx: Ctx) => {
   ctx.events.setStage("noAction");
 };
 
-export const rollDice: Move<GameState> = (G, ctx) => {
+export const rollDice: Move<GameState> = (G, ctx, value?) => {
   G.dice = ctx.random.D6(2) as [number, number];
   const currentPlayer = getPlayer(G, ctx);
-  let newPosition = currentPlayer.position + G.dice[0] + G.dice[1];
+  let newPosition = value
+    ? currentPlayer.position + value
+    : currentPlayer.position + G.dice[0] + G.dice[1];
 
   G.dice[0] === G.dice[1] ? (G.doubles += 1) : (G.doubles = 0);
   if (G.doubles >= 3) {
@@ -104,6 +106,11 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
 
   currentPlayer.properties.forEach(spaceIndex => {
     const space = G.spaces[spaceIndex];
+
+    // Add buildings back to the bank
+    space.houses === 5
+      ? (G.buildings.hotels += 1)
+      : (G.buildings.houses += space.houses);
     space.houses = 0;
 
     if (newPlayer !== "") {
