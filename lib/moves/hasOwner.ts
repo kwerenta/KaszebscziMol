@@ -23,6 +23,18 @@ export const pay: Move<GameState> = (G, ctx) => {
     rent = (G.dice[0] + G.dice[1]) * (ownsAllUtilities ? 10 : 4);
   }
 
+  if (space.group === PropertyGroups.Train) {
+    // Count how many Stations owner player has
+    const trainCount = G.spaces.reduce(
+      (count, s) =>
+        s.group === PropertyGroups.Train && s.owner === space.owner
+          ? count + 1
+          : count,
+      0
+    );
+    rent = space.rent[trainCount - 1];
+  }
+
   if (currentPlayer.money < rent) return INVALID_MOVE;
 
   currentPlayer.money -= rent;
