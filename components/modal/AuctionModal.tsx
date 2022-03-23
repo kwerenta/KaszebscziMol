@@ -5,7 +5,7 @@ import { Modal } from "./Modal";
 interface Props {
   propertyName: string;
   handleBid: (amount: number) => void;
-  handlePass: () => void;
+  handleWithdraw: () => void;
   value: number;
   winningPlayerName: string;
   currentPlayer: Player;
@@ -13,7 +13,7 @@ interface Props {
 export const AuctionModal = ({
   propertyName,
   handleBid,
-  handlePass,
+  handleWithdraw,
   winningPlayerName,
   value,
   currentPlayer,
@@ -47,7 +47,11 @@ export const AuctionModal = ({
               disabled={currentPlayer.money < value + amount}
             />
           ))}
-          <MoveButton text={`Spasuj`} color="red" moveFn={handlePass} />
+          <MoveButton
+            text={`Wycofaj się`}
+            color="red"
+            moveFn={handleWithdraw}
+          />
         </div>
       </div>
     </Modal>

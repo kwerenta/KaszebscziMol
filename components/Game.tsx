@@ -50,7 +50,7 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
                   .map(propertyIndex => G.spaces[propertyIndex].name)
                   .join(", ")}
                 handleBid={moves["bid"]}
-                handlePass={moves["pass"]}
+                handleWithdraw={moves["withdraw"]}
                 value={G.auction.price}
                 winningPlayerName={G.players[G.auction.player].name}
                 currentPlayer={currentPlayer}

@@ -12,6 +12,6 @@ export const bid: Move<GameState> = (G, ctx, amount: number) => {
   ctx.events.endTurn();
 };
 
-export const pass: Move<GameState> = (_, ctx) => {
+export const withdraw: Move<GameState> = (_, ctx) => {
   ctx.events.pass({ remove: true });
 };
