@@ -1,15 +1,17 @@
 import { Move } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
+import { Stages } from ".";
 import { cards } from "../configs/cards";
+import { MortgageStatus } from "../configs/spaces";
 import { GameState } from "../KaszebscziMol";
-import { getPlayer, goToJail } from "./base";
+import { getPlayer, goToJail } from "./utils";
 
 export const acceptCard: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
 
   const { payload, action } = cards[G.card.current];
 
-  let nextStage = "noAction";
+  let nextStage: Stages = "noAction";
 
   switch (action) {
     case "collect":
@@ -71,7 +73,9 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
         ? "noOwner"
         : currentSpace.owner === ctx.currentPlayer
         ? "isOwner"
-        : "hasOwner";
+        : currentSpace.mortgage === MortgageStatus.Unmortgaged
+        ? "hasOwner"
+        : "noAction";
       break;
 
     case "goToJail":

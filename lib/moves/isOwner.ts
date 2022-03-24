@@ -1,11 +1,8 @@
 import { Move, MoveFn } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
-import { Groups, Space, groups, MortgageStatus } from "../configs/spaces";
+import { Space, groups, MortgageStatus } from "../configs/spaces";
 import { GameState } from "../KaszebscziMol";
-import { getPlayer } from "./base";
-
-const getColorGroupSpaces = (spaces: Space[], group: Groups) =>
-  spaces.filter(space => space.group === group);
+import { getColorGroupSpaces, getPlayer } from "./utils";
 
 const areBuiltEqually = (
   spaces: Space[],

@@ -1,17 +1,9 @@
-import { Ctx, Move } from "boardgame.io";
+import { Move } from "boardgame.io";
 import { Stage } from "boardgame.io/core";
 import { Stages } from ".";
 import { MortgageStatus, OtherGroups } from "../configs/spaces";
-import { GameState, Player } from "../KaszebscziMol";
-
-export const getPlayer = (G: GameState, ctx: Ctx): Player =>
-  G.players[ctx.currentPlayer];
-
-export const goToJail = (currentPlayer: Player, ctx: Ctx) => {
-  currentPlayer.jail = 3;
-  currentPlayer.position = 12;
-  ctx.events.setStage("noAction");
-};
+import { GameState } from "../KaszebscziMol";
+import { getPlayer, goToJail } from "./utils";
 
 export const rollDice: Move<GameState> = (G, ctx) => {
   G.dice = ctx.random.D6(2) as [number, number];

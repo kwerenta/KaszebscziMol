@@ -2,7 +2,7 @@ import { Move } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
 import { PropertyGroups } from "../configs/spaces";
 import { GameState } from "../KaszebscziMol";
-import { getPlayer } from "./base";
+import { getColorGroupSpaces, getPlayer } from "./utils";
 
 export const pay: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
@@ -21,9 +21,7 @@ export const pay: Move<GameState> = (G, ctx) => {
 
     // Multiply sum of dice depending on whether player owns all Utilities
     rent = (G.dice[0] + G.dice[1]) * (ownsAllUtilities ? 10 : 4);
-  }
-
-  if (space.group === PropertyGroups.Train) {
+  } else if (space.group === PropertyGroups.Train) {
     // Count how many Stations owner player has
     const trainCount = G.spaces.reduce(
       (count, s) =>
@@ -33,6 +31,15 @@ export const pay: Move<GameState> = (G, ctx) => {
       0
     );
     rent = space.rent[trainCount - 1];
+  }
+  // Check if player owns all the properties in the color set
+  // and none of them have buildings, then double the rent
+  else if (
+    getColorGroupSpaces(G.spaces, space.group).every(
+      s => s.owner === ctx.currentPlayer && s.houses === 0
+    )
+  ) {
+    rent *= 2;
   }
 
   if (currentPlayer.money < rent) return INVALID_MOVE;
