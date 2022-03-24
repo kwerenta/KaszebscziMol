@@ -7,7 +7,7 @@ import { drawCard } from "./cardSpace";
 import { auction, buyProperty } from "./noOwner";
 import type { GameState } from "../KaszebscziMol";
 import type { Ctx, Move } from "boardgame.io";
-import { acceptOffer, offer, rejectOffer } from "./trade";
+import { acceptOffer, selectPlayer, makeOffer, rejectOffer } from "./trade";
 
 interface moveData {
   text: string;
@@ -72,7 +72,11 @@ export const movesData = createMovesDataMap({
     text: "Wymiana",
     color: "green",
   },
-  offer: {
+  selectPlayer: {
+    text: "Wybierz gracza",
+    color: "green",
+  },
+  makeOffer: {
     text: "Złóż ofertę",
     color: "green",
   },
@@ -101,7 +105,8 @@ const Moves = createMovesMap({
   cardSpace: { drawCard },
   cardAction: { acceptCard, bankrupt },
   auction: { bid, withdraw },
-  tradeSetup: { offer },
+  tradeSetup: { selectPlayer },
+  tradeOffer: { makeOffer },
   trade: { acceptOffer, rejectOffer },
 });
 export type Stages = keyof typeof Moves;

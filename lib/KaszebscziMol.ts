@@ -1,4 +1,5 @@
 import { Game } from "boardgame.io";
+import { Stage } from "boardgame.io/dist/types/packages/core";
 import { cards } from "./configs/cards";
 import { MortgageStatus, Space, spaces } from "./configs/spaces";
 import Moves, { Stages } from "./moves";
@@ -219,10 +220,19 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
         };
       },
       turn: {
+        onBegin: (_, ctx) => {
+          ctx.events.setActivePlayers({
+            currentPlayer: "tradeOffer",
+            maxMoves: 1,
+          });
+        },
         order: {
-          first: () => 1,
+          first: () => 0,
           next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
           playOrder: G => [G.trade.offers.player, G.trade.wants.player],
+        },
+        stages: {
+          tradeOffer: { moves: Moves.tradeOffer },
         },
       },
       moves: Moves.trade,

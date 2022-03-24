@@ -42,24 +42,34 @@ const updatePlayer = (
   );
 };
 
-export const offer: Move<GameState> = (
+export const selectPlayer: Move<GameState> = (G, ctx, playerID: string) => {
+  G.trade.offers.player = ctx.currentPlayer;
+  G.trade.wants.player = playerID;
+  ctx.events.setPhase("trade");
+};
+
+export const makeOffer: Move<GameState> = (
   G,
   ctx,
-  wantsFromPlayerID: string,
   items: Record<"offers" | "wants", TradeItems>
 ) => {
-  // Check that the items meet the conditions
-  if (!areItemsCorrect(G.spaces, G.players, items.offers, ctx.currentPlayer))
+  const { offers, wants } = G.trade;
+
+  if (
+    offers.player === "" ||
+    wants.player === "" ||
+    offers.player !== ctx.currentPlayer
+  )
     return INVALID_MOVE;
-  if (!areItemsCorrect(G.spaces, G.players, items.wants, wantsFromPlayerID))
+  // Check if the players have enough money and that
+  // they own properties that are without buildings
+  if (!areItemsCorrect(G.spaces, G.players, items.offers, offers.player))
+    return INVALID_MOVE;
+  if (!areItemsCorrect(G.spaces, G.players, items.wants, wants.player))
     return INVALID_MOVE;
 
-  G.trade = {
-    offers: { player: ctx.currentPlayer, items: items.offers },
-    wants: { player: wantsFromPlayerID, items: items.wants },
-  };
-
-  ctx.events.setPhase("trade");
+  G.trade.offers.items = items.offers;
+  G.trade.wants.items = items.wants;
 };
 
 export const acceptOffer: Move<GameState> = (G, ctx) => {
