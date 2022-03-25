@@ -56,12 +56,10 @@ export const rollDice: Move<GameState> = (G, ctx) => {
     return;
   }
 
-  if (space.owner === ctx.currentPlayer) {
-    ctx.events.setStage("isOwner");
-    return;
-  }
-
-  if (space.mortgage !== MortgageStatus.Unmortgaged) {
+  if (
+    space.owner === ctx.currentPlayer ||
+    space.mortgage !== MortgageStatus.Unmortgaged
+  ) {
     ctx.events.setStage("noAction");
     return;
   }
@@ -120,4 +118,8 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
 export const trade: Move<GameState> = (G, ctx) => {
   G.temp.stage = ctx.activePlayers?.[ctx.currentPlayer] || Stage.NULL;
   ctx.events.setStage("tradeSetup");
+};
+
+export const manageProperties: Move<GameState> = (G, ctx) => {
+  ctx.events.setStage("propertyManagment");
 };

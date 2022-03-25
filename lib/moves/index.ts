@@ -1,5 +1,5 @@
-import { rollDice, bankrupt, endTurn, trade } from "./base";
-import { buyHouse, mortgage, sellHouse } from "./isOwner";
+import { rollDice, bankrupt, endTurn, trade, manageProperties } from "./base";
+import { buyHouse, mortgage, sellHouse } from "./propertyManagment";
 import { pay } from "./hasOwner";
 import { bid, withdraw } from "./auction";
 import { acceptCard } from "./cardAction";
@@ -27,6 +27,10 @@ export const movesData = createMovesDataMap({
   endTurn: {
     text: "Zakończ turę",
     color: "orange",
+  },
+  manageProperties: {
+    text: "Zarządzaj nieruchomościami",
+    color: "green",
   },
   buyHouse: {
     text: "Kup dom",
@@ -91,6 +95,8 @@ export const movesData = createMovesDataMap({
 });
 export type movesMap = keyof typeof movesData;
 
+const defaultMoves = { manageProperties, trade, bankrupt };
+
 const createMovesMap = <
   T extends { [name: string]: Partial<Record<movesMap, Move<GameState, Ctx>>> }
 >(
@@ -98,16 +104,16 @@ const createMovesMap = <
 ) => map;
 const Moves = createMovesMap({
   rollDice: { rollDice },
-  noAction: { endTurn, bankrupt, trade },
-  isOwner: { endTurn, buyHouse, sellHouse, mortgage, bankrupt },
-  hasOwner: { pay, bankrupt },
-  noOwner: { buyProperty, auction },
+  noAction: { endTurn, ...defaultMoves },
+  hasOwner: { pay, ...defaultMoves },
+  noOwner: { buyProperty, auction, manageProperties, trade },
   cardSpace: { drawCard },
-  cardAction: { acceptCard, bankrupt },
+  cardAction: { acceptCard, ...defaultMoves },
   auction: { bid, withdraw },
   tradeSetup: { selectPlayer },
   tradeOffer: { makeOffer },
   trade: { acceptOffer, rejectOffer },
+  propertyManagment: { buyHouse, sellHouse, mortgage },
 });
 export type Stages = keyof typeof Moves;
 

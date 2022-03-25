@@ -149,12 +149,12 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
     },
     stages: {
       noAction: { moves: Moves.noAction },
-      isOwner: { moves: Moves.isOwner },
       hasOwner: { moves: Moves.hasOwner },
       noOwner: { moves: Moves.noOwner },
       cardSpace: { moves: Moves.cardSpace },
       cardAction: { moves: Moves.cardAction },
       tradeSetup: { moves: Moves.tradeSetup },
+      propertyManagment: { moves: Moves.propertyManagment },
     },
   },
   phases: {
