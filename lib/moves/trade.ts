@@ -62,6 +62,7 @@ export const makeOffer: Move<GameState> = (
   )
     return INVALID_MOVE;
 
+  // Check if trade items are empty
   if (
     items.offers.money === 0 &&
     items.offers.properties.length === 0 &&

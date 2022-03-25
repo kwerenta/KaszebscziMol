@@ -19,8 +19,8 @@ export const buyHouse: Move<GameState> = (G, ctx) => {
   const space = G.spaces[currentPlayer.position];
   const price = groups[space.group].housePrice;
 
-  if (!space.price || space.mortgage !== MortgageStatus.Unmortgaged)
-    return INVALID_MOVE;
+  if (!space.price || space.owner !== ctx.currentPlayer) return INVALID_MOVE;
+  if (space.mortgage !== MortgageStatus.Unmortgaged) return INVALID_MOVE;
   if (currentPlayer.money < price || space.houses > 4) return INVALID_MOVE;
   // Check if there is enough buildings left
   if (
@@ -61,9 +61,10 @@ export const sellHouse: Move<GameState> = (G, ctx) => {
   const space = G.spaces[currentPlayer.position];
   const price = groups[space.group].housePrice / 2;
 
+  if (!space.price || space.owner !== ctx.currentPlayer || space.houses < 1)
+    return INVALID_MOVE;
   // Check if there is enough houses to sell hotel
   if (space.houses === 5 && G.buildings.houses < 4) return INVALID_MOVE;
-  if (!space.price || space.houses < 1) return INVALID_MOVE;
 
   const colorGroupSpaces = getColorGroupSpaces(G.spaces, space.group);
   if (!areBuiltEqually(colorGroupSpaces, space, "sell")) return INVALID_MOVE;
@@ -83,7 +84,8 @@ export const mortgage: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
   const space = G.spaces[currentPlayer.position];
 
-  if (space.houses !== 0) return INVALID_MOVE;
+  if (space.houses !== 0 || space.owner !== ctx.currentPlayer)
+    return INVALID_MOVE;
 
   // Mortgage property
   const mortgageValue = space.price / 2;
