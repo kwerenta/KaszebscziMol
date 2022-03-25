@@ -9,9 +9,18 @@ export const rollDice: Move<GameState> = (G, ctx) => {
   G.dice = ctx.random.D6(2) as [number, number];
   const currentPlayer = getPlayer(G, ctx);
   let newPosition = currentPlayer.position + G.dice[0] + G.dice[1];
+  const isDouble = G.dice[0] === G.dice[1];
 
-  G.dice[0] === G.dice[1] ? (G.doubles += 1) : (G.doubles = 0);
+  // End the turn if the player in jail
+  // didn't roll a double
+  if (currentPlayer.jail > 0 && !isDouble) {
+    ctx.events.endTurn();
+    return;
+  }
+
+  isDouble && currentPlayer.jail === 0 ? (G.doubles += 1) : (G.doubles = 0);
   if (G.doubles >= 3) {
+    G.doubles = 0;
     return goToJail(currentPlayer, ctx);
   }
 

@@ -127,6 +127,10 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
 
   turn: {
     onBegin: (G, ctx) => {
+      if (G.players[ctx.currentPlayer].jail > 0) {
+        ctx.events.setActivePlayers({ currentPlayer: "inJail" });
+        return;
+      }
       if (G.temp.stage !== "") {
         ctx.events.setActivePlayers({ currentPlayer: G.temp.stage });
         G.temp.stage = "";
@@ -155,6 +159,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       cardAction: { moves: Moves.cardAction },
       tradeSetup: { moves: Moves.tradeSetup },
       propertyManagment: { moves: Moves.propertyManagment },
+      inJail: { moves: Moves.inJail },
     },
   },
   phases: {

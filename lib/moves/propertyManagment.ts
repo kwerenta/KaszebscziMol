@@ -79,7 +79,7 @@ export const sellHouse: Move<GameState> = (G, ctx) => {
   currentPlayer.money += price;
 };
 
-export const mortgage: MoveFn<GameState> = (G, ctx) => {
+export const mortgage: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
   const space = G.spaces[currentPlayer.position];
 

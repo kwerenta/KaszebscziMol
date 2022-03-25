@@ -1,13 +1,14 @@
-import { rollDice, bankrupt, endTurn, trade, manageProperties } from "./base";
-import { buyHouse, mortgage, sellHouse } from "./propertyManagment";
-import { pay } from "./hasOwner";
+import type { Ctx, Move } from "boardgame.io";
+import type { GameState } from "../KaszebscziMol";
 import { bid, withdraw } from "./auction";
+import { bankrupt, endTurn, manageProperties, rollDice, trade } from "./base";
 import { acceptCard } from "./cardAction";
 import { drawCard } from "./cardSpace";
+import { pay } from "./hasOwner";
+import { payFine } from "./inJail";
 import { auction, buyProperty } from "./noOwner";
-import type { GameState } from "../KaszebscziMol";
-import type { Ctx, Move } from "boardgame.io";
-import { acceptOffer, selectPlayer, makeOffer, rejectOffer } from "./trade";
+import { buyHouse, mortgage, sellHouse } from "./propertyManagment";
+import { acceptOffer, makeOffer, rejectOffer, selectPlayer } from "./trade";
 
 export interface moveData {
   text: string;
@@ -17,7 +18,7 @@ const createMovesDataMap = <T extends { [name: string]: moveData }>(map: T) =>
   map;
 export const movesData = createMovesDataMap({
   rollDice: {
-    text: "Rzuć kostką",
+    text: "Rzuć kośćmi",
     color: "green",
   },
   bankrupt: {
@@ -92,6 +93,10 @@ export const movesData = createMovesDataMap({
     text: "Odrzuć ofertę",
     color: "red",
   },
+  payFine: {
+    text: "Zapłać grzywnę",
+    color: "orange",
+  },
 });
 export type movesMap = keyof typeof movesData;
 
@@ -114,6 +119,7 @@ const Moves = createMovesMap({
   tradeOffer: { makeOffer },
   trade: { acceptOffer, rejectOffer },
   propertyManagment: { buyHouse, sellHouse, mortgage },
+  inJail: { payFine, rollDice, ...defaultMoves },
 });
 export type Stages = keyof typeof Moves;
 

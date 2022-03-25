@@ -8,7 +8,7 @@ export const getPlayer = (G: GameState, ctx: Ctx): Player =>
 export const goToJail = (currentPlayer: Player, ctx: Ctx) => {
   currentPlayer.jail = 3;
   currentPlayer.position = 12;
-  ctx.events.setStage("noAction");
+  ctx.events.endTurn();
 };
 
 export const getColorGroupSpaces = (spaces: Space[], group: Groups) =>
