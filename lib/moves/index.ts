@@ -1,7 +1,14 @@
 import type { Ctx, Move } from "boardgame.io";
 import type { GameState } from "../KaszebscziMol";
 import { bid, withdraw } from "./auction";
-import { bankrupt, endTurn, manageProperties, rollDice, trade } from "./base";
+import {
+  bankrupt,
+  endTurn,
+  goBack,
+  manageProperties,
+  rollDice,
+  trade,
+} from "./base";
 import { acceptCard } from "./cardAction";
 import { drawCard } from "./cardSpace";
 import { pay } from "./hasOwner";
@@ -97,6 +104,10 @@ export const movesData = createMovesDataMap({
     text: "Zapłać grzywnę",
     color: "orange",
   },
+  goBack: {
+    text: "Wróć",
+    color: "orange",
+  },
 });
 export type movesMap = keyof typeof movesData;
 
@@ -116,9 +127,9 @@ const Moves = createMovesMap({
   cardAction: { acceptCard, ...defaultMoves },
   auction: { bid, withdraw },
   tradeSetup: { selectPlayer },
-  tradeOffer: { makeOffer },
+  tradeOffer: { makeOffer, goBack },
   trade: { acceptOffer, rejectOffer },
-  propertyManagment: { buyHouse, sellHouse, mortgage },
+  propertyManagment: { buyHouse, sellHouse, mortgage, goBack },
   inJail: { payFine, rollDice, ...defaultMoves },
 });
 export type Stages = keyof typeof Moves;

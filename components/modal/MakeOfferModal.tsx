@@ -6,6 +6,7 @@ import { Modal } from "./Modal";
 
 interface Props {
   handleOffer: (items: Record<"offers" | "wants", TradeItems>) => void;
+  handleGoBack: () => void;
   spaces: Space[];
   players: GameState["players"];
   trade: GameState["trade"];
@@ -13,6 +14,7 @@ interface Props {
 
 export const MakeOfferModal = ({
   handleOffer,
+  handleGoBack,
   players,
   spaces,
   trade,
@@ -120,7 +122,7 @@ export const MakeOfferModal = ({
             </ul>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col justify-center gap-6">
           <MoveButton
             color="green"
             text="Złóż ofertę"
@@ -137,6 +139,7 @@ export const MakeOfferModal = ({
               })
             }
           />
+          <MoveButton color="orange" text="Wróć" moveFn={handleGoBack} />
         </div>
         <div className="flex flex-1 flex-col gap-4">
           <div className="bg-blue-gray-light rounded-md">

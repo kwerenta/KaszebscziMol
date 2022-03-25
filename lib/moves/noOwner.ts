@@ -8,7 +8,6 @@ export const auction: Move<GameState> = (G, ctx) => {
   G.auction.player = ctx.currentPlayer;
   G.auction.properties = [currentPlayer.position];
   ctx.events.setPhase("auction");
-  ctx.events.endTurn();
 };
 
 export const buyProperty: Move<GameState> = (G, ctx) => {
@@ -20,5 +19,5 @@ export const buyProperty: Move<GameState> = (G, ctx) => {
   space.owner = ctx.currentPlayer;
   currentPlayer.properties.push(currentPlayer.position);
   currentPlayer.money -= price;
-  ctx.events.endStage();
+  ctx.events.setStage("noAction");
 };

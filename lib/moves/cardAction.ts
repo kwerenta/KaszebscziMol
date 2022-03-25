@@ -67,15 +67,14 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
       currentPlayer.position = newPosition;
 
       const currentSpace = G.spaces[currentPlayer.position];
-      nextStage = !currentSpace.price
-        ? "noAction"
-        : currentSpace.owner === ""
-        ? "noOwner"
-        : currentSpace.owner === ctx.currentPlayer
-        ? "isOwner"
-        : currentSpace.mortgage === MortgageStatus.Unmortgaged
-        ? "hasOwner"
-        : "noAction";
+      nextStage =
+        !currentSpace.price || currentSpace.owner === ctx.currentPlayer
+          ? "noAction"
+          : currentSpace.owner === ""
+          ? "noOwner"
+          : currentSpace.mortgage === MortgageStatus.Unmortgaged
+          ? "hasOwner"
+          : "noAction";
       break;
 
     case "goToJail":

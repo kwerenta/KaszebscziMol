@@ -76,6 +76,7 @@ export const Game = ({
             {currentStage === "tradeOffer" && (
               <MakeOfferModal
                 handleOffer={moves["makeOffer"].fn}
+                handleGoBack={moves["goBack"].fn}
                 players={G.players}
                 spaces={G.spaces}
                 trade={G.trade}

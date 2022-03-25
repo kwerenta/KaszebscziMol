@@ -3,7 +3,7 @@ import { Stage } from "boardgame.io/core";
 import { Stages } from ".";
 import { MortgageStatus, OtherGroups } from "../configs/spaces";
 import { GameState } from "../KaszebscziMol";
-import { getPlayer, goToJail } from "./utils";
+import { getPlayer, getStage, goToJail } from "./utils";
 
 export const rollDice: Move<GameState> = (G, ctx) => {
   G.dice = ctx.random.D6(2) as [number, number];
@@ -125,10 +125,17 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
 };
 
 export const trade: Move<GameState> = (G, ctx) => {
-  G.temp.stage = ctx.activePlayers?.[ctx.currentPlayer] || Stage.NULL;
+  G.temp.stage = getStage(ctx);
   ctx.events.setStage("tradeSetup");
 };
 
 export const manageProperties: Move<GameState> = (G, ctx) => {
+  G.temp.stage = getStage(ctx);
   ctx.events.setStage("propertyManagment");
+};
+
+export const goBack: Move<GameState> = (G, ctx) => {
+  if (getStage(ctx) === "tradeOffer") return ctx.events.endPhase();
+  ctx.events.setActivePlayers({ currentPlayer: G.temp.stage });
+  G.temp.stage = "";
 };
