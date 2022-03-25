@@ -9,7 +9,7 @@ import type { GameState } from "../KaszebscziMol";
 import type { Ctx, Move } from "boardgame.io";
 import { acceptOffer, selectPlayer, makeOffer, rejectOffer } from "./trade";
 
-interface moveData {
+export interface moveData {
   text: string;
   color: "green" | "red" | "orange";
 }

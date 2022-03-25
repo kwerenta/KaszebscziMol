@@ -1,14 +1,20 @@
 import type { BoardProps } from "boardgame.io/react";
 import { cards } from "../lib/configs/cards";
 import type { GameState } from "../lib/KaszebscziMol";
-import { movesData, movesMap, stageMoves, Stages } from "../lib/moves";
+import { movesMap, stageMoves, Stages } from "../lib/moves";
 import { Board } from "./board/Board";
 import { MoveButton } from "./Button/MoveButton";
 import { AuctionModal } from "./modal/AuctionModal";
 import { SelectPlayerModal } from "./modal/SelectPlayerModal";
 import { MakeOfferModal } from "./modal/MakeOfferModal";
+import { useWrappedMoves } from "../hooks/useWrappedMoves";
 
-export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
+export const Game = ({
+  G,
+  ctx,
+  moves: moveFns,
+}: BoardProps<GameState>): JSX.Element => {
+  const moves = useWrappedMoves(moveFns);
   const currentPlayer = G.players[ctx.currentPlayer];
   const currentSpace = G.spaces[currentPlayer.position];
   const currentStage = (ctx.activePlayers?.[ctx.currentPlayer] ||
@@ -23,10 +29,10 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
             <div className="flex flex-col gap-8">
               {stageMoves[currentStage].map((move: movesMap, i) => (
                 <MoveButton
-                  color={movesData[move].color}
+                  color={moves[move].color}
                   key={i}
-                  moveFn={moves[move]}
-                  text={movesData[move].text}
+                  moveFn={moves[move].fn}
+                  text={moves[move].text}
                 />
               ))}
             </div>
@@ -53,8 +59,8 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
                 propertyName={G.auction.properties
                   .map(propertyIndex => G.spaces[propertyIndex].name)
                   .join(", ")}
-                handleBid={moves["bid"]}
-                handleWithdraw={moves["withdraw"]}
+                handleBid={moves["bid"].fn}
+                handleWithdraw={moves["withdraw"].fn}
                 value={G.auction.price}
                 winningPlayerName={G.players[G.auction.player].name}
                 currentPlayer={currentPlayer}
@@ -64,12 +70,12 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
               <SelectPlayerModal
                 currentPlayer={ctx.currentPlayer}
                 players={G.players}
-                handleSelection={moves["selectPlayer"]}
+                handleSelection={moves["selectPlayer"].fn}
               />
             )}
             {currentStage === "tradeOffer" && (
               <MakeOfferModal
-                handleOffer={moves["makeOffer"]}
+                handleOffer={moves["makeOffer"].fn}
                 players={G.players}
                 spaces={G.spaces}
                 trade={G.trade}
