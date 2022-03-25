@@ -5,6 +5,8 @@ import { movesData, movesMap, stageMoves, Stages } from "../lib/moves";
 import { Board } from "./board/Board";
 import { MoveButton } from "./Button/MoveButton";
 import { AuctionModal } from "./modal/AuctionModal";
+import { SelectPlayerModal } from "./modal/SelectPlayerModal";
+import { MakeOfferModal } from "./modal/MakeOfferModal";
 
 export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
   const currentPlayer = G.players[ctx.currentPlayer];
@@ -56,6 +58,21 @@ export const Game = ({ G, ctx, moves }: BoardProps<GameState>): JSX.Element => {
                 value={G.auction.price}
                 winningPlayerName={G.players[G.auction.player].name}
                 currentPlayer={currentPlayer}
+              />
+            )}
+            {currentStage === "tradeSetup" && (
+              <SelectPlayerModal
+                currentPlayer={ctx.currentPlayer}
+                players={G.players}
+                handleSelection={moves["selectPlayer"]}
+              />
+            )}
+            {currentStage === "tradeOffer" && (
+              <MakeOfferModal
+                handleOffer={moves["makeOffer"]}
+                players={G.players}
+                spaces={G.spaces}
+                trade={G.trade}
               />
             )}
           </section>

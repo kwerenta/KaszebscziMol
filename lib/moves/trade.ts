@@ -61,6 +61,15 @@ export const makeOffer: Move<GameState> = (
     offers.player !== ctx.currentPlayer
   )
     return INVALID_MOVE;
+
+  if (
+    items.offers.money === 0 &&
+    items.offers.properties.length === 0 &&
+    items.wants.money === 0 &&
+    items.wants.properties.length === 0
+  )
+    return INVALID_MOVE;
+
   // Check if the players have enough money and that
   // they own properties that are without buildings
   if (!areItemsCorrect(G.spaces, G.players, items.offers, offers.player))
