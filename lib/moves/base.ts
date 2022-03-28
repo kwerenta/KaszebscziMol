@@ -1,5 +1,6 @@
 import { Move } from "boardgame.io";
 import { Stages } from ".";
+import { cards } from "../configs/cards";
 import { MortgageStatus, OtherGroups } from "../configs/spaces";
 import { GameState } from "../KaszebscziMol";
 import { getPlayer, getStage, goToJail } from "./utils";
@@ -99,6 +100,14 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
     G.auction.player =
       ctx.playOrder[(ctx.playOrderPos + 1) % ctx.playOrder.length];
     G.auction.properties = [...currentPlayer.properties];
+
+    if (
+      stage === "cardAction" &&
+      cards[G.card.current].action === "getJailCard"
+    )
+      G.card.left.push(G.card.current);
+    G.card.left.unshift(...currentPlayer.jailCards);
+
     ctx.events.setPhase("auction");
   }
 

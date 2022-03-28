@@ -82,12 +82,9 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
       break;
 
     case "getJailCard":
-      currentPlayer.jailCard.push(G.card.current);
+      currentPlayer.jailCards.push(G.card.current);
       break;
   }
-
-  // set current card to none
-  G.card.current = -1;
 
   ctx.events.setStage(nextStage);
 };

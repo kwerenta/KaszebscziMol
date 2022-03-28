@@ -15,9 +15,9 @@ export const payFine: Move<GameState> = (G, ctx) => {
 
 export const useJailCard: Move<GameState> = (G, ctx) => {
   const currentPlayer = getPlayer(G, ctx);
-  if (currentPlayer.jailCard.length === 0) return INVALID_MOVE;
+  if (currentPlayer.jailCards.length === 0) return INVALID_MOVE;
 
-  G.card.left.unshift(currentPlayer.jailCard.shift());
+  G.card.left.unshift(currentPlayer.jailCards.shift());
   currentPlayer.jail = 0;
   ctx.events.setStage(Stage.NULL);
 };

@@ -10,7 +10,7 @@ export interface Player {
   position: number;
   properties: number[];
   jail: number;
-  jailCard: number[];
+  jailCards: number[];
 }
 
 export interface TradeItems {
@@ -66,7 +66,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
 
   setup: ctx => ({
     players: Object.fromEntries(
-      setupData.map((playerData, index) => [
+      setupData.map((playerData, index): [number, Player] => [
         index,
         {
           name: playerData.name,
@@ -75,7 +75,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
           position: 0,
           properties: [],
           jail: 0,
-          jailCard: [],
+          jailCards: [],
         },
       ])
     ),
