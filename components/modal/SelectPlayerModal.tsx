@@ -1,16 +1,17 @@
+import { WrappedMove } from "../../hooks/useWrappedMoves";
 import { GameState } from "../../lib/KaszebscziMol";
 import { Modal } from "./Modal";
 
 interface Props {
   currentPlayer: string;
-  handleSelection: (playerID: string) => void;
+  selectPlayerMove: WrappedMove<string>;
   players: GameState["players"];
 }
 
 export const SelectPlayerModal = ({
   players,
   currentPlayer,
-  handleSelection,
+  selectPlayerMove,
 }: Props) => {
   return (
     <Modal show>
@@ -20,7 +21,7 @@ export const SelectPlayerModal = ({
             id !== currentPlayer && (
               <li
                 className="cursor-pointer rounded-md p-2 text-lg hover:bg-black/30 dark:hover:bg-white/30"
-                onClick={() => handleSelection(id)}
+                onClick={() => selectPlayerMove.fn(id)}
               >
                 {player.name}
               </li>

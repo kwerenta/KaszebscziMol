@@ -31,7 +31,7 @@ export const Game = ({
                 <MoveButton
                   color={moves[move].color}
                   key={i}
-                  moveFn={moves[move].fn}
+                  fn={moves[move].fn}
                   text={moves[move].text}
                 />
               ))}
@@ -59,8 +59,8 @@ export const Game = ({
                 propertyName={G.auction.properties
                   .map(propertyIndex => G.spaces[propertyIndex].name)
                   .join(", ")}
-                handleBid={moves["bid"].fn}
-                handleWithdraw={moves["withdraw"].fn}
+                bidMove={moves["bid"]}
+                withdrawMove={moves["withdraw"]}
                 value={G.auction.price}
                 winningPlayerName={G.players[G.auction.player].name}
                 currentPlayer={currentPlayer}
@@ -70,13 +70,13 @@ export const Game = ({
               <SelectPlayerModal
                 currentPlayer={ctx.currentPlayer}
                 players={G.players}
-                handleSelection={moves["selectPlayer"].fn}
+                selectPlayerMove={moves["selectPlayer"]}
               />
             )}
             {currentStage === "tradeOffer" && (
               <MakeOfferModal
-                handleOffer={moves["makeOffer"].fn}
-                handleGoBack={moves["goBack"].fn}
+                makeOfferMove={moves["makeOffer"]}
+                goBackMove={moves["goBack"]}
                 players={G.players}
                 spaces={G.spaces}
                 trade={G.trade}

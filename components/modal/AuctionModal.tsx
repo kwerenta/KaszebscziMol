@@ -1,19 +1,20 @@
+import { WrappedMove } from "../../hooks/useWrappedMoves";
 import type { Player } from "../../lib/KaszebscziMol";
 import { MoveButton } from "../Button/MoveButton";
 import { Modal } from "./Modal";
 
 interface Props {
   propertyName: string;
-  handleBid: (amount: number) => void;
-  handleWithdraw: () => void;
+  bidMove: WrappedMove<number>;
+  withdrawMove: WrappedMove;
   value: number;
   winningPlayerName: string;
   currentPlayer: Player;
 }
 export const AuctionModal = ({
   propertyName,
-  handleBid,
-  handleWithdraw,
+  bidMove,
+  withdrawMove,
   winningPlayerName,
   value,
   currentPlayer,
@@ -39,18 +40,18 @@ export const AuctionModal = ({
           </span>
         </h2>
         <div className="grid grid-cols-2 gap-2">
-          {[1, 10, 50, 100].map(amount => (
+          {[1, 10, 100].map(amount => (
             <MoveButton
-              text={`Zalicytuj ${amount}$`}
-              color="green"
-              moveFn={() => handleBid(amount)}
+              text={`${bidMove.text} ${amount}$`}
+              color={bidMove.color}
+              fn={() => bidMove.fn(amount)}
               disabled={currentPlayer.money < value + amount}
             />
           ))}
           <MoveButton
-            text={`Wycofaj się`}
-            color="red"
-            moveFn={handleWithdraw}
+            text={withdrawMove.text}
+            color={withdrawMove.color}
+            fn={withdrawMove.fn}
           />
         </div>
       </div>

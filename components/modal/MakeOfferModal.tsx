@@ -1,20 +1,21 @@
 import { useState } from "react";
+import { WrappedMove } from "../../hooks/useWrappedMoves";
 import { Space } from "../../lib/configs/spaces";
 import { GameState, Player, TradeItems } from "../../lib/KaszebscziMol";
 import { MoveButton } from "../Button/MoveButton";
 import { Modal } from "./Modal";
 
 interface Props {
-  handleOffer: (items: Record<"offers" | "wants", TradeItems>) => void;
-  handleGoBack: () => void;
+  makeOfferMove: WrappedMove<Record<"offers" | "wants", TradeItems>>;
+  goBackMove: WrappedMove;
   spaces: Space[];
   players: GameState["players"];
   trade: GameState["trade"];
 }
 
 export const MakeOfferModal = ({
-  handleOffer,
-  handleGoBack,
+  makeOfferMove,
+  goBackMove,
   players,
   spaces,
   trade,
@@ -124,22 +125,26 @@ export const MakeOfferModal = ({
         </div>
         <div className="flex flex-col justify-center gap-6">
           <MoveButton
-            color="green"
-            text="Złóż ofertę"
+            color={makeOfferMove.color}
+            text={makeOfferMove.text}
             disabled={
               offersItems.properties.length === 0 &&
               wantsItems.properties.length === 0 &&
               offersItems.money === 0 &&
               wantsItems.money === 0
             }
-            moveFn={() =>
-              handleOffer({
+            fn={() =>
+              makeOfferMove.fn({
                 offers: offersItems,
                 wants: wantsItems,
               })
             }
           />
-          <MoveButton color="orange" text="Wróć" moveFn={handleGoBack} />
+          <MoveButton
+            color={goBackMove.color}
+            text={goBackMove.text}
+            fn={goBackMove.fn}
+          />
         </div>
         <div className="flex flex-1 flex-col gap-4">
           <div className="bg-blue-gray-light rounded-md">

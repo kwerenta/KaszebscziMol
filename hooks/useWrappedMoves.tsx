@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { moveData, movesData, movesMap } from "../lib/moves";
 
-interface WrappedMove extends moveData {
-  fn: (...args: any[]) => void;
+export type MoveFn<T = never> = { (): void } | { (payload: T): void };
+
+export interface WrappedMove<T = never> extends moveData {
+  fn: MoveFn<T>;
 }
 
 export const useWrappedMoves = (

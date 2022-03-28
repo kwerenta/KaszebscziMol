@@ -1,4 +1,4 @@
-import type { Ctx, Move } from "boardgame.io";
+import type { Move } from "boardgame.io";
 import type { GameState } from "../KaszebscziMol";
 import { bid, withdraw } from "./auction";
 import {
@@ -74,7 +74,7 @@ export const movesData = createMovesDataMap({
   },
   bid: {
     text: "Licytuj",
-    color: "orange",
+    color: "green",
   },
   withdraw: {
     text: "Wycofaj się",
@@ -118,7 +118,7 @@ export type movesMap = keyof typeof movesData;
 const defaultMoves = { manageProperties, trade, bankrupt };
 
 const createMovesMap = <
-  T extends { [name: string]: Partial<Record<movesMap, Move<GameState, Ctx>>> }
+  T extends { [name: string]: Partial<Record<movesMap, Move<GameState>>> }
 >(
   map: T
 ) => map;
