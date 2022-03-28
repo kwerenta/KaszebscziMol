@@ -6,15 +6,14 @@ type actionsWithNumber =
   | "pay"
   | "payEachPlayer";
 
+type actionsWithNull = "goToJail" | "getJailCard";
+
 type Base<T> = { text: string } & T;
 
 export type Card = Base<
-  | {
-      action: actionsWithNumber;
-      payload: number;
-    }
+  | { action: actionsWithNumber; payload: number }
+  | { action: actionsWithNull; payload: null }
   | { action: "advanceToNearest"; payload: Groups }
-  | { action: "goToJail"; payload: undefined }
 >;
 
 export const cards: Card[] = [
@@ -96,6 +95,11 @@ export const cards: Card[] = [
   {
     text: "Twój znajomy kurier słusznie stwierdza, że picie czystego soku z cytryny powinno być nielegalne. W wyniku popełnienia tego niewybaczalnego czynu, sam postanawiasz udać się do więzienia.",
     action: "goToJail",
-    payload: undefined,
+    payload: null,
+  },
+  {
+    text: "Otrzymujesz kartę 'Wyjdź z więzienia' od taty kolegi, który jest policjantem",
+    action: "getJailCard",
+    payload: null,
   },
 ];

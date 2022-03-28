@@ -1,5 +1,4 @@
 import { Game } from "boardgame.io";
-import { Stage } from "boardgame.io/dist/types/packages/core";
 import { cards } from "./configs/cards";
 import { MortgageStatus, Space, spaces } from "./configs/spaces";
 import Moves, { Stages } from "./moves";
@@ -11,6 +10,7 @@ export interface Player {
   position: number;
   properties: number[];
   jail: number;
+  jailCard: number[];
 }
 
 export interface TradeItems {
@@ -75,6 +75,7 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
           position: 0,
           properties: [],
           jail: 0,
+          jailCard: [],
         },
       ])
     ),

@@ -12,7 +12,7 @@ import {
 import { acceptCard } from "./cardAction";
 import { drawCard } from "./cardSpace";
 import { pay } from "./hasOwner";
-import { payFine } from "./inJail";
+import { payFine, useJailCard } from "./inJail";
 import { auction, buyProperty } from "./noOwner";
 import { buyHouse, mortgage, sellHouse } from "./propertyManagment";
 import { acceptOffer, makeOffer, rejectOffer, selectPlayer } from "./trade";
@@ -104,6 +104,10 @@ export const movesData = createMovesDataMap({
     text: "Zapłać grzywnę",
     color: "orange",
   },
+  useJailCard: {
+    text: "Użyj karty 'Wyjdź z więzienia'",
+    color: "orange",
+  },
   goBack: {
     text: "Wróć",
     color: "orange",
@@ -130,7 +134,7 @@ const Moves = createMovesMap({
   tradeOffer: { makeOffer, goBack },
   trade: { acceptOffer, rejectOffer },
   propertyManagment: { buyHouse, sellHouse, mortgage, goBack },
-  inJail: { payFine, rollDice, ...defaultMoves },
+  inJail: { payFine, useJailCard, rollDice, ...defaultMoves },
 });
 export type Stages = keyof typeof Moves;
 

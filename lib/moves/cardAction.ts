@@ -80,6 +80,10 @@ export const acceptCard: Move<GameState> = (G, ctx) => {
     case "goToJail":
       goToJail(currentPlayer, ctx);
       break;
+
+    case "getJailCard":
+      currentPlayer.jailCard.push(G.card.current);
+      break;
   }
 
   // set current card to none

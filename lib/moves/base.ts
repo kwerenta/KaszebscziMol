@@ -1,5 +1,4 @@
 import { Move } from "boardgame.io";
-import { Stage } from "boardgame.io/core";
 import { Stages } from ".";
 import { MortgageStatus, OtherGroups } from "../configs/spaces";
 import { GameState } from "../KaszebscziMol";
