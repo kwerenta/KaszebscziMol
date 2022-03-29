@@ -1,11 +1,10 @@
 import { Space, groups } from "../../lib/configs/spaces";
-import { Player } from "../../lib/KaszebscziMol";
+import { GameState } from "../../lib/KaszebscziMol";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface TileProps {
-  players: Record<string, Player>;
+  players: GameState["players"];
   space: Space;
-  index: number;
 }
 
 export const Tile = ({ space, players }: TileProps) => {

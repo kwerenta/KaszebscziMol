@@ -8,6 +8,7 @@ import { AuctionModal } from "./modal/AuctionModal";
 import { SelectPlayerModal } from "./modal/SelectPlayerModal";
 import { MakeOfferModal } from "./modal/MakeOfferModal";
 import { useWrappedMoves } from "../hooks/useWrappedMoves";
+import { PropertyManagmentModal } from "./modal/PropertyManagmentModal";
 
 export const Game = ({
   G,
@@ -80,6 +81,17 @@ export const Game = ({
                 players={G.players}
                 spaces={G.spaces}
                 trade={G.trade}
+              />
+            )}
+            {currentStage === "propertyManagment" && (
+              <PropertyManagmentModal
+                goBackMove={moves["goBack"]}
+                mortgageMove={moves["mortgage"]}
+                buyHouseMove={moves["buyHouse"]}
+                sellHouseMove={moves["sellHouse"]}
+                currentPlayerID={ctx.currentPlayer}
+                currentPlayer={currentPlayer}
+                spaces={G.spaces}
               />
             )}
           </section>

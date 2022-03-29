@@ -35,9 +35,7 @@ export const TilesSlice = ({
     <div className={`flex ${classes}`}>
       {spaces.slice(startIndex, stopIndex).map((space, i) => {
         const index = i + startIndex;
-        return (
-          <Tile key={index} space={space} index={index} players={players} />
-        );
+        return <Tile key={index} space={space} players={players} />;
       })}
     </div>
   );
