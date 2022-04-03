@@ -226,11 +226,18 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
         };
       },
       turn: {
-        onBegin: (_, ctx) => {
-          ctx.events.setActivePlayers({
-            currentPlayer: "tradeOffer",
-            maxMoves: 1,
-          });
+        onBegin: (G, ctx) => {
+          const { offers, wants } = G.trade;
+          if (
+            offers.items.money === 0 &&
+            offers.items.properties.length === 0 &&
+            wants.items.money === 0 &&
+            wants.items.properties.length === 0
+          )
+            ctx.events.setActivePlayers({
+              currentPlayer: "tradeOffer",
+              maxMoves: 1,
+            });
         },
         order: {
           first: () => 0,

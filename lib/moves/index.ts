@@ -15,7 +15,13 @@ import { pay } from "./hasOwner";
 import { payFine, useJailCard } from "./inJail";
 import { auction, buyProperty } from "./noOwner";
 import { buyHouse, mortgage, sellHouse } from "./propertyManagment";
-import { acceptOffer, makeOffer, rejectOffer, selectPlayer } from "./trade";
+import {
+  acceptOffer,
+  makeOffer,
+  negotiateOffer,
+  rejectOffer,
+  selectPlayer,
+} from "./trade";
 
 export interface moveData {
   text: string;
@@ -96,6 +102,10 @@ export const movesData = createMovesDataMap({
     text: "Akceptuj ofertę",
     color: "green",
   },
+  negotiateOffer: {
+    text: "Negocjuj",
+    color: "orange",
+  },
   rejectOffer: {
     text: "Odrzuć ofertę",
     color: "red",
@@ -132,7 +142,7 @@ const Moves = createMovesMap({
   auction: { bid, withdraw },
   tradeSetup: { selectPlayer },
   tradeOffer: { makeOffer, goBack },
-  trade: { acceptOffer, rejectOffer },
+  trade: { acceptOffer, negotiateOffer, rejectOffer },
   propertyManagment: { buyHouse, sellHouse, mortgage, goBack },
   inJail: { payFine, useJailCard, rollDice, ...defaultMoves },
 });

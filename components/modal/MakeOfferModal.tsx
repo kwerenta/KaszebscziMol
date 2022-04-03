@@ -23,17 +23,21 @@ export const MakeOfferModal = ({
   const offersPlayer: Player = players[trade.offers.player];
   const wantsPlayer: Player = players[trade.wants.player];
 
+  const [offersItems, setOffersItems] = useState({ ...trade.offers.items });
+  const [wantsItems, setWantsItems] = useState({ ...trade.wants.items });
+
   const [offersLeft, setOffersLeft] = useState({
-    properties: offersPlayer.properties,
+    properties: offersPlayer.properties.filter(
+      propertyIndex => !offersItems.properties.includes(propertyIndex)
+    ),
     money: offersPlayer.money,
   });
   const [wantsLeft, setWantsLeft] = useState({
-    properties: wantsPlayer.properties,
+    properties: wantsPlayer.properties.filter(
+      propertyIndex => !wantsItems.properties.includes(propertyIndex)
+    ),
     money: wantsPlayer.money,
   });
-
-  const [offersItems, setOffersItems] = useState({ ...trade.offers.items });
-  const [wantsItems, setWantsItems] = useState({ ...trade.wants.items });
 
   const add = (prevItems: TradeItems, property: number): TradeItems => ({
     ...prevItems,

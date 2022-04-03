@@ -1,5 +1,5 @@
 import { Move } from "boardgame.io";
-import { INVALID_MOVE } from "boardgame.io/core";
+import { INVALID_MOVE, Stage } from "boardgame.io/core";
 import { Space } from "../configs/spaces";
 import { GameState, TradeItems, Player, Trade } from "../KaszebscziMol";
 
@@ -80,6 +80,8 @@ export const makeOffer: Move<GameState> = (
 
   G.trade.offers.items = items.offers;
   G.trade.wants.items = items.wants;
+
+  ctx.events.endTurn();
 };
 
 export const acceptOffer: Move<GameState> = (G, ctx) => {
@@ -92,4 +94,14 @@ export const acceptOffer: Move<GameState> = (G, ctx) => {
 
   ctx.events.endPhase();
 };
+
+export const negotiateOffer: Move<GameState> = (G, ctx) => {
+  [G.trade.offers, G.trade.wants] = [G.trade.wants, G.trade.offers];
+
+  ctx.events.setActivePlayers({
+    currentPlayer: "tradeOffer",
+    maxMoves: 1,
+  });
+};
+
 export const rejectOffer: Move<GameState> = (_, ctx) => ctx.events.endPhase();
