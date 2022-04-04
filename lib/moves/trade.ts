@@ -1,5 +1,5 @@
 import { Move } from "boardgame.io";
-import { INVALID_MOVE, Stage } from "boardgame.io/core";
+import { INVALID_MOVE } from "boardgame.io/core";
 import { Space } from "../configs/spaces";
 import { GameState, TradeItems, Player, Trade } from "../KaszebscziMol";
 
@@ -43,6 +43,13 @@ const updatePlayer = (
 };
 
 export const selectPlayer: Move<GameState> = (G, ctx, playerID: string) => {
+  if (
+    typeof playerID !== "string" ||
+    !ctx.playOrder.includes(playerID) ||
+    playerID === ctx.currentPlayer
+  )
+    return INVALID_MOVE;
+
   G.trade.offers.player = ctx.currentPlayer;
   G.trade.wants.player = playerID;
   ctx.events.setPhase("trade");
@@ -62,12 +69,14 @@ export const makeOffer: Move<GameState> = (
   )
     return INVALID_MOVE;
 
-  // Check if trade items are empty
   if (
-    items.offers.money === 0 &&
-    items.offers.properties.length === 0 &&
-    items.wants.money === 0 &&
-    items.wants.properties.length === 0
+    !items ||
+    !items.offers ||
+    !items.wants ||
+    (items.offers.money === 0 &&
+      items.offers.properties.length === 0 &&
+      items.wants.money === 0 &&
+      items.wants.properties.length === 0)
   )
     return INVALID_MOVE;
 
