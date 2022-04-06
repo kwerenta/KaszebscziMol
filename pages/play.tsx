@@ -1,17 +1,18 @@
-import { Client } from "boardgame.io/react";
-import { KaszebscziMol, playerData } from "../lib/KaszebscziMol";
+import { KaszebscziMol, SetupData } from "../lib/KaszebscziMol";
 import { Game } from "../components/Game";
 import { Layout } from "../components/Layout";
 import { useRouter } from "next/router";
+import { ClientProps, GameClient } from "../components/GameClient";
 
-export default function GameClient(): JSX.Element {
+export default function Play(): JSX.Element {
   const router = useRouter();
 
   const playersData =
-    !Array.isArray(router.query.players) && router.query.players
-      ? JSON.parse(router.query.players)
-      : {};
-  const players: playerData[] =
+    router.query.players &&
+    !Array.isArray(router.query.players) &&
+    JSON.parse(router.query.players);
+
+  const players: SetupData =
     playersData && playersData.length >= 2
       ? playersData
       : [
@@ -21,16 +22,17 @@ export default function GameClient(): JSX.Element {
           { name: "Piotr", color: "bg-sky-500" },
         ];
 
-  const Component = Client({
-    game: KaszebscziMol([...players]),
+  const clientOptions: ClientProps = {
+    game: KaszebscziMol,
     numPlayers: players.length,
     board: Game,
+    setupData: [...players],
     debug: true,
-  });
+  };
 
   return (
     <Layout>
-      <Component />
+      <GameClient {...clientOptions} />
     </Layout>
   );
 }

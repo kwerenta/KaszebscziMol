@@ -1,11 +1,16 @@
-import { Game } from "boardgame.io";
+import { Ctx, Game } from "boardgame.io";
 import { cards } from "./configs/cards";
 import { MortgageStatus, Space, spaces } from "./configs/spaces";
 import Moves, { Stages } from "./moves";
 
-export interface Player {
+export interface PlayerData {
   name: string;
   color: string;
+}
+
+export type SetupData = PlayerData[];
+
+export interface Player extends PlayerData {
   money: number;
   position: number;
   properties: number[];
@@ -54,19 +59,15 @@ export interface GameState {
   dice: [number, number];
 }
 
-export interface playerData {
-  name: string;
-  color: string;
-}
-export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
+export const KaszebscziMol: Game<GameState, Ctx, SetupData> = {
   name: "KaszëbscziMôl",
   minPlayers: 2,
   maxPlayers: 6,
   disableUndo: true,
 
-  setup: ctx => ({
-    players: Object.fromEntries(
-      setupData.map((playerData, index): [number, Player] => [
+  setup: (ctx, setupData) => ({
+    players: Object.fromEntries<Player>(
+      setupData.map((playerData, index) => [
         index,
         {
           name: playerData.name,
@@ -251,4 +252,4 @@ export const KaszebscziMol = (setupData: playerData[]): Game<GameState> => ({
       moves: Moves.trade,
     },
   },
-});
+};

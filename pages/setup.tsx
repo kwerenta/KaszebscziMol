@@ -5,10 +5,10 @@ import { LinkButton } from "../components/Button/LinkButton";
 import { Card } from "../components/setup/Card";
 import { CardsContainer } from "../components/setup/CardsContainer";
 import { PlayerCard } from "../components/setup/PlayerCard";
-import type { playerData } from "../lib/KaszebscziMol";
+import type { SetupData, PlayerData } from "../lib/KaszebscziMol";
 import { faCouch, faGlobe, faRobot } from "@fortawesome/free-solid-svg-icons";
 
-const EMPTY_PLAYER: playerData = { name: "", color: "" };
+const EMPTY_PLAYER: PlayerData = { name: "", color: "" };
 const PLAYER_COLORS = [
   "bg-pattern-red",
   "bg-pattern-blue-dark",
@@ -22,8 +22,8 @@ const STEPS = ["Tryb", "Gracze"] as const;
 export default function Setup() {
   const [activeStep, setActiveStep] = useState(0);
   const [colors, setColors] = useState(PLAYER_COLORS.sort());
-  const [players, setPlayers] = useState<playerData[]>([]);
-  const [playerData, setPlayerData] = useState<playerData>(EMPTY_PLAYER);
+  const [players, setPlayers] = useState<SetupData>([]);
+  const [playerData, setPlayerData] = useState<PlayerData>(EMPTY_PLAYER);
 
   const nextStep = () => {
     setActiveStep(currentStep =>
@@ -129,10 +129,10 @@ export default function Setup() {
           <LinkButton
             text={"Rozpocznij grę"}
             href={{
-              pathname: "/game",
+              pathname: "/play",
               query: { players: JSON.stringify(players) },
             }}
-            as={"/game"}
+            as={"/play"}
             disabled={players.length < 2}
           />
         </>

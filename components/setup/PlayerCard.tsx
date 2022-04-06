@@ -4,13 +4,13 @@ import { faPlusCircle, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useMemo } from "react";
-import type { playerData } from "../../lib/KaszebscziMol";
+import type { PlayerData } from "../../lib/KaszebscziMol";
 import { Card } from "./Card";
 
 interface PlayerCardProps {
   removePlayer: (name: string) => void;
   colors?: never;
-  addPlayerCard?: never;
+  addPlayerCard?: false;
   setPlayerData?: never;
   addPlayer?: never;
 }
@@ -19,12 +19,12 @@ interface AddPlayerCardProps {
   removePlayer?: never;
   colors: string[];
   addPlayerCard: true;
-  setPlayerData: Dispatch<SetStateAction<playerData>>;
+  setPlayerData: Dispatch<SetStateAction<PlayerData>>;
   addPlayer: () => void;
 }
 
 type CardProps = (PlayerCardProps | AddPlayerCardProps) & {
-  playerData: playerData;
+  playerData: PlayerData;
 };
 
 export const PlayerCard = ({
