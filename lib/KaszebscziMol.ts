@@ -2,6 +2,7 @@ import { Ctx, Game } from "boardgame.io";
 import { cards } from "./configs/cards";
 import { MortgageStatus, Space, spaces } from "./configs/spaces";
 import Moves, { Stages } from "./moves";
+import * as Phases from "./phases/";
 
 export interface PlayerData {
   name: string;
@@ -28,7 +29,7 @@ export interface Trade {
   items: TradeItems;
 }
 
-const EMPTY_TRADE: Trade = {
+export const EMPTY_TRADE: Trade = {
   player: "",
   items: {
     properties: [],
@@ -165,91 +166,7 @@ export const KaszebscziMol: Game<GameState, Ctx, SetupData> = {
     },
   },
   phases: {
-    auction: {
-      onBegin: (G, ctx) => {
-        G.temp.playOrderPos = ctx.playOrderPos;
-        G.temp.playOrder = ctx.playOrder;
-
-        // Check if this space has been put up for auction
-        // Then set temp stage to let last player end his turn
-        if (G.spaces[G.auction.properties[0]].owner === "")
-          G.temp.stage = "noAction";
-      },
-      endIf: (_, ctx) => ctx.playOrder.length === 1,
-      onEnd: G => {
-        const winner = G.players[G.auction.player];
-
-        G.auction.properties.forEach(propertyIndex => {
-          G.spaces[propertyIndex].owner = G.auction.player;
-        });
-
-        winner.money -= G.auction.price;
-        winner.properties = winner.properties.concat(G.auction.properties);
-
-        G.auction = {
-          ...G.auction,
-          price: 0,
-          player: "",
-          properties: [],
-        };
-      },
-      turn: {
-        order: {
-          first: (G, ctx) =>
-            // If auction is due to bankruptcy, set first position
-            // to current position due to change in playOrder
-            G.spaces[G.auction.properties[0]].owner !== ""
-              ? ctx.playOrderPos
-              : (ctx.playOrderPos + 1) % ctx.playOrder.length,
-          next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
-          playOrder: (_, ctx) => ctx.playOrder,
-        },
-      },
-      moves: Moves.auction,
-    },
-    trade: {
-      onBegin: (G, ctx) => {
-        G.temp.playOrderPos = ctx.playOrderPos;
-        G.temp.playOrder = ctx.playOrder;
-      },
-      onEnd: G => {
-        // TEMP Change the interest on properties already mortgaged to Interest20
-        G.trade.offers.items.properties
-          .concat(G.trade.wants.items.properties)
-          .forEach(propertyIndex => {
-            const space = G.spaces[propertyIndex];
-            if (space.mortgage === MortgageStatus.Interest10)
-              space.mortgage = MortgageStatus.Interest20;
-          });
-        G.trade = {
-          offers: EMPTY_TRADE,
-          wants: EMPTY_TRADE,
-        };
-      },
-      turn: {
-        onBegin: (G, ctx) => {
-          const { offers, wants } = G.trade;
-          if (
-            offers.items.money === 0 &&
-            offers.items.properties.length === 0 &&
-            wants.items.money === 0 &&
-            wants.items.properties.length === 0
-          )
-            ctx.events.setActivePlayers({
-              currentPlayer: "tradeOffer",
-              maxMoves: 1,
-            });
-        },
-        order: {
-          first: () => 0,
-          next: (_, ctx) => (ctx.playOrderPos + 1) % ctx.playOrder.length,
-          playOrder: G => [G.trade.offers.player, G.trade.wants.player],
-        },
-        stages: {
-          tradeOffer: { moves: Moves.tradeOffer },
-        },
-      },
-      moves: Moves.trade,
-    },
+    auction: Phases.auction,
+    trade: Phases.trade,
   },
 };
