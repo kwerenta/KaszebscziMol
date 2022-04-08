@@ -40,6 +40,8 @@ export const enum MortgageStatus {
   Interest0 = "INTEREST 0%",
   Interest10 = "INTEREST 10%",
   Interest20 = "INTEREST 20%",
+  Interest0To10 = "INTEREST 0 TO 10%",
+  Interest10To20 = "INTEREST 10 TO 20%",
 }
 
 type AllOrNone<T> = T | { [K in keyof T]?: never };
@@ -72,19 +74,19 @@ export const groups: Record<PropertyGroups, Group> = {
 export const spaces: SpaceData[] = [
   { name: "START", group: OtherGroups.Start, icon: "arrow-right" },
   {
-    name: "Plaża Ostrzyce",
+    name: "Brak nazwy",
     price: 60,
     group: PropertyGroups.Color1,
     rent: [2, 10, 30, 90, 160, 250],
-    icon: "umbrella-beach",
+    icon: "city",
   },
   { name: "Kasa społeczna?", group: OtherGroups.Card, icon: "toolbox" },
   {
-    name: "Ostrzycki domek",
+    name: "Brak nazwy",
     price: 60,
     group: PropertyGroups.Color1,
     rent: [4, 20, 60, 180, 320, 450],
-    icon: "house-user",
+    icon: "city",
   },
   {
     name: "Tequila Gdańsk",
@@ -175,12 +177,12 @@ export const spaces: SpaceData[] = [
     icon: "wine-bottle",
   },
   {
-    name: "Najpiękniejsza wieś pomorska 2014",
+    name: "Parking nauczycielski w ZSŁ",
     group: OtherGroups.CarPark,
     icon: "parking",
   },
   {
-    name: "Dino Mściszewice",
+    name: "Brak nazwy",
     price: 220,
     group: PropertyGroups.Color5,
     rent: [18, 90, 250, 700, 875, 1050],
@@ -188,25 +190,25 @@ export const spaces: SpaceData[] = [
   },
   { name: "Szansa?", group: OtherGroups.Card, icon: "question" },
   {
-    name: "Dino Mściszewice",
+    name: "Brak nazwy",
     price: 220,
     group: PropertyGroups.Color5,
     rent: [18, 90, 250, 700, 875, 1050],
     icon: "city",
   },
   {
-    name: "Dino Mściszewice",
+    name: "Brak nazwy",
     price: 240,
     group: PropertyGroups.Color5,
     rent: [20, 100, 300, 750, 925, 1100],
     icon: "city",
   },
   {
-    name: "Kościerzyna",
+    name: "Limonka Ostrzyce",
     price: 260,
     group: PropertyGroups.Color6,
     rent: [22, 110, 330, 800, 975, 1150],
-    icon: "city",
+    icon: "lemon",
   },
   {
     name: "PKM Kartuzy",
@@ -216,18 +218,18 @@ export const spaces: SpaceData[] = [
     icon: "train",
   },
   {
-    name: "Kościerzyna",
+    name: "Tawerna Kaszubska w Ostrzycach",
     price: 260,
     group: PropertyGroups.Color6,
     rent: [22, 110, 330, 800, 975, 1150],
-    icon: "city",
+    icon: "beer-mug-empty",
   },
   {
-    name: "Kościerzyna",
+    name: "Hilton Ostrzyce",
     price: 280,
     group: PropertyGroups.Color6,
     rent: [24, 120, 360, 850, 1025, 1200],
-    icon: "city",
+    icon: "house-user",
   },
   {
     name: "Wodociągi?",
@@ -244,7 +246,11 @@ export const spaces: SpaceData[] = [
     rent: [26, 130, 390, 900, 1100, 1275],
     icon: "theater-masks",
   },
-  { name: "Idź do Żukowa", group: OtherGroups.GoToJail, icon: "paper-plane" },
+  {
+    name: "Idź do Żukowa",
+    group: OtherGroups.GoToJail,
+    icon: "paper-plane",
+  },
   {
     name: "Ołtarz Papieski z Pelplina w Sierakowicach",
     price: 300,

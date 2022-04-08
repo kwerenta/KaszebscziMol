@@ -3,6 +3,7 @@ import { Stages } from ".";
 import { cards } from "../configs/cards";
 import { MortgageStatus, OtherGroups } from "../configs/spaces";
 import { GameState } from "../KaszebscziMol";
+import { mortgage } from "./propertyManagment";
 import { getPlayer, getStage, goToJail } from "./utils";
 
 export const rollDice: Move<GameState> = (G, ctx) => {
@@ -88,8 +89,6 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
     ctx.phase ||
     "rollDice") as Stages;
 
-  ctx.events.pass({ remove: true });
-
   let newPlayer = "";
   // Check if player owes another player
   if (stage === "hasOwner") {
@@ -123,6 +122,11 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
     if (newPlayer !== "") {
       space.owner = newPlayer;
       G.players[newPlayer].properties.push(spaceIndex);
+
+      if (space.mortgage !== MortgageStatus.Unmortgaged) {
+        space.mortgage = MortgageStatus.Interest0To10;
+        G.temp.updateInterest = true;
+      }
       return;
     }
 
@@ -130,6 +134,7 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
   });
 
   G.bankrupts += 1;
+  ctx.events.pass({ remove: true });
 };
 
 export const trade: Move<GameState> = (G, ctx) => {

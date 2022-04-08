@@ -46,7 +46,12 @@ export interface GameState {
     player: string;
   };
   trade: Record<"offers" | "wants", Trade>;
-  temp: { playOrder: string[]; playOrderPos: number; stage: Stages | "" };
+  temp: {
+    playOrder: string[];
+    playOrderPos: number;
+    stage: Stages | "";
+    updateInterest: boolean;
+  };
   doubles: number;
   card: {
     current: number;
@@ -68,7 +73,7 @@ export const KaszebscziMol: Game<GameState, Ctx, SetupData> = {
 
   setup: (ctx, setupData) => ({
     players: Object.fromEntries<Player>(
-      setupData.map((playerData, index) => [
+      setupData.map((playerData, index): [number, Player] => [
         index,
         {
           name: playerData.name,
@@ -90,6 +95,7 @@ export const KaszebscziMol: Game<GameState, Ctx, SetupData> = {
       playOrder: [],
       playOrderPos: -1,
       stage: "",
+      updateInterest: false,
     },
     trade: {
       offers: EMPTY_TRADE,
@@ -134,9 +140,30 @@ export const KaszebscziMol: Game<GameState, Ctx, SetupData> = {
         ctx.events.setActivePlayers({ currentPlayer: "inJail" });
         return;
       }
+
       if (G.temp.stage !== "") {
         ctx.events.setActivePlayers({ currentPlayer: G.temp.stage });
         G.temp.stage = "";
+      }
+    },
+    onEnd: (G, ctx) => {
+      if (G.temp.updateInterest) {
+        const player = G.players[ctx.currentPlayer];
+        player.properties.forEach(propertyIndex => {
+          const space = G.spaces[propertyIndex];
+          space.mortgage =
+            space.mortgage === MortgageStatus.Interest0To10
+              ? MortgageStatus.Interest10
+              : space.mortgage === MortgageStatus.Interest10To20
+              ? MortgageStatus.Interest20
+              : space.mortgage;
+        });
+
+        G.temp.updateInterest = G.spaces.some(
+          space =>
+            space.mortgage === MortgageStatus.Interest0To10 ||
+            space.mortgage === MortgageStatus.Interest10To20
+        );
       }
     },
     minMoves: 1,

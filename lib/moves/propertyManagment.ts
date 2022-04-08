@@ -110,7 +110,8 @@ export const mortgage: Move<GameState> = (G, ctx, propertyIndex: number) => {
   const interest =
     space.mortgage === MortgageStatus.Interest20
       ? 1.2
-      : space.mortgage === MortgageStatus.Interest10
+      : space.mortgage === MortgageStatus.Interest10 ||
+        space.mortgage === MortgageStatus.Interest10To20
       ? 1.1
       : 1;
   const unmortgageCost = mortgageValue * interest;

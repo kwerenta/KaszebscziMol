@@ -15,7 +15,6 @@ export {
   faChargingStation,
   faFaucet,
   faHouseUser,
-  faUmbrellaBeach,
   faCocktail,
   faWarehouse,
   faUserSecret,
@@ -25,4 +24,6 @@ export {
   faWineGlassAlt,
   faWineGlass,
   faWineBottle,
+  faLemon,
+  faBeerMugEmpty,
 } from "@fortawesome/free-solid-svg-icons";

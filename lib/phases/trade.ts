@@ -9,14 +9,17 @@ export const trade: PhaseConfig<GameState, Ctx> = {
     G.temp.playOrder = ctx.playOrder;
   },
   onEnd: G => {
-    // TEMP Change the interest on properties already mortgaged to Interest20
-    G.trade.offers.items.properties
-      .concat(G.trade.wants.items.properties)
-      .forEach(propertyIndex => {
-        const space = G.spaces[propertyIndex];
-        if (space.mortgage === MortgageStatus.Interest10)
-          space.mortgage = MortgageStatus.Interest20;
-      });
+    [
+      ...G.trade.offers.items.properties,
+      ...G.trade.wants.items.properties,
+    ].forEach(propertyIndex => {
+      const space = G.spaces[propertyIndex];
+      if (space.mortgage !== MortgageStatus.Unmortgaged) {
+        space.mortgage = MortgageStatus.Interest10To20;
+        G.temp.updateInterest = true;
+      }
+    });
+
     G.trade = {
       offers: EMPTY_TRADE,
       wants: EMPTY_TRADE,
