@@ -134,6 +134,7 @@ export const bankrupt: Move<GameState> = (G, ctx) => {
   });
 
   G.bankrupts += 1;
+  currentPlayer.isBankrupt = true;
   ctx.events.pass({ remove: true });
 };
 

@@ -17,6 +17,7 @@ export interface Player extends PlayerData {
   properties: number[];
   jail: number;
   jailCards: number[];
+  isBankrupt: boolean;
 }
 
 export interface TradeItems {
@@ -83,6 +84,7 @@ export const KaszebscziMol: Game<GameState, Ctx, SetupData> = {
           properties: [],
           jail: 0,
           jailCards: [],
+          isBankrupt: false,
         },
       ])
     ),
@@ -179,7 +181,7 @@ export const KaszebscziMol: Game<GameState, Ctx, SetupData> = {
       playOrder: (G, ctx) =>
         G.temp.playOrderPos === -1
           ? ctx.random.Shuffle(ctx.playOrder)
-          : G.temp.playOrder,
+          : G.temp.playOrder.filter(id => !G.players[id].isBankrupt),
     },
     stages: {
       noAction: { moves: Moves.noAction },
